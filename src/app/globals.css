@@ -1,0 +1,256 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+/*
+  Calnivo Design System
+  ---------------------
+  #FAF9F6  main background  (canvas)
+  #FFFFFF  cards / surfaces
+  #17232D  headings & body text (deep charcoal-navy)
+  #F4511E -> #FF6A00  primary accent / CTA (gradient)
+  #66727C  secondary / muted text
+  #E5E7E9  borders & dividers
+*/
+:root {
+  --radius: 0.75rem;
+
+  /* Brand */
+  --brand-bg: #FAF9F6;
+  --brand-surface: #FFFFFF;
+  --brand-ink: #17232D;
+  --brand-accent-from: #F4511E;
+  --brand-accent-to: #FF6A00;
+  --brand-accent: #FF6A00;
+  --brand-accent-deep: #F4511E;
+  --brand-muted: #66727C;
+  --brand-border: #E5E7E9;
+
+  /* shadcn semantic tokens mapped to Calnivo palette */
+  --background: #FAF9F6;
+  --foreground: #17232D;
+
+  --card: #FFFFFF;
+  --card-foreground: #17232D;
+
+  --popover: #FFFFFF;
+  --popover-foreground: #17232D;
+
+  --primary: #FF6A00;
+  --primary-foreground: #FFFFFF;
+
+  --secondary: #F3F2EF;
+  --secondary-foreground: #17232D;
+
+  --muted: #F3F2EF;
+  --muted-foreground: #66727C;
+
+  --accent: #FFF1E8;
+  --accent-foreground: #F4511E;
+
+  --destructive: #DC2626;
+  --destructive-foreground: #FFFFFF;
+
+  --border: #E5E7E9;
+  --input: #E5E7E9;
+  --ring: #FF6A00;
+
+  --chart-1: #FF6A00;
+  --chart-2: #F4511E;
+  --chart-3: #17232D;
+  --chart-4: #66727C;
+  --chart-5: #C9A227;
+
+  --sidebar: #FFFFFF;
+  --sidebar-foreground: #17232D;
+  --sidebar-primary: #FF6A00;
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-accent: #FFF1E8;
+  --sidebar-accent-foreground: #F4511E;
+  --sidebar-border: #E5E7E9;
+  --sidebar-ring: #FF6A00;
+}
+
+.dark {
+  --background: #0F1A22;
+  --foreground: #FAF9F6;
+
+  --card: #17232D;
+  --card-foreground: #FAF9F6;
+
+  --popover: #17232D;
+  --popover-foreground: #FAF9F6;
+
+  --primary: #FF6A00;
+  --primary-foreground: #FFFFFF;
+
+  --secondary: #1E2C36;
+  --secondary-foreground: #FAF9F6;
+
+  --muted: #1E2C36;
+  --muted-foreground: #9AA4AD;
+
+  --accent: #2A1A12;
+  --accent-foreground: #FF8A3D;
+
+  --destructive: #EF4444;
+  --destructive-foreground: #FFFFFF;
+
+  --border: #2C3A45;
+  --input: #2C3A45;
+  --ring: #FF6A00;
+
+  --chart-1: #FF6A00;
+  --chart-2: #F4511E;
+  --chart-3: #FAF9F6;
+  --chart-4: #9AA4AD;
+  --chart-5: #C9A227;
+
+  --sidebar: #0F1A22;
+  --sidebar-foreground: #FAF9F6;
+  --sidebar-primary: #FF6A00;
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-accent: #2A1A12;
+  --sidebar-accent-foreground: #FF8A3D;
+  --sidebar-border: #2C3A45;
+  --sidebar-ring: #FF6A00;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+/* Calnivo utility helpers */
+@layer utilities {
+  .bg-brand-canvas {
+    background-color: #FAF9F6;
+  }
+  .text-brand-ink {
+    color: #17232D;
+  }
+  .text-brand-muted {
+    color: #66727C;
+  }
+  .bg-brand-accent-gradient {
+    background-image: linear-gradient(135deg, #F4511E 0%, #FF6A00 100%);
+  }
+  .text-brand-accent-gradient {
+    background-image: linear-gradient(135deg, #F4511E 0%, #FF6A00 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
+  .border-brand {
+    border-color: #E5E7E9;
+  }
+  .ring-brand {
+    --tw-ring-color: #FF6A00;
+  }
+  .shadow-brand {
+    box-shadow: 0 1px 2px 0 rgba(23, 35, 45, 0.04),
+      0 4px 16px -2px rgba(23, 35, 45, 0.06);
+  }
+  .shadow-brand-lg {
+    box-shadow: 0 4px 12px -2px rgba(23, 35, 45, 0.06),
+      0 16px 48px -8px rgba(255, 106, 0, 0.12);
+  }
+  .shadow-accent {
+    box-shadow: 0 8px 24px -6px rgba(255, 106, 0, 0.45);
+  }
+}
+
+/* Custom scrollbar */
+@layer utilities {
+  .scroll-thin {
+    scrollbar-width: thin;
+    scrollbar-color: #CBD0D5 transparent;
+  }
+  .scroll-thin::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  .scroll-thin::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .scroll-thin::-webkit-scrollbar-thumb {
+    background-color: #CBD0D5;
+    border-radius: 9999px;
+  }
+  .scroll-thin::-webkit-scrollbar-thumb:hover {
+    background-color: #FF6A00;
+  }
+}
+
+/* Smooth focus ring for inputs */
+input[type="text"],
+input[type="number"],
+input[type="email"],
+input[type="password"],
+input[type="search"],
+input[type="date"],
+input[type="tel"],
+input[type="url"],
+select,
+textarea {
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+/* Number input cleanup */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type="number"] {
+  -moz-appearance: textfield;
+}

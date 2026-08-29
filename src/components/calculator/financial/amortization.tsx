@@ -21,12 +21,24 @@ export default function AmortizationCalculator() {
     const months = parseNum(years) * 12;
     const monthlyRate = parseNum(rate) / 100 / 12;
     let monthly = 0;
-    if (monthlyRate === 0) {
-      monthly = months > 0 ? P / months : 0;
+    if (months <= 0) {
+      monthly = 0;
+    } else if (monthlyRate === 0) {
+      monthly = P / months;
+    } else if (monthlyRate <= -1) {
+      monthly = 0;
     } else {
       const f = Math.pow(1 + monthlyRate, months);
-      monthly = (P * monthlyRate * f) / (f - 1);
+      if (!isFinite(f)) {
+        monthly = P * monthlyRate; // asymptotic
+      } else if (f !== 1) {
+        monthly = (P * monthlyRate * f) / (f - 1);
+      } else {
+        monthly = P / months;
+      }
     }
+    if (!isFinite(monthly)) monthly = 0;
+    const safeMonths = Math.min(months, 1200); // cap schedule iterations to avoid runaway loops
     const schedule: {
       month: number;
       date: string;
@@ -36,7 +48,7 @@ export default function AmortizationCalculator() {
     }[] = [];
     let balance = P;
     const start = startDate ? new Date(startDate) : null;
-    for (let i = 1; i <= months && balance > 0.005; i++) {
+    for (let i = 1; i <= safeMonths && balance > 0.005; i++) {
       const interest = balance * monthlyRate;
       let principal = monthly - interest;
       if (principal > balance) principal = balance;

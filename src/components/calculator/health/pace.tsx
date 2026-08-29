@@ -187,11 +187,19 @@ export default function PaceCalculator() {
   const splits = computed
     ? Array.from({ length: splitCount }, (_, i) => {
         const splitDist = i + 1;
-        const splitSeconds =
-          (mode === "distance" ? computed.outSeconds / computed.outDistance : 0) ||
-          (mode === "pace"
-            ? totalSeconds * (splitDist / distKm)
-            : paceSecondsPerKm * splitDist);
+        // Pace (seconds per km) — uniform across all splits.
+        const pacePerKm =
+          mode === "pace"
+            ? distKm > 0
+              ? totalSeconds / distKm
+              : 0
+            : mode === "time"
+              ? paceSecondsPerKm
+              : computed.outDistance > 0
+                ? computed.outSeconds / computed.outDistance
+                : 0;
+        // Cumulative time at splitDist = pace × distance.
+        const splitSeconds = pacePerKm * splitDist;
         return { km: splitDist, seconds: splitSeconds };
       })
     : [];

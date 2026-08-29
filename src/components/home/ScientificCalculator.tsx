@@ -94,6 +94,12 @@ export function ScientificCalculator() {
   // Live preview of the current expression, computed during render.
   const preview = useMemo(() => {
     if (!expr.trim()) return { value: "0", error: null as string | null };
+    // If the expression itself is an error sentinel (set after pressing "=" on
+    // a mathematically undefined input), display "Error" rather than trying to
+    // re-evaluate the literal string "Error".
+    if (expr === "Error" || expr.startsWith("Error")) {
+      return { value: "Error", error: "Math error" };
+    }
     try {
       const subbed = expr.replace(/Ans/g, String(ans));
       const v = evaluate(subbed, mode);

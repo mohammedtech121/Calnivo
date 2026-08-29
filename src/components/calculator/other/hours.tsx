@@ -41,9 +41,12 @@ let nextId = 7;
 
 function parseHM(s: string): number | null {
   // returns minutes from midnight, or null
+  // Restricts to valid 24-hour clock times (00:00 – 23:59).
   const m = s.trim().match(/^(\d{1,2}):([0-5]?\d)$/);
   if (!m) return null;
-  return parseInt(m[1], 10) * 60 + parseInt(m[2], 10);
+  const h = parseInt(m[1], 10);
+  if (h > 23) return null;
+  return h * 60 + parseInt(m[2], 10);
 }
 
 function fmtHours(min: number): string {
@@ -70,21 +73,25 @@ export default function HoursCalculator() {
       const start = parseHM(r.start);
       const end = parseHM(r.end);
       let worked = 0;
+      // Break minutes cannot be negative — clamp to 0 (defensive against
+      // non-numeric or "-30" style entries that would otherwise inflate hours).
+      const breakMin = Math.max(0, parseNum(r.break));
       let valid = start !== null && end !== null;
       if (valid) {
         let diff = (end as number) - (start as number);
         if (diff < 0) diff += 24 * 60; // overnight shift
-        const br = parseNum(r.break);
-        worked = Math.max(0, diff - br);
+        worked = Math.max(0, diff - breakMin);
       }
-      return { ...r, workedMin: worked, valid };
+      return { ...r, workedMin: worked, breakMin, valid };
     });
   }, [rows]);
 
   const totalMin = computed.reduce((s, r) => s + r.workedMin, 0);
   const totalHours = totalMin / 60;
-  const hourlyRate = parseNum(rate);
-  const totalPay = totalHours * hourlyRate;
+  const hourlyRate = Math.max(0, parseNum(rate));
+  const totalPay = isFinite(totalHours) && isFinite(hourlyRate)
+    ? totalHours * hourlyRate
+    : 0;
 
   function addRow() {
     setRows((prev) => [
@@ -206,7 +213,7 @@ export default function HoursCalculator() {
                   {r.end}
                 </TableCell>
                 <TableCell className="text-right tabular-nums">
-                  {parseNum(r.break)} min
+                  {r.breakMin} min
                 </TableCell>
                 <TableCell className="text-right font-semibold tabular-nums">
                   {r.valid ? fmtHours(r.workedMin) : "—"}
@@ -236,7 +243,7 @@ export default function HoursCalculator() {
           <ResultCard
             label="Total break"
             value={`${fmtNum(
-              computed.reduce((s, r) => s + parseNum(r.break), 0),
+              computed.reduce((s, r) => s + r.breakMin, 0),
               0,
             )} min`}
             sub={`${rows.length} day${rows.length === 1 ? "" : "s"}`}

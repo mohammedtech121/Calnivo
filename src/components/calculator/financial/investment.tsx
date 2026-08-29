@@ -23,12 +23,21 @@ export default function InvestmentCalculator() {
     const months = y * 12;
     const monthlyRate = parseNum(rate) / 100 / 12;
     let fv = P;
-    if (monthlyRate === 0) {
+    if (months <= 0) {
+      fv = P;
+    } else if (monthlyRate === 0) {
       fv = P + PMT * months;
+    } else if (monthlyRate <= -1) {
+      fv = P;
     } else {
       const f = Math.pow(1 + monthlyRate, months);
-      fv = P * f + PMT * ((f - 1) / monthlyRate);
+      if (isFinite(f)) {
+        fv = P * f + PMT * ((f - 1) / monthlyRate);
+      } else {
+        fv = P;
+      }
     }
+    if (!isFinite(fv)) fv = P;
     const invested = P + PMT * months;
     const earnings = fv - invested;
     return { P, PMT, months, y, fv, invested, earnings };
@@ -38,16 +47,19 @@ export default function InvestmentCalculator() {
     const P = parseNum(initial);
     const PMT = parseNum(monthly);
     const monthlyRate = parseNum(rate) / 100 / 12;
-    const y = parseNum(years);
+    const y = Math.min(parseNum(years), 100); // cap iterations for chart
     const data: number[] = [];
     for (let i = 0; i <= y; i++) {
       const m = i * 12;
+      let v = P;
       if (monthlyRate === 0) {
-        data.push(P + PMT * m);
-      } else {
+        v = P + PMT * m;
+      } else if (monthlyRate > -1) {
         const f = Math.pow(1 + monthlyRate, m);
-        data.push(P * f + PMT * ((f - 1) / monthlyRate));
+        v = isFinite(f) ? P * f + PMT * ((f - 1) / monthlyRate) : P;
       }
+      if (!isFinite(v)) v = P;
+      data.push(v);
     }
     return data;
   }, [initial, monthly, rate, years]);

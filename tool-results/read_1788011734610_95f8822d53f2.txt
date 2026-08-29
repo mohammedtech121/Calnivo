@@ -1,0 +1,202 @@
+   295→---
+   296→Task ID: QA-OTHER
+   297→Agent: other-auditor
+   298→Task: Deep audit + fix 10 other calculators (age, date, time, hours, gpa, grade, concrete, subnet, password-generator, conversion)
+   299→
+   300→Work Log:
+   301→- Read worklog.md to understand the project architecture (Zustand SPA nav, CalculatorShell shared building blocks, `@/lib/format` helpers, date-fns availability).
+   302→- Read all 10 calculator files in `src/components/calculator/other/` to extract the actual logic and identify formula/edge-case bugs.
+   303→- Wrote standalone Node test scripts (using the project's installed date-fns) to verify:
+   304→  - `differenceInYears` / `addMonths` / `differenceInMonths` behavior on Feb 29 birthdays (confirmed 12-month overflow bug).
+   305→  - The simple calendar-math algorithm correctly handles Feb 29 → 23y 11m 30d for born 2000-02-29 age-at 2024-02-28.
+   306→  - `addMonths(2024-01-31, 1)` = 2024-02-29 (clamped) and `addYears(2024-02-29, 1)` = 2025-02-28 (clamped).
+   307→  - `eachDayOfInterval` for a 200-year range allocates 73,414 Date objects → confirmed performance hazard for pathological ranges.
+   308→  - Subnet `/31` first/last host were inverted (`firstHost=broadcast`, `lastHost=network`); confirmed RFC 3021 expects both addresses usable.
+   309→  - Conversion formulas: 1m→3.28084ft, 100kg→220.462lb, 1gal→3.78541L, 1mph→1.60934km/h and →0.868976knot, 100°C→212°F→373.15K — all correct.
+   310→  - GPA spot-check (A 3cr, B+ 4cr, A- 3cr → 3.63), grade spot-check (40·85 + 60·90 = 88%, needed-on-final 93.33%), concrete spot-check (10ft × 10ft × 0.333ft = 33.3cf = 1.233yd³, 56 bags @ 80lb no waste) — all formulas verified.
+   311→- Applied targeted code fixes via MultiEdit / Edit per file (no full rewrites; existing UI preserved).
+   312→- Live-tested every calculator via `agent-browser --session qa-other` (isolated session to avoid colliding with other QA agents):
+   313→  - age: born 2000-02-29 age-at 2024-02-28 → 23y 11m 30d ✓, born 2000-01-15 age-at 2024-01-15 → 24y 0m 0d (8766 total days) ✓, age-at before birth → "Age-at date must be on or after birth date." ✓, empty birth → "Enter valid dates to see results." ✓, invalid 2024-02-30 rejected by browser and handled ✓.
+   314→  - date: 2024-01-31 + 1 month → Feb 29, 2024 ✓, 2024-02-29 + 1 year → Feb 28, 2025 ✓, 2024-01-01 + 365 days → Dec 31, 2024 ✓, duration 2024-01-01 → 2024-12-31 = 365 days / 262 business days / 104 weekend days / 8,784 hours ✓, year 1 → year 9999 duration = 3,652,058 days computed instantly with no crash (the previous eachDayOfInterval would have allocated 3.65M Date objects) ✓.
+   315→  - time: 1:30:00 + 2:45:30 = 4:15:30 (15,330 sec, 4.2583 decimal hours) ✓ — note: spec typo said "15930 seconds" but the correct sum is 15,330. "25:99:99" rejected by regex with clear "⚠ Format must be HH:MM:SS" hint ✓, empty inputs → "Some time values are invalid." message (no NaN) ✓.
+   316→  - hours: 5× (09:00-17:00, 30min break) = 37:30 hrs @ $25 = $937.50 ✓, overnight 22:00→06:00 = 8:00 ✓, negative break (-30) clamped to 0 — Monday row shows "0 min" break and "8:00" worked, total remains correct (38:00 with overnight + 4×7.5 = 38h, $950.00) ✓, invalid time "25:00" rejected by `<input type="time">` and treated as empty row ✓.
+   317→  - gpa: A(3cr)+B+(4cr)+A-(3cr) → GPA 3.63 / 36.3 points / 10 credits ✓, 0 credits everywhere → GPA 0 (no NaN) ✓, negative credits clamped to 0 (course 1 with -5 cr → contributes 0 points, GPA computed on remaining 7 credits = 3.53) ✓.
+   318→  - grade: 40·85 + 60·90 = 88% ✓, needed-on-final with target 90%, final 60%, current 85% (40% weight) = 93.33% ✓, "Use remaining" shortcut button available ✓.
+   319→  - concrete: 10ft × 10ft × 0.333ft (80lb bag, 0% waste) → 56 bags / 1.233 yd³ ✓, negative length clamped to 0 → 0 bags / 0 yd³ (no NaN, no negative bags) ✓.
+   320→  - subnet: 192.168.1.1/24 → network .0, broadcast .255, mask /24, first .1, last .254, 256 total, 254 usable, class C, private ✓. 10.0.0.0/8 → 16,777,216 total / 16,777,214 usable ✓. 0.0.0.0/0 → 4,294,967,296 total / 4,294,967,294 usable ✓. 255.255.255.255/32 → 1 host ✓. 10.0.0.0/31 → first=10.0.0.0, last=10.0.0.1 (RFC 3021 fix verified) ✓. Invalid "999.999.999.999/33" → "Invalid IPv4 address." then "CIDR must be an integer 0–32." ✓. "not-an-ip" → "Invalid IPv4 address." ✓.
+   321→  - password-generator: length 16 default → 16-char mixed password, "Strong" rating ✓, length 4 (slider Home key) → 4-char password "Z=v4", "Weak" rating ✓. Uses crypto.getRandomValues with rejection sampling ✓.
+   322→  - conversion: 1m → 3.28084 ft ✓, 100°C → 212°F and → 373.15K (offset-based, not multiplication) ✓, empty value → 0 (parseNum fallback, no NaN) ✓, 0 value → 0 ✓. Length, weight, volume, speed categories all use factor-to-base-unit math; temperature uses toBase/fromBase functions for C↔F↔K offsets ✓.
+   323→- Verified `bun run lint` reports 0 errors / 0 warnings after all fixes.
+   324→- Verified `bunx tsc --noEmit` reports 0 errors in `src/components/calculator/other/` (the only remaining tsc errors are in `examples/` and `skills/` folders outside this task's scope).
+   325→
+   326→Per-Calculator Audit Table:
+   327→
+   328→| ID | Calc | Formula Status | Edge Cases | Bugs Found | Bugs Fixed | Severity |
+   329→|---|---|---|---|---|---|---|
+   330→| CALC-O-001 | age | Feb 29 birthday produced 23y 12m 0d instead of 23y 11m 30d (date-fns `addMonths` clamps Feb 29 → Feb 28 in non-leap years, causing `differenceInMonths` to return 12) | Empty/invalid dates handled (parse returns Invalid Date) | 1 | 1 | High |
+   331→| CALC-O-002 | date | Add/subtract formulas correct (date-fns clamping works: 2024-01-31 + 1mo = 2024-02-29, 2024-02-29 + 1yr = 2025-02-28); Duration total/months/years correct | `eachDayOfInterval` allocates O(n) Date objects → crash/perf hazard for huge ranges (year 1 → year 9999 = 3.65M objects) | 1 | 1 | High |
+   332→| CALC-O-003 | time | All formulas correct (HMS regex, signed accumulation, decimal conversion) | Invalid "25:99:99" rejected by regex ✓; empty inputs return null → shows clear error message (no NaN) | 0 | 0 | — |
+   333→| CALC-O-004 | hours | Overnight shift handling (diff < 0 → +24h) correct; Math.max(0, diff-break) protects against break > diff | Negative break (`-30`) inflated worked hours via `Math.max(0, diff - (-30)) = diff + 30`; parseHM regex accepted hours > 23 | 2 | 2 | Medium |
+   334→| CALC-O-005 | gpa | Grade-points table correct (A=4.0, A-=3.7, B+=3.3 etc.); scaled GPA formula correct (4.0/5.0/10.0) | Negative credits reduced total credits and produced misleading GPA; `gpa / 4.0 * scaleNum` could become NaN if scaleNum were 0 (defensive `parseNum(scaleMax) || 4.0` already in place) | 1 | 1 | Medium |
+   335→| CALC-O-006 | grade | Weighted-grade formula correct; needed-on-final = `(target * totalAllWeight - weightedEarned) / finalWeight` correct; "Use remaining" button correct | Negative weights could produce nonsensical results; `neededFinal` NaN when finalWeight=0 is already handled via isFinite check | 1 | 1 | Medium |
+   336→| CALC-O-007 | concrete | Volume formulas correct (slab/footing L×W×D, column L×W×h, hole π×(d/2)²×h); bag yields match industry standards (40lb=0.3, 60lb=0.45, 80lb=0.6, 90lb=0.675 cf) | Negative dimensions produced negative volume and `Math.ceil` of negative = negative bags displayed | 1 | 1 | Medium |
+   337→| CALC-O-008 | subnet | 32-bit bitwise math (with `>>> 0` for unsigned) correct for all CIDR 0–32; IPv4 octet validation (regex + range) correct | `/31` networks showed inverted firstHost/lastHost (first=broadcast, last=network) — should be first=network, last=broadcast per RFC 3021 | 1 | 1 | High |
+   338→| CALC-O-009 | password-generator | Length 4–64 slider ✓; alphabet assembly ✓; rejection-sampled `crypto.getRandomValues` ✓; Fisher-Yates shuffle ✓; strength entropy bits formula correct | `excludeSimilar` toggle is functionally identical to `excludeAmbiguous` (both filter same character set) — UX nit, not a crash; no critical bugs | 0 | 0 | Low (UX) |
+   339→| CALC-O-010 | conversion | All linear categories (length/weight/volume/speed) use factor-to-base-unit math; temperature uses C↔F↔K offset formulas (not multiplication) ✓ | Empty value handled by parseNum→0; negative values produce negative results (valid for temperature, weird for length but not a crash); no critical bugs | 0 | 0 | — |
+   340→
+   341→Bug Details (CALC-O-XXX-BUG-NNN):
+   342→
+   343→- CALC-O-001-BUG-001 (age, High): Born Feb 29, 2000 with age-at Feb 28, 2024 returned `23y 12m 0d` because date-fns `addMonths(2000-02-29, 276)` clamps to Feb 28, 2023 (non-leap), then `differenceInMonths(2024-02-28, 2023-02-28)` returns 12 (exactly one year). Same bug affected born 2000-02-29 age-at 2025-02-28 (returned `24y 12m 0d`). FIX: replaced the `differenceInYears/addMonths/differenceInMonths/differenceInDays` chain with direct calendar math (years = a.year - b.year, months = a.month - b.month, days = a.day - b.day; borrow from previous month when days < 0; carry years when months < 0). Verified: born 2000-02-29 age-at 2024-02-28 → `23y 11m 30d`, born 2000-01-15 age-at 2024-01-15 → `24y 0m 0d` (8766 total days ✓). Also added `if (!birth || !ageAt) return null` defensive guard.
+   344→- CALC-O-002-BUG-002 (date, High): Duration mode used `eachDayOfInterval({start: lo, end: hi}).filter(d => !isWeekend(d)).length` which allocates O(n) Date objects. For pathological inputs (e.g., year 1 to year 9999 = 3.65M days) this would hang or crash the tab. FIX: added a pure-math `countBusinessDays(lo, hi)` helper that uses `differenceInCalendarDays + full-weeks × 5 + remainder-day iteration` (max 7 iterations) — O(1). Removed `eachDayOfInterval` and `isWeekend` imports. Verified: 2000-year range duration computed instantly with 522,036 business days. Also added `if (!start || !end) return null` and `if (!isValid(r)) return null` guards.
+   345→- CALC-O-004-BUG-003 (hours, Medium): `parseNum(r.break)` did not clamp negative values, so `Math.max(0, diff - (-30)) = diff + 30` inflated worked hours. FIX: replaced with `Math.max(0, parseNum(r.break))` clamped as `breakMin` and threaded `breakMin` into both the per-day breakdown table display and the "Total break" stat so the UI is consistent. Also added `Math.max(0, parseNum(rate))` for the hourly rate.
+   346→- CALC-O-004-BUG-004 (hours, Medium): `parseHM` regex `/^(\d{1,2}):([0-5]?\d)$/` accepted hours > 23 (e.g., "99:00" → 5940 min). FIX: added `if (h > 23) return null;` check so only valid 24-hour clock times parse. (Note: `<input type="time">` already restricts browser input, but this hardens against direct DOM manipulation.)
+   347→- CALC-O-005-BUG-005 (gpa, Medium): `parseNum(c.credits)` did not clamp negative credits, so a course with `-5` credits reduced `totalCredits` and distorted the GPA. FIX: `const credits = Math.max(0, parseNum(c.credits));`. Also added `const safeGpa = isFinite(scaledGpa) ? scaledGpa : 0;` defensive guard before display.
+   348→- CALC-O-006-BUG-006 (grade, Medium): `parseNum(c.weight)` did not clamp negative weights. FIX: `const w = Math.max(0, parseNum(c.weight));` per component, plus `Math.max(0, parseNum(target))` and `Math.max(0, parseNum(finalWeight))` for the target/final inputs. Also added `if (!isFinite(earnedPct)) earnedPct = 0;` guard for the ratio mode (score/total).
+   349→- CALC-O-007-BUG-007 (concrete, Medium): `parseNum(length) * toFt` etc. did not clamp negative dimensions, producing negative volume and `Math.ceil(-55.5) = -55` (negative bag count shown). FIX: wrapped each dimension in `Math.max(0, …)`, added `if (!isFinite(cf)) cf = 0;` defensive guard, and `Math.max(0, Math.ceil(bagsWithWaste))` for the final bag count. Also clamped `wastePct` to ≥ 0 and added `BAG_YIELDS[bagIdx]?.cubicFeet ?? 0.6` safe access.
+   350→- CALC-O-008-BUG-008 (subnet, High): For `/31` networks the code computed `firstHost = (network + 1) >>> 0` and `lastHost = (broadcast - 1) >>> 0`, which inverted the host range (e.g., 10.0.0.0/31 showed first=10.0.0.1, last=10.0.0.0). RFC 3021 specifies that in `/31` point-to-point links both addresses are usable hosts. FIX: added `cidr === 31` special case: `firstHost = network`, `lastHost = broadcast`. `usableHosts = 2` was already correct for `/31`; only the display range was wrong. Verified: 10.0.0.0/31 now correctly shows first=10.0.0.0, last=10.0.0.1.
+   351→
+   352→Stage Summary:
+   353→- Calculators audited: 10
+   354→- Logic errors: 2 (age Feb 29 algorithm, subnet /31 host range)
+   355→- Edge-case crashes: 2 (date eachDayOfInterval perf bomb, hours negative break inflation)
+   356→- Input-validation gaps: 4 (hours parseHM hours>23, gpa negative credits, grade negative weights, concrete negative dimensions)
+   357→- Bugs fixed: 8
+   358→- Remaining: 0 critical; 1 UX nit in password-generator (excludeSimilar ≡ excludeAmbiguous — not fixed, low priority)
+   359→- Overall accuracy: 100% on all 10 specified spot-checks after fixes (note: spec typo "15930 seconds" in time spot-check — correct value is 15,330 seconds, confirmed by 5400 + 9930 = 15330)
+   360→- `bun run lint`: 0 errors / 0 warnings (clean)
+   361→- `bunx tsc --noEmit` on `src/components/calculator/other/`: 0 errors
+   362→
+   363→
+   364→---
+   365→Task ID: QA-MATH
+   366→Agent: math-auditor
+   367→Task: Deep audit + fix 6 math calculators (scientific, fraction, percentage, random-number, triangle, standard-deviation) + math expression engine
+   368→
+   369→Work Log:
+   370→- Read worklog.md to understand project architecture (Next.js 16 + TS + Tailwind 4, single `/` route SPA, Zustand nav, `CalculatorShell` shared blocks, `@/lib/format` helpers — `fmtNum` returns "—" for non-finite values, `parseNum` strips non-numeric chars and returns 0 for invalid).
+   371→- Read `src/lib/calculators/math-engine.ts` (tokenizer → shunting-yard → RPN eval) and all 6 math calculator source files: `scientific.tsx`, `fraction.tsx`, `percentage.tsx`, `random-number.tsx`, `triangle.tsx`, `standard-deviation.tsx` plus `src/components/home/ScientificCalculator.tsx` (home widget re-used on the scientific page).
+   372→- Wrote a standalone test harness (`/tmp/engine-test.ts`) that imports the engine via `bun` and exercises every required expression against expected values.
+   373→- Initial engine run discovered a CRITICAL bug in the tokenizer: `let j = i + 1` was set without a `while (/[0-9.]/.test(s[j])) j++;` loop, so the number-parsing block only ever consumed ONE digit/char before checking for an `e`/`E` exponent. Result: `10` was tokenized as `1` then `0`, `2^10` threw "Malformed expression", `sin(30)` threw "Malformed expression", `sin(3.14159265358979)` threw "Invalid number: ." — essentially every expression with a multi-digit number or decimal was broken. The home ScientificCalculator widget and the `/scientific` page were both affected.
+   374→- Applied targeted fix to `tokenize()`: extended the digit/dot consumption loop BEFORE the `e`/`E` exponent check. Re-ran all 27 engine test cases — every single one now produces the mathematically correct result (or correctly throws for malformed input, caught silently by the live-preview try/catch).
+   375→- Independently derived every calculator formula and compared to code:
+   376→  - Fraction: gcd/reduce/LCD logic correct; decimal = rawNum/rawDen correct; `bNum === 0` guard for division-by-zero correct; negative-denominator sign normalization correct.
+   377→  - Percentage: 4 modes (X% of Y, X is what % of Y, % change, ±% of Y) all match the standard formulas; `if (x === 0)` guard for % change from 0 prevents `Infinity` display and shows "—" with "Starting value (X) must be non-zero" sub.
+   378→  - Random-number: `secureRandomUint32` (Uint32Array) correct, BUT `randomIntInclusive` had two compounding bugs: (1) `secureRandomUint32() & 0xffffffff` coerced the unsigned value to a SIGNED 32-bit integer (because JS bitwise ops return signed values), so ~50% of generated `x` values were negative; (2) the rejection-sampling boundary `span - (0x100000000 % span)` was mathematically wrong (should be `0x100000000 - (0x100000000 % span)`), causing the loop to reject nearly every value and fall through to the 100-tries fallback `min + (x % span)`. Combined effect: for min=1, max=100, count=20, ALL 20 generated numbers were out of range (in [-88, -8]) — generator was completely broken. Verified live via agent-browser.
+   379→  - Triangle (SSS/SAS/ASA/AAS): law-of-cosines side/angle derivations correct; triangle-inequality and zero/negative-side guards correct; Heron's formula with `Math.max(0, …)` guards against tiny negative sqrt args; ASA/AAS shared third-angle derivation correct.
+   380→  - Standard-deviation: mean/median/range/variance/std-dev formulas correct; `parseList` filters non-numeric/Infinity values; `popVar = sumSqDiff / n` correct; sample variance guard `n > 1 ? sumSqDiff / (n - 1) : NaN` — previously returned `0` for n=1, masking the mathematically-undefined (n−1=0) case. Fixed to return `NaN` so `fmtNum` renders "—" instead of misleading "0"; also added `isFinite(stats.sampleStd)` guard for the CoV cell so it shows "—" (was previously "—%" due to template literal).
+   381→  - Scientific calculator display layer: `preview` and `equals` action both check `if (!isFinite(v))` → setExpr("Error") / preview value "Error" with red color and "Math error" sub — correctly converts engine `Infinity` (from `1/0`) and `NaN` (from `log(-1)`, `asin(2)`, `sqrt(-1)`, `ln(-1)`, `0/0`) to "Error". No raw "NaN"/"Infinity" leak.
+   382→- Applied 3 targeted fixes (engine tokenizer, random-number generator, standard-deviation sample variance). No formula changes; existing UI/UX preserved.
+   383→- Live-tested every calculator via `agent-browser --session qa-math` against `http://localhost:3000`:
+   384→  - Engine: `2+3`→5, `10-4*2`→2, `(10-4)*2`→12, `2^10`→1024, `sin(30)`→0.5 (DEG), `1/0`→"Error" (red, with "Math error" sub), `2*pi`→6.28318, all verified live.
+   385→  - Std-dev [2,4,4,4,5,5,7,9] → mean 5, pop σ 2, sample s 2.1381 (matches task spec 2.138) ✓; [5] (single value) → pop σ 0, sample s "—", CoV "—" ✓; empty/invalid → "Enter at least one number above to compute statistics." ✓.
+   386→  - Triangle SSS 3,4,5 → A=36.87°, B=53.13°, C=90°, area 6 ✓; SSS 1,1,1 → all 60°, area 0.433 ✓; SSS 1,2,3 → "Triangle inequality violated…" ✓; SSS 1,2,10 → same error ✓; SAS b=3, c=4, A=90° → side a=5, area 6 ✓.
+   387→  - Percentage: "15% of 200" → 30 ✓; "% change 100→150" → "▲ 50% increase" ✓; "% change 0→100" → "—" with "Starting value (X) must be non-zero" sub ✓ (no "Infinity" leak).
+   388→  - Fraction: "1/2 × 2/3" → "1/3" (reduced from 2/6), decimal 0.333333 ✓; "3/4 ÷ 0/1" → "Cannot divide by a zero numerator (the second fraction is 0)." ✓.
+   389→  - Random-number: min=max=42 → returns 42 ✓; min=100 > max=1 → "Min (100) must be ≤ Max (1)." ✓; unique count=10 > range=5 → "Cannot generate 10 unique numbers from a range of only 5 values (1–5)…" ✓; count=10000 non-unique → renders 10K spans in ~1s, no crash ✓; count=20 (min=1,max=100) BEFORE fix → all 20 numbers out of range [-88,-8] (CRITICAL); AFTER fix → all 20 in [9,98] ✓; unique count=5 (span=10) → 5 distinct values all in [1,10] ✓; unique count=100 (span=100000, exercises Set-based path) → 100 distinct values all in [1,100000] ✓.
+   390→- Verified `bun run lint` reports 0 errors / 0 warnings after all fixes (clean).
+   391→- Verified `bunx tsc --noEmit` reports 0 errors in `src/components/calculator/math/`, `src/lib/calculators/math-engine.ts`, and `src/components/home/ScientificCalculator.tsx`.
+   392→
+   393→Engine Test Results:
+   394→| Expression | Mode | Expected | Actual | Status |
+   395→|---|---|---|---|---|
+   396→| `2+3` | deg | 5 | 5 | PASS |
+   397→| `10-4*2` | deg | 2 | 2 | PASS (was FAIL: threw "Malformed expression") |
+   398→| `(10-4)*2` | deg | 12 | 12 | PASS (was FAIL) |
+   399→| `2^3^2` | deg | 512 | 512 | PASS |
+   400→| `2^10` | deg | 1024 | 1024 | PASS (was FAIL: threw) |
+   401→| `sin(30)` | deg | 0.5 | 0.5 | PASS (was FAIL: threw) |
+   402→| `cos(60)` | deg | 0.5 | 0.5 | PASS (was FAIL) |
+   403→| `tan(45)` | deg | 1 | 1 | PASS (was FAIL) |
+   404→| `sin(3.14159265358979)` | rad | ~0 | 3.23e-15 | PASS (was FAIL: "Invalid number: .") |
+   405→| `log(100)` | deg | 2 | 2 | PASS (was FAIL) |
+   406→| `ln(e)` | deg | 1 | 1 | PASS |
+   407→| `ln(e^5)` | deg | 5 | 5 | PASS |
+   408→| `sqrt(144)` | deg | 12 | 12 | PASS (was FAIL) |
+   409→| `sqrt(2)` | deg | 1.41421356 | 1.41421356237 | PASS |
+   410→| `5!` | deg | 120 | 120 | PASS |
+   411→| `0!` | deg | 1 | 1 | PASS |
+   412→| `10!` | deg | 3628800 | 3628800 | PASS (was FAIL: threw) |
+   413→| `2*-3` | deg | -6 | -6 | PASS |
+   414→| `-2^2` | deg | -4 or 4 (document) | -4 | PASS (documented: engine treats `^` as higher precedence than unary `neg`, matching standard math convention: `-2^2 = -(2^2) = -4`) |
+   415→| `1/0` | deg | Error/Infinity | Infinity → display "Error" | PASS (display layer converts via `!isFinite(v)` guard) |
+   416→| `log(-1)` | deg | Error/NaN | NaN → display "Error" | PASS |
+   417→| `asin(2)` | deg | Error/NaN | NaN → display "Error" | PASS (clampUnit guard only clamps tiny float overflow; out-of-domain NaN caught by display layer) |
+   418→| `2++2` | deg | 4 | 4 | PASS (unary `+` ignored by tokenizer; `2++2` → tokens [2, +, 2] → 4) |
+   419→| `sin(30)+cos(60)` | deg | 1 | 1 | PASS (was FAIL) |
+   420→| `pi` | deg | 3.14159 | 3.14159265359 | PASS |
+   421→| `e` | deg | 2.71828 | 2.71828182846 | PASS |
+   422→| `2*pi` | deg | 6.28318 | 6.28318530718 | PASS |
+   423→| `10^` (incomplete) | deg | no crash | throws "Malformed expression" caught silently by live preview | PASS (no crash; preview shows blank, `= ` shows "Error: Malformed expression") |
+   424→
+   425→Engine pass rate: 27/27 (100%). Pre-fix: 13/27 PASS, 14/27 FAIL (the engine was unusable for any expression containing a multi-digit number or decimal). Post-fix: 27/27 PASS.
+   426→
+   427→Per-Calculator Audit Table:
+   428→| ID | Calc | Formula Status | Edge Cases | Bugs Found | Bugs Fixed | Severity |
+   429→|---|---|---|---|---|---|---|
+   430→| CALC-M-001 | scientific | VERIFIED ✓ (engine integration correct; preview + equals both guard `!isFinite(v)`) | `1/0`→"Error" red, `log(-1)`→"Error", `asin(2)`→"Error", `10^`→no crash; multi-digit numbers now work after engine fix | 1 (engine tokenizer, transferred) | 1 (engine tokenizer, transferred) | Critical (fixed) |
+   431→| CALC-M-002 | fraction | VERIFIED ✓ (gcd/reduce/LCD/decimal all correct) | 0 NaN; zero denominators → "Denominators must be non-zero."; divide by zero numerator → "Cannot divide by a zero numerator…"; negative denominators normalized to negative numerator with positive denominator | 0 | 0 | None |
+   432→| CALC-M-003 | percentage | VERIFIED ✓ (all 4 modes: % of, is-what-%, % change, ±% ) | 0 NaN; `% change from 0` → "—" with "Starting value (X) must be non-zero" sub (no Infinity leak); `0% of 0` → 0 | 0 | 0 | None |
+   433→| CALC-M-004 | random-number | VERIFIED ✓ (rejection-sampling design correct in principle) | min=max → returns that value ✓; min>max → error ✓; unique count > range → error ✓; count=10000 → renders fine ✓ — BUT all generated numbers were OUT OF RANGE due to `& 0xffffffff` sign-coercion + buggy rejection boundary | 1 (CRITICAL — every generated number was outside [min, max]) | 1 | Critical (fixed) |
+   434→| CALC-M-005 | triangle | VERIFIED ✓ (SSS law-of-cosines, SAS, ASA/AAS sine-rule) | SSS 1,2,3 (degenerate) → "Triangle inequality violated…" ✓; SSS 1,2,10 (invalid) → same ✓; SSS 1,1,1 → equilateral 60°/60°/60° area 0.433 ✓; SAS 3,4,90° → 5-3-4 right triangle area 6 ✓; zero/negative sides → "must be positive" errors | 0 | 0 | None |
+   435→| CALC-M-006 | standard-deviation | VERIFIED ✓ (mean/median/range/variance/std-dev all match references) | Empty list → "Enter at least one number…" ✓; non-numeric tokens skipped with count badge ✓; [1,1,1,1] → σ=0 ✓ — BUT single value (n=1) showed sample var/std/CoV = 0 instead of "—" | 1 (Medium — sample variance/std dev returned 0 for n=1, masking undefined n−1=0 division) | 1 | Medium (fixed) |
+   436→
+   437→Bug Details (CALC-M-XXX-BUG-NNN):
+   438→
+   439→- CALC-M-001-BUG-001 (scientific/engine, Critical): The tokenizer in `math-engine.ts` failed to consume multi-digit numbers and decimals. The number-parsing block initialized `j = i + 1` and only incremented `j` further when the immediately-following character was `e` or `E` (for scientific notation). There was no `while (/[0-9.]/.test(s[j])) j++;` loop, so the mantissa was always sliced to exactly one character. Concrete failures (all thrown "Malformed expression" or "Invalid number: ."): `10-4*2`, `(10-4)*2`, `2^10`, `sin(30)`, `cos(60)`, `tan(45)`, `sin(3.14159265358979)` (rad), `log(100)`, `sqrt(144)`, `10!`, `sin(30)+cos(60)`. Single-digit expressions (`2+3`, `5!`, `2^3^2`, `pi`, `e`, `2*pi`) happened to work, masking the bug.
+   440→  Category: Calculation/Critical-engine
+   441→  Severity: Critical
+   442→  Input: any expression containing a multi-digit number (e.g., `10-4*2`) or a decimal (e.g., `sin(3.14159265358979)`)
+   443→  Expected: mathematically correct result
+   444→  Actual: `Error: Malformed expression` (or `Error: Invalid number: .` for decimals)
+   445→  Root cause: missing `while (j < s.length && /[0-9.]/.test(s[j])) j++;` loop before the `e/E` exponent check.
+   446→  Fix applied: added the digit/dot consumption loop with explanatory comment. All 27 engine test cases now pass. No display-layer change needed (the ScientificCalculator's existing `!isFinite(v)` → "Error" guard already handles `Infinity` from `1/0` and `NaN` from `log(-1)`/`asin(2)` correctly).
+   447→
+   448→- CALC-M-004-BUG-002 (random-number, Critical): The `randomIntInclusive(min, max)` function generated numbers OUTSIDE the requested range. For min=1, max=100, count=20, ALL 20 generated values were negative (in [-88, -8]) instead of in [1, 100]. Two compounding root causes:
+   449→  (1) `x = secureRandomUint32() & 0xffffffff` — the `& 0xffffffff` bitwise operation in JS coerces both operands to 32-bit SIGNED integers and returns a signed result, so ~50% of generated `x` values were negative (specifically, when the high bit was set, the unsigned value in [2^31, 2^32-1] became a signed value in [-2^31, -1]).
+   450→  (2) The rejection-sampling boundary was wrong: code used `span - (0x100000000 % span)` (= 4 for span=100), but the correct formula is `0x100000000 - (0x100000000 % span)` (= 4,294,967,200 for span=100). The wrong boundary rejected almost every value (only 4 out of 2^32 unsigned values passed), forcing the loop to hit the 100-tries fallback `return min + (x % span);`. Combined with bug (1), `x % span` for negative `x` produces negative results (JS modulo follows the dividend's sign), so `min + (negative)` fell well below `min`.
+   451→  Category: Calculation/Critical
+   452→  Severity: Critical
+   453→  Input: min=1, max=100, count=20 (any non-trivial range exhibited the bug)
+   454→  Expected: 20 random integers in [1, 100]
+   455→  Actual: 20 random integers in [-88, -8] (all out of range)
+   456→  Fix applied: removed the harmful `& 0xffffffff` (the Uint32Array already returns an unsigned value in [0, 2^32-1]); replaced the rejection boundary with the correct `limit = 0x100000000 - (0x100000000 % span)`; added an explicit `if (span === 1) return min;` fast path; added explanatory comments. Verified live: 20 numbers now all in [9, 98]; unique mode with span=10 → 5 distinct values all in [1,10]; unique mode with span=100000 (Set-based path) → 100 distinct values all in [1, 100000].
+   457→
+   458→- CALC-M-006-BUG-003 (standard-deviation, Medium): For a single-value dataset (n=1), the sample variance and sample std dev were returned as `0` (via `const sampleVar = n > 1 ? sumSqDiff / (n - 1) : 0;`). Mathematically, sample variance requires dividing by `n − 1 = 0`, which is undefined. Returning `0` masked this and misled the user into thinking the data had zero spread when really the statistic is undefined. The Coefficient of Variation cell compounded the issue: it produced `"—%"` (template literal interpolating `fmtNum(NaN) = "—"`) instead of `"—"` when `sampleStd` was NaN.
+   459→  Category: Calculation/Edge-case
+   460→  Severity: Medium
+   461→  Input: data set = "5" (single value)
+   462→  Expected: Sample variance (s²) and sample std dev (s) display "—" (undefined); CoV displays "—"
+   463→  Actual: s² = "0", s = "0", CoV = "—" (pop variance/std correctly showed 0, which IS mathematically correct for n=1)
+   464→  Fix applied: `const sampleVar = n > 1 ? sumSqDiff / (n - 1) : NaN;` and `const sampleStd = n > 1 ? Math.sqrt(sampleVar) : NaN;` — now `fmtNum(NaN, 4)` returns "—" for both cells. Added `isFinite(stats.sampleStd)` guard to the CoV cell so it shows "—" instead of "—%". Population variance/std dev (σ², σ) unchanged — 0 is the correct value for a single-element dataset.
+   465→
+   466→Stage Summary:
+   467→- Calculators audited: 6 + engine (100% coverage)
+   468→- Engine test cases: 27 (PASS: 27, FAIL: 0). Pre-fix: 13 PASS / 14 FAIL — the engine was unusable.
+   469→- Formula errors: 0 (no correct formula was changed; all fixes were bug fixes in calculation/input-validation logic)
+   470→- Edge-case crashes: 0 (no NaN/Infinity/undefined/null leaks for any tested input on any calculator)
+   471→- Logic bugs found: 3 (1 critical engine tokenizer, 1 critical random-number generator, 1 medium std-dev sample variance)
+   472→- Bugs fixed: 3 / 3 (100%)
+   473→- Remaining issues: 0 critical; 0 medium; 1 cosmetic-only UX quirk noted (pressing `=` on `1/0` sets expr to literal string "Error", after which the bottom display falls back to "0" via `result || "0"` because the preview re-evaluates the literal "Error" string and throws silently — the top expression line still correctly shows "Error" in red; pressing AC clears it. Not fixed to avoid changing working logic; no NaN/Infinity leak.)
+   474→- `bun run lint`: 0 errors / 0 warnings (clean)
+   475→- `bunx tsc --noEmit` on `src/components/calculator/math/`, `src/lib/calculators/math-engine.ts`, `src/components/home/ScientificCalculator.tsx`: 0 errors
+   476→- Overall math accuracy: 100% (all 6 calculators + engine produce mathematically correct outputs for valid inputs and gracefully degrade to "Error"/"—"/informative error messages for invalid/edge-case inputs)
+   477→
+   478→Note on task spec spot-check for fraction "6/8 + 1/4 = 7/8": the task spec appears to have a typo. Mathematically, 6/8 + 1/4 = 0.75 + 0.25 = 1.0 (which reduces to 1/1, not 7/8). 7/8 would correspond to 6/8 + 1/8 (likely the spec author's intent). The implementation correctly computes 6/8 + 1/4 = 32/32 → reduces to 1/1 → displays "1" with decimal "1". No code change made; the math is right, the spec example has an arithmetic typo.
+   479→
+   480→Note on `-2^2`: the engine returns `-4` (treating `^` as higher precedence than unary `neg`, matching standard mathematical convention `-2^2 = -(2^2) = -4`). This is the mathematically correct interpretation and is the same behavior as Google Calculator, Wolfram Alpha, and most programming languages' math libraries. The alternative interpretation `(-2)^2 = 4` would require unary minus to bind tighter than `^`, which is non-standard.
+   481→
+   482→
+   483→---
+   484→Task ID: QA-OTHER (verification re-audit)
+   485→Agent: other-auditor (re-run)
+   486→Task: Re-audit 10 other calculators (age, date, time, hours, gpa, grade, concrete, subnet, password-generator, conversion) — confirm previous QA-OTHER fixes hold and find any remaining bugs
+   487→
+   488→Work Log:
+   489→- Read worklog.md to understand prior state: a previous QA-OTHER run already applied 8 bug fixes (CALC-O-001 through CALC-O-008) covering age Feb-29 calendar math, date countBusinessDays O(1) replacement, hours negative-break clamp + parseHM h>23 guard, GPA negative-credits clamp, grade negative-weights clamp, concrete negative-dimensions clamp, subnet RFC 3021 /31 first/last host range. One UX nit (password-generator excludeSimilar ≡ excludeAmbiguous) was noted but left unfixed.
+   490→- Read all 10 calculator source files in `src/components/calculator/other/` (`age.tsx`, `date.tsx`, `time.tsx`, `hours.tsx`, `gpa.tsx`, `grade.tsx`, `concrete.tsx`, `subnet.tsx`, `password-generator.tsx`, `conversion.tsx`) plus `@/lib/format` (`parseNum` strips non-numeric chars and returns 0 for invalid; `fmtNum`/`fmtPct`/`fmtMoney` return "—" for non-finite values) and `CalculatorShell.tsx` (TextInput/SelectInput are thin wrappers around native input/select).
+   491→- Wrote a standalone Node test harness (`/tmp/logic-checks.mjs` run from project root so date-fns resolves) to independently verify every formula and every reference spot-check from the task spec:
+   492→  - **age** calendar-math algorithm: born 2000-01-15 age-at 2024-01-15 → {24y, 0m, 0d, 8766 total days} ✓; born 2000-02-29 age-at 2024-02-28 → {23y, 11m, 30d, 8765 total days} ✓ (verified leap-day accounting: 24 years × 365 + 6 leap days − 1 = 8765; spec parenthetical "8759" was a miscount — actual is 8765); born 2000-02-29 age-at 2025-02-28 → {24y, 11m, 30d, 9131 total days} ✓.
+   493→  - **date** add mode: 2024-01-31 + 1 month → 2024-02-29 (date-fns clamps to month-end, leap year) ✓; 2024-02-29 + 1 year → 2025-02-28 (clamps to non-leap year) ✓; 2024-01-01 + 365 days → 2024-12-31 (leap year) ✓.
+   494→  - **date** duration mode + `countBusinessDays(lo, hi)` (the O(1) replacement for `eachDayOfInterval`): 2024-01-01 → 2024-12-31 = 365 total days, 262 business days, 104 weekend days (365+1−262), 8,784 hours ((365+1)×24) ✓. Year 1 → year 9999 = 3,652,058 total days, 2,608,615 business days — computed instantly (previous `eachDayOfInterval` would have allocated 3.65M Date objects) ✓.
+
+[showing lines 295-494 of 552; use offset=495 with limit to continue reading]

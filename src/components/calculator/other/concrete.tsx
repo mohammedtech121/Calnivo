@@ -41,15 +41,17 @@ export default function ConcreteCalculator() {
   const [waste, setWaste] = useState<string>("5");
 
   const toFt = DIM_UNITS.find((u) => u.label === unit)?.toFt ?? 1;
-  const wastePct = parseNum(waste);
+  const wastePct = Math.max(0, parseNum(waste));
 
   const vol = useMemo(() => {
     const qty = Math.max(1, Math.round(parseNum(quantity)));
-    const L = parseNum(length) * toFt;
-    const W = parseNum(width) * toFt;
-    const D = parseNum(depth) * toFt;
-    const dia = parseNum(diameter) * toFt;
-    const h = parseNum(height) * toFt;
+    // Dimensions must be non-negative; clamp to 0 (defensive against negative
+    // inputs that would otherwise produce negative volumes / bag counts).
+    const L = Math.max(0, parseNum(length) * toFt);
+    const W = Math.max(0, parseNum(width) * toFt);
+    const D = Math.max(0, parseNum(depth) * toFt);
+    const dia = Math.max(0, parseNum(diameter) * toFt);
+    const h = Math.max(0, parseNum(height) * toFt);
     let cf = 0;
     if (shape === "slab" || shape === "footing") {
       cf = L * W * D;
@@ -60,16 +62,17 @@ export default function ConcreteCalculator() {
       // round hole / cylindrical column: π × (dia/2)² × h
       cf = Math.PI * (dia / 2) ** 2 * h;
     }
+    if (!isFinite(cf)) cf = 0;
     return { cubicFeet: cf * qty, qty };
   }, [shape, length, width, depth, diameter, height, quantity, toFt]);
 
-  const cubicFeet = vol.cubicFeet;
+  const cubicFeet = Math.max(0, vol.cubicFeet);
   const cubicYards = cubicFeet / 27;
   const cubicMeters = cubicFeet * 0.0283168;
-  const bagYield = BAG_YIELDS[bagIdx].cubicFeet;
+  const bagYield = BAG_YIELDS[bagIdx]?.cubicFeet ?? 0.6;
   const bagsExact = bagYield > 0 ? cubicFeet / bagYield : 0;
   const bagsWithWaste = bagsExact * (1 + wastePct / 100);
-  const bagsRounded = Math.ceil(bagsWithWaste);
+  const bagsRounded = Math.max(0, Math.ceil(bagsWithWaste));
 
   return (
     <div className="space-y-6">

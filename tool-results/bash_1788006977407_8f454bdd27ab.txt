@@ -1,0 +1,187 @@
+186 /tmp/worklog_part.txt
+---
+Task ID: 0
+Agent: main
+Task: Project scaffolding — design system, navigation store, registry, layout, home page, scientific calculator, shared calculator shell
+
+Work Log:
+- Updated `src/app/globals.css` with Calnivo palette (CSS vars + utility helpers: bg-brand-canvas, text-brand-ink, bg-brand-accent-gradient, shadow-brand, scroll-thin, etc.)
+- Created `src/store/calculator-nav.ts` Zustand store (view / history / query / go / back / setHome)
+- Created `src/lib/calculators/registry.ts` with 41 calculator metadata entries, CATEGORY_META, searchCalculators()
+- Created `src/lib/calculators/math-engine.ts` — expression evaluator (tokenizer → shunting yard → RPN) supporting + - * / ^ %, functions, factorial, constants, deg/rad
+- Created `src/lib/format.ts` (fmtMoney, fmtNum, fmtPct, parseNum, clamp)
+- Created `src/components/layout/Logo.tsx`, `Header.tsx` (sticky, search dropdown, sign-in), `Footer.tsx` (sticky mt-auto)
+- Created `src/components/home/ScientificCalculator.tsx` (full working scientific calc with keyboard support, memory, Ans, deg/rad)
+- Created `src/components/home/HomePage.tsx` (hero + scientific calc widget + 4-column category grid + search results + mission statement)
+- Created `src/components/calculator/CalculatorShell.tsx` (breadcrumb, title, sidebar with related calculators + search; reusable Field/TextInput/SelectInput/CalcButton/ResultCard/CalcCard)
+- Created `src/components/calculator/CalculatorPage.tsx` (renders correct component by id from registry)
+- Created `src/components/calculator/registry.ts` + 4 empty category index files (financial/health/math/other) to be populated by subagents
+- Updated `src/app/page.tsx` (root router) and `src/app/layout.tsx` (Calnivo metadata)
+
+Stage Summary:
+- Foundation complete and self-contained. Site should render home page with working scientific calculator and category grid even before individual calculators are wired in (registry falls back to ComingSoon).
+- Next: delegate the 4 calculator category groups to parallel subagents (financial / health / math / other).
+
+---
+Task ID: 9b
+Agent: health-calculators
+Task: Build all 9 fitness & health calculator React components for the Calnivo site
+
+Work Log:
+- Read existing project structure: `worklog.md`, `CalculatorShell.tsx` (reusable Field/TextInput/SelectInput/CalcButton/ResultCard/CalcCard), `format.ts` (fmtNum/fmtPct/parseNum/clamp), registry (9 health ids), and existing empty `health/index.ts`.
+- Built 9 fully-functional calculator components under `src/components/calculator/health/`:
+
+  1. `bmi.tsx` — BMI Calculator (id: bmi). Inputs: Age, Gender, Height (cm/ft-in toggle), Weight (kg/lb toggle). Computes BMI = kg/m², category (Underweight/Normal/Overweight/Obese), BMI prime, healthy weight range (18.5–24.9 × height²), weight-to-lose/gain, plus a visual BMI scale bar with 4 colored segments (amber/green/orange/red) and an absolutely-positioned triangular marker. Includes inline `UnitToggle` helper.
+  2. `calorie.tsx` — Calorie Calculator (id: calorie). Inputs: Age, Gender, Height, Weight, Activity Level (5 options × factor 1.2/1.375/1.55/1.725/1.9), Goal (Lose/Maintain/Gain → ±500 kcal). Mifflin-St Jeor BMR per gender, TDEE = BMR × factor, daily target, weekly weight-change projection (7700 kcal ≈ 1 kg), macro split (30 % protein / 40 % carbs / 30 % fat) rendered as a clean table with right-aligned tabular-nums.
+  3. `body-fat.tsx` — Body Fat Calculator (id: body-fat). U.S. Navy circumference method (log10-based) with separate formulas for men (waist − neck) and women (waist + hip − neck). Shows BF %, category (Essential/Athlete/Fitness/Average/Obese) with gender-specific ranges, fat mass, lean mass, and a 5-segment colored body-fat scale bar with marker. Validates "waist must exceed neck" and shows a clear error.
+  4. `bmr.tsx` — BMR Calculator (id: bmr). Formula toggle: Mifflin-St Jeor, Harris-Benedict (revised 1984), Katch-McArdle (with body-fat % input → uses lean mass). Primary result highlighted via `ResultCard`, plus an all-formulas comparison table (highlights the active formula row with `bg-accent/40`) and a 5-tier TDEE reference grid (Sedentary/Light/Moderate/Active/Very Active).
+  5. `ideal-weight.tsx` — Ideal Weight Calculator (id: ideal-weight). Computes Hamwi (1964), Devine (1974), Robinson (1983), Miller (1983) side-by-side. Uses inches over 5 ft (60 in) baseline. Shows all 4 results + average in a table, plus BMI 18.5–24.9 reference range.
+  6. `pace.tsx` — Pace Calculator (id: pace). Three solve modes via a styled mode toggle: Distance + Time → Pace; Distance + Pace → Time; Time + Pace → Distance. Distance unit km/mi. Time input accepts hh:mm:ss / mm:ss / plain numbers via a custom `parseDurationToSeconds` helper. Outputs pace per unit, speed (km/h or mph), total time/distance, plus a split-times table (cumulative time per km/mi, up to 20 splits) with lap deltas.
+  7. `pregnancy.tsx` — Pregnancy Calculator (id: pregnancy). Uses date-fns `addDays`, `differenceInDays`, `format`, `parseISO`, `isValid`. Inputs: LMP date and cycle length (default 28). EDD = LMP + 280 + (cycle − 28). Shows gestational age (weeks+days), current trimester, conception estimate, pregnancy progress bar (gradient), and a comprehensive milestones table (heartbeat 6w, T1 end 13w, anatomy scan 20w, viability 24w, T2 end 27w, early-term 37w, full term 39w, due date 40w) with Reached/Upcoming status pills.
+  8. `pregnancy-conception.tsx` — Pregnancy Conception Calculator (id: pregnancy-conception). Toggle between Due Date and Birth Date input. Computes conception date = input − 266 days, LMP = input − 280 days, ovulation window = conception ± 2 days. Shows timeline table with day-offsets from conception, current gestational age, and a pregnancy progress bar.
+  9. `due-date.tsx` — Due Date Calculator (id: due-date). Inputs: LMP + cycle length. EDD = LMP + 280 + (cycle − 28). Highlights days-until-due countdown, weeks+days gestational age, current trimester, and a progress bar (0–40 weeks) with trimester tick marks. Trimester schedule table with per-trimester start/end dates and completion status.
+
+- Updated `health/index.ts` to import all 9 default exports and export `HealthCalculators: Record<string, FC>` mapping each id → component.
+- All calculators: `"use client"` directive, `export default function XxxCalculator()` FC with no props, render only calculator body (CalculatorShell provides the rest). Use shared `Field/TextInput/SelectInput/ResultCard/CalcCard` building blocks, `useState` for inputs, live computation. Date inputs use `<input type="date">` styled via shared `TextInput`. No indigo/blue colors — only Calnivo palette + amber/green/orange/red status colors (no blue). Spacious gap-4/gap-6, p-5/p-6 throughout.
+- Reusable local `UnitToggle` component duplicated in each file (small enough that cross-file extraction wasn't warranted; keeps each calculator self-contained).
+
+Verification:
+- `bunx eslint src/components/calculator/health/` → no output (zero lint errors in any of the 9 health files).
+- `bunx tsc --noEmit | grep health` → no output (zero TypeScript errors in any of the 9 health files).
+- `bun run lint` reports only 2 pre-existing errors in files owned by other agents/tasks: `financial/_shared.tsx` (reassignment in render, built by the financial subagent) and `home/ScientificCalculator.tsx` (setState in effect, built by main agent). These are NOT in the health folder and are not my responsibility to fix.
+
+Stage Summary:
+- All 9 fitness & health calculators are wired into the registry and ready to render. Each is fully functional with correct real-world formulas (Mifflin-St Jeor, Harris-Benedict, Katch-McArdle, U.S. Navy body fat, Hamwi/Devine/Robinson/Miller, Naegele's rule, ovulation/conception back-calculation). The 4 health-related date calculators use date-fns as required. Visual scale bars (BMI, body-fat) and progress bars (pregnancy, due-date) are implemented with absolutely-positioned markers over gradient/segmented backgrounds.
+- The two remaining `bun run lint` errors are in other agents' files (`financial/_shared.tsx`, `home/ScientificCalculator.tsx`) and should be addressed by those agents.
+
+---
+Task ID: 9a
+Agent: financial-calculators
+Task: Build all 15 financial calculator components for the Calnivo calculator site (mortgage, loan, auto-loan, interest, payment, retirement, amortization, investment, inflation, finance/TVM, income-tax, compound-interest, salary, interest-rate, sales-tax) and wire them into the financial registry.
+
+Work Log:
+- Created `src/components/calculator/financial/_shared.tsx` — shared building blocks: `DonutChart` (SVG stroke-dasharray segments with center label), `LineChart` (SVG line + area fill, scales to max/min), `ProportionBar` (horizontal stacked bar with legend), `DataTable` (brand-styled table with sticky header, right-aligned tabular-nums, max-h-96 scroll-thin). DonutChart uses purely functional offset computation (sum of prior segment lengths) to satisfy react-hooks/immutability rule.
+- `mortgage.tsx` — Home price, down payment ($ or %), loan program (15/20/30 yr), rate; expandable "include taxes & costs" panel for property tax %, home insurance $/yr, HOA $/mo, other $/yr. Computes P&I via M = P·r(1+r)ⁿ/((1+r)ⁿ−1), totals tax/insurance/HOA/other, renders ResultCard + breakdown table + DonutChart of the four cost components.
+- `loan.tsx` — Loan amount, term with years/months toggle, rate. Shows monthly payment, total interest, total paid; ProportionBar for principal vs interest share.
+- `auto-loan.tsx` — Vehicle price, down payment, trade-in, sales tax %, term (months), rate. Computes financed amount = price − down − trade-in, sales tax on (price − trade-in), monthly payment via amortization, total cost incl. tax. Renders 4 stat tiles.
+- `interest.tsx` — Principal, rate, years, toggle Simple vs Compound, compounding frequency select for compound. Simple I = P·r·t, Compound A = P(1+r/n)^(nt). Shows interest earned, total amount, return on principal.
+- `payment.tsx` — Loan amount, term in months, rate, compounding frequency (Monthly/Quarterly/Semi-annual/Annual). Computes period payment from converted period rate, shows monthly equivalent and total interest.
+- `retirement.tsx` — Current age, retirement age, current savings, monthly contribution, annual return. FV = P(1+r)ⁿ + PMT·((1+r)ⁿ−1)/r with monthly compounding; renders growth LineChart across years.
+- `amortization.tsx` — Loan amount, rate, term (years), optional start date. Generates full month-by-month schedule (principal, interest, balance) inside a scrollable DataTable. Optional start date shows formatted month/year per row.
+- `investment.tsx` — Initial investment, monthly contribution, years, return %. Same FV-of-annuity formula. Growth LineChart across all years.
+- `inflation.tsx` — Current amount, years, inflation rate. Future cost = amount·(1+i)ⁿ, purchasing power = amount/(1+i)ⁿ, real value loss %.
+- `finance.tsx` — TVM calculator with "Solve for" select [PV | FV | PMT | N | Rate]. Closed-form solvers for PV/FV/PMT/N from the TVM equation PV(1+r)ⁿ + PMT·((1+r)ⁿ−1)/r + FV = 0; Rate solver uses Newton-Raphson with bisection fallback in (0, 1000%) for robustness. Shows result with money/num/percent formatting depending on solved variable.
+- `income-tax.tsx` — US federal income tax estimator using real 2024 IRS brackets for Single / Married Filing Jointly / Head of Household. Computes tax owed across brackets, effective rate, marginal rate, take-home, and renders a bracket breakdown table showing taxed amount and tax owed per bracket.
+- `compound-interest.tsx` — Principal, annual rate, compounding frequency (Annual/Semi/Quarterly/Monthly/Daily/Continuous), years, optional monthly contribution. Standard A = P(1+r/n)^(nt) + PMT·((1+r/n)^(nt)−1)/(r/n); continuous uses P·e^(rt) + PMT·12·((e^(rt)−1)/r). Growth LineChart.
+- `salary.tsx` — Hourly wage, hours per week, vacation-adjustment toggle (50 vs 52 working weeks). Shows hourly/daily/weekly/bi-weekly/monthly/annual conversions in stat tiles.
+- `interest-rate.tsx` — Loan amount, monthly payment, term (months). Reverses amortization to solve for monthly rate via bisection then Newton-Raphson refinement, returns APR (×12×100). Handles edge case where payment < principal/term (no solution). Shows APR, total interest, total paid.
+- `sales-tax.tsx` — Amount, tax rate %, before-tax vs after-tax toggle. Before-tax: adds tax on top. After-tax (tax-inclusive): back out net by dividing by (1 + rate). Shows net/tax/total breakdown.
+- Updated `src/components/calculator/financial/index.ts` — imports all 15 calculators and exports `FinancialCalculators: Record<string, FC>` mapping ids (mortgage, loan, auto-loan, interest, payment, retirement, amortization, investment, inflation, finance, income-tax, compound-interest, salary, interest-rate, sales-tax) to their default-exported components.
+
+Stage Summary:
+- All 15 financial calculators built and wired into the financial registry. Every calculator is a default-exported `XxxCalculator()` React.FC taking no props, uses the shared `CalcCard`/`Field`/`TextInput`/`SelectInput`/`ResultCard` building blocks and `fmtMoney`/`fmtNum`/`fmtPct`/`parseNum` helpers.
+- All formulas implemented with real-world math (standard amortization, future-value-of-annuity, compound/simple interest, IRS 2024 progressive brackets, Newton-Raphson + bisection for rate solving in finance.tsx and interest-rate.tsx).
+- Layout: `grid lg:grid-cols-[1fr_1fr] gap-4` for inputs + results side by side on desktop, stacked on mobile. Donut chart (mortgage), LineCharts (retirement, investment, compound-interest), ProportionBar (loan), and DataTable (amortization, income-tax breakdown) for visual output.
+- ESLint: `bun run lint` passes with zero errors in the financial folder (one pre-existing error remains in `ScientificCalculator.tsx` from Task 0 — `react-hooks/set-state-in-effect` — not introduced by this task). TypeScript `tsc --noEmit` reports zero errors in `financial/` files.
+- Next: remaining category subagents (health / math / other) can follow the same `_shared.tsx + per-calculator-file` pattern. The financial registry is ready for the CalculatorPage router to render any of the 15 financial calculators by id.
+
+---
+Task ID: 9d
+Agent: subagent-other
+Task: Build the 10 "other" (everyday utility) calculator components for the Calnivo site
+
+Work Log:
+- Read existing worklog and CalculatorShell.tsx to align with the shared design system (Field, TextInput, SelectInput, CalcButton, ResultCard, CalcCard) and the Calnivo palette utilities (bg-brand-canvas, text-brand-ink, bg-brand-accent-gradient, shadow-accent, etc.).
+- Created 10 fully-functional calculator components under `src/components/calculator/other/`:
+  - `age.tsx` — Exact age in years/months/days, totals (months, weeks, days, hours, minutes), day-of-week born, next-birthday countdown with DOW. Uses date-fns `differenceInYears/Months/Days`, `addMonths`, `differenceInCalendarDays`.
+  - `date.tsx` — Two-tab calculator: (1) Add/subtract days|weeks|months|years from a date → resulting date + DOW; (2) Duration between two dates → total days, weeks+days, months+days, years+months+days, business days (Mon–Fri via `isWeekend`), weekend count, hours. Uses date-fns throughout.
+  - `time.tsx` — Add/subtract a list of HH:MM:SS values with a starting time. Validates input via regex; shows total as HH:MM:SS, decimal hours/minutes, total seconds.
+  - `hours.tsx` — Timesheet/work-hours calculator with one row per day. Handles overnight shifts (end < start → +24h), subtracts break, totals across days, and computes total pay from an hourly rate. Per-day table + result cards.
+  - `gpa.tsx` — Course list with letter grade (A+/A/A-/.../F) + credits. Maps to standard 4.0 grade points, supports 4.0/5.0/10.0 scales, shows GPA to 2 decimals + total points + breakdown table.
+  - `grade.tsx` — Assessment components (name, weight %, earned as % or score/total). Computes current weighted grade, "grade needed on final" given a target % and final-exam weight (with "use remaining weight" shortcut), and a contribution table. Letter-grade mapping included.
+  - `concrete.tsx` — Shape select (Slab/Footing/Column/Hole), dimensions with unit picker (in/ft/cm/m), quantity. Outputs volume in ft³/yd³/m³, plus bags needed (40/60/80/90 lb selectable) with optional waste %, rounded up. Results table.
+  - `subnet.tsx` — IPv4 + CIDR input. 32-bit bitwise math (with `>>> 0` for unsigned). Outputs network, broadcast, subnet mask, wildcard, first/last usable host, total & usable hosts, IP class, private/public scope, and binary representation. Includes preset chips for /8, /16, /24, /28.
+  - `password-generator.tsx` — Length slider (4–64), character-set checkboxes (uppercase/lowercase/numbers/symbols), exclude-ambiguous + exclude-similar toggles via shadcn `Slider` & `Checkbox`. Uses `crypto.getRandomValues` with rejection sampling for uniform selection, guarantees one char per selected set + Fisher–Yates shuffle. Strength meter (5 bars) based on entropy bits; copy button with transient "Copied!" state.
+  - `conversion.tsx` — Unit converter with category chips (Length, Weight, Temperature, Volume, Speed). Linear categories use factor-to-base-unit math; Temperature uses C↔F↔K offsets. Live result + swap button + "all conversions" preview table.
+- Updated `src/components/calculator/other/index.ts` to import all 10 components and export `OtherCalculators: Record<string, FC>` mapping each id (age, date, time, hours, gpa, grade, concrete, subnet, password-generator, conversion) to its component.
+- Used the shadcn `Table` primitives from `@/components/ui/table` (not from CalculatorShell — those aren't exported there) for hours/gpa/grade/concrete/subnet/conversion tables.
+- Style: every calculator wraps inputs in a `CalcCard` titled "Inputs" and results in `CalcCard` titled "Results" or specific labels; primary results use `ResultCard` (gradient); dynamic lists use `grid grid-cols-12 gap-2` rows with a small × delete button; numbers are right-aligned `tabular-nums`; table headers use `bg-muted/50`. No indigo/blue colors — only Calnivo palette.
+- Fixed lint/TS errors discovered during verification:
+  - `concrete.tsx`: stray `)` instead of `}` in JSX expression `{BAG_YIELDS[bagIdx].label)`.
+  - `password-generator.tsx`: removed unused `useEffect` (rule `react-hooks/set-state-in-effect`); replaced with lazy `useState` initializer to seed the initial password on mount. Renamed local `Check` component to `CheckRow` to avoid name clash with the lucide `Check` icon (imported as `CheckIcon`). Fixed `tabular-ink` typo → `tabular-nums`.
+  - `date.tsx`: added missing `differenceInYears` import from date-fns.
+  - `gpa.tsx`, `grade.tsx`, `hours.tsx`: moved `Table`/`TableHeader`/etc. imports to `@/components/ui/table` (they are not exported from CalculatorShell).
+
+Verification:
+- `bun run lint` → 0 errors and 0 warnings in `src/components/calculator/other/` (verified with `npx eslint src/components/calculator/other`).
+- `npx tsc --noEmit` → 0 errors in `src/components/calculator/other/`.
+- The only remaining lint/tsc errors are in files outside this task's scope (`src/components/calculator/financial/_shared.tsx` and `src/components/home/ScientificCalculator.tsx`); leaving them for the respective owners.
+
+Stage Summary:
+- All 10 "other" calculators are now wired into the registry via `OtherCalculators`, so `<CalculatorPage id={...} />` will render the real component for each of age, date, time, hours, gpa, grade, concrete, subnet, password-generator, and conversion (instead of the ComingSoon fallback).
+- Each calculator is fully functional with live computation (or button-driven where appropriate), dynamic add/remove rows, and the Calnivo design language throughout. No placeholders.
+- Next: hand off to integration testing; verify the home page's "Other" category grid now deep-links to working calculators.
+
+---
+Task ID: 9c
+Agent: math-calculators
+Task: Build all 6 math calculator React components for the Calnivo site (scientific, fraction, percentage, random-number, triangle, standard-deviation) and wire them into the math registry.
+
+Work Log:
+- Read existing worklog and inspected shared building blocks (CalculatorShell: `Field/TextInput/SelectInput/CalcButton/ResultCard/CalcCard`), `@/lib/format` (`fmtNum/fmtPct/parseNum/clamp`), `@/lib/calculators/math-engine` (`evaluate`/`AngleMode`), the existing `@/components/home/ScientificCalculator` widget, the shadcn `@/components/ui/table` primitives, and prior work from agents 9a/9b/9d for conventions.
+- Built 6 fully-functional calculator components under `src/components/calculator/math/`:
+
+  1. `scientific.tsx` (id: scientific) — Imports the existing `ScientificCalculator` widget from `@/components/home/ScientificCalculator` and renders it inside a `CalcCard` (max-w-xl) on the left. On the right (stacks on mobile), a tips card lists 11 example expressions with results (sin(30)=0.5, cos(60)=0.5, log(100)=2, ln(e)=1, 2^10=1024, 5!=120, sqrt(144)=12, pi, e, 10^3=1000, 1/0=Error). A second card describes Deg/Rad toggle, memory keys (M+, M-, MR) and the Ans key. A third reference card lists all supported functions, operators and constants. Reuses the existing math expression engine via the imported widget.
+
+  2. `fraction.tsx` (id: fraction) — Inputs: two fractions (num + den each) and an operation (add/sub/mul/div) via both a SelectInput and a button group (active = `bg-brand-accent-gradient text-white shadow-accent`). Implements Euclidean `gcd()` and `reduce()` helpers. For add/sub: computes common denominator (LCD), rewrites both fractions, sums numerators, reduces via gcd. For mul: cross-multiplies numerators and denominators. For div: multiplies by the reciprocal. Outputs the reduced fraction via `ResultCard`, plus an "Unreduced / Reduced / Decimal" stat grid, plus an ordered step-by-step list of the working with numbered orange badges. Handles zero denominators and "divide by zero numerator" with explicit error messages.
+
+  3. `percentage.tsx` (id: percentage) — A multi-mode percentage calculator with a 4-button mode group: (1) "What is X% of Y?" → (X/100)·Y; (2) "X is what % of Y?" → (X/Y)·100; (3) "% change from X to Y" → ((Y−X)/X)·100 with ▲/▼ increase/decrease indicator; (4) "Increase/decrease Y by X%" → Y·(1 ± X/100) with a separate ▲/▼ direction toggle. Each mode shows only its relevant inputs (sm:grid-cols-2 / sm:grid-cols-[1fr_1fr_auto]). The formula is displayed in small muted text. ResultCard shows the answer plus an "extra" stat grid (absolute change, direction, multiplier) where relevant. Division-by-zero (e.g. isWhat with Y=0, change with X=0) returns graceful "—" with an explanatory sub-text.
+
+  4. `random-number.tsx` (id: random-number) — Inputs: Min, Max, How many (default 1, clamped to [1, 10000]), Unique? (checkbox), Sort? (none/asc/desc button group). Uses `crypto.getRandomValues(new Uint32Array(1))` for high-quality randomness with `Math.random()` fallback. Integer generation uses rejection sampling to avoid modulo bias. For unique-with-count, uses Fisher–Yates swap-shuffle when the span is ≤ 10,000 (then slices `count` items), or a Set-based approach for larger spans. Validates: min > max, count < 1, and unique-count-exceeds-range (max−min+1). Generates on a "Generate" button click (no live preview) and displays results as styled pills in a scrollable container (`max-h-96 overflow-y-auto scroll-thin`); a single result is shown large in a gradient card. Includes Min/Max/Mean/Count summary stats when more than one number is drawn.
+
+  5. `triangle.tsx` (id: triangle) — A full triangle solver with a "given" mode select (SSS, SAS, ASA, AAS) and a button group of the same four labels. SSS validates triangle inequality (a+b>c, etc.) and shows an error if violated, then uses Law of Cosines to derive angles. SAS uses Law of Cosines to find the third side then derives the other angles. ASA computes the third angle (180−A−B) and uses Law of Sines to find the other two sides. AAS uses Law of Sines twice. Area via Heron's formula √(s(s−a)(s−b)(s−c)); perimeter = a+b+c; triangle type classification by sides (equilateral/isosceles/scalene) and by angles (acute/right/obtuse). All angles in degrees (DEG/RAD constants used for conversion). Renders an SVG sketch (320×240 viewBox) with the triangle, vertex labels A/B/C, side labels a/b/c (positioned at midpoints), vertex dots, and dashed interior-angle arcs. SVG placement uses local math coordinates (Y up) with a `toPx` helper that flips Y for SVG; auto-scales/centers the triangle inside a usable padded region.
+
+  6. `standard-deviation.tsx` (id: standard-deviation) — Inputs: a `<textarea>` (rows=5) accepting comma/space/newline/semicolon/pipe/tab-separated numbers. `parseList()` filters invalid tokens (and the UI shows how many values were skipped). Computes: count (n), sum, mean, median, min, max, range, population variance (σ²=Σ(x−μ)²/n), population std dev (σ=√σ²), sample variance (s²=Σ(x−x̄)²/(n−1)), sample std dev (s=√s²), and coefficient of variation (s/|x̄|·100). Uses `useMemo` for live computation (no `useEffect`/setState-in-effect). Primary mean is shown via `ResultCard`; secondary stats in a 3-column grid (sm:2, lg:3). A formulas reference grid shows σ², s², σ, s equations. A "Sorted data" `CalcCard` contains the shadcn `Table` (from `@/components/ui/table`, not re-exported from CalculatorShell) with header row `bg-muted/50`, right-aligned tabular-nums columns (#, Value, Deviation x−x̄, (x−x̄)²), in a `max-h-96 overflow-y-auto scroll-thin` container, with a footer row summing the squared deviations.
+
+- Updated `src/components/calculator/math/index.ts` to import all 6 default exports and export `MathCalculators: Record<string, FC>` mapping each id (scientific, fraction, percentage, random-number, triangle, standard-deviation) to its component.
+
+- All calculators: `"use client"` directive, `export default function XxxCalculator()` FC taking no props, render only the calculator body (CalculatorShell provides breadcrumb/title/sidebar). Used shared `CalcCard/Field/TextInput/SelectInput/CalcButton/ResultCard` building blocks and `fmtNum/parseNum/clamp` from `@/lib/format`. Live computation via render-time IIFE or `useMemo` — no `setState`-in-effect patterns. Mode/tab selectors use `flex gap-2 flex-wrap` button groups with active = `bg-brand-accent-gradient text-white shadow-accent`. Tables imported from `@/components/ui/table`. No indigo/blue colors — only Calnivo palette. Spacious gap-4/gap-6 and p-5/p-6 throughout.
+
+Verification:
+- `bunx eslint src/components/calculator/math/` → 0 errors, 0 warnings (clean).
+- `bunx tsc --noEmit` → 0 errors in any `src/components/calculator/math/` file.
+- `bun run build` (Next.js 16 / Turbopack) → "Compiled successfully in 10.8s", all 4 static pages generated. Build passes.
+- `bun run lint` reports only the single pre-existing error in `src/components/home/ScientificCalculator.tsx` (line 123, `react-hooks/set-state-in-effect`) — this is owned by Task 0 / main agent, not introduced by this task.
+
+Stage Summary:
+- All 6 math calculators are wired into the registry via `MathCalculators`, so `<CalculatorPage id={...} />` will render the real component for scientific, fraction, percentage, random-number, triangle, and standard-deviation (instead of the ComingSoon fallback). Every calculator is fully functional with correct math (Euclidean gcd + fraction reduction, four percentage problem types, crypto-backed random integers, Law of Sines/Cosines + Heron's formula + SVG sketch, full population+sample statistics set). The math registry is now complete and ready for integration testing alongside the financial, health, and other categories.
+
+---
+Task ID: FINAL
+Agent: main
+Task: Integration, verification, and launch
+
+Work Log:
+- Fixed ScientificCalculator lint error (react-hooks/set-state-in-effect) by converting live preview from useEffect+setState to useMemo derivation; kept keyboard handler as a legitimate external-system subscription effect.
+- Verified `bun run lint` is completely clean (0 errors, 0 warnings).
+- Verified dev server runs on port 3000 (HTTP 200, no runtime errors in dev.log).
+- Agent Browser end-to-end verification:
+  - Home page renders: hero + working scientific calculator + 4-column category grid + "Why Calnivo" trust panel + mission statement.
+  - Scientific calculator: typed 7+9, live preview showed "16", pressed "=", Ans updated to 16. Deg/Rad toggle, memory (M+/M-/MR), keyboard support all wired.
+  - Navigation: clicking a category item (e.g. Mortgage) switches to the calculator page with correct breadcrumb (Home > Financial > Mortgage Calculator) and "All calculators" back button.
+  - Mortgage calculator: computes monthly payment ($2,086.16 default), shows donut chart + breakdown — fully functional.
+  - BMI, Percentage, Password Generator, Triangle, Conversion, Subnet, Age calculators all render and are interactive.
+  - Header search dropdown filters calculators live and navigates on click.
+  - Footer present and sticky (mt-auto in flex-col layout).
+  - Mobile viewport (375px): layout stacks responsively, header condenses Sign-in to icon.
+- VLM visual review of home + mortgage + BMI screenshots all confirm: "clean, modern, professional SaaS/fintech aesthetic" with Calnivo orange gradient (#F4511E→#FF6A00) on cream background (#FAF9F6).
+
+Stage Summary:
+- Project COMPLETE and verified. 40 functional calculators + scientific calculator widget, all using Calnivo design system, single `/` route with SPA navigation.
+- No known bugs. Ready for the 15-minute webDevReview cron to iterate on polish and new features.
+
+Unresolved / next-phase recommendations:
+- Consider adding a "Favorites / recent calculators" feature (localStorage).
+- Add a printable/exportable results view for financial calculators.
+- Add a dark-mode toggle (theme tokens already defined in globals.css .dark).
+- Expand the "All Calculators" index page view (currently reachable via category browsing/search).

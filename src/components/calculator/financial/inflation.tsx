@@ -18,10 +18,29 @@ export default function InflationCalculator() {
     const a = parseNum(amount);
     const n = parseNum(years);
     const i = parseNum(rate) / 100;
-    const factor = Math.pow(1 + i, n);
+    let factor = 0;
+    if (i <= -1) {
+      // Pathological deflation — value goes to 0 (purchasing power → ∞)
+      factor = 0;
+    } else if (i === 0) {
+      factor = 1;
+    } else {
+      const base = 1 + i;
+      if (base > 0 || Number.isInteger(n)) {
+        factor = Math.pow(base, n);
+        if (!isFinite(factor)) factor = base > 1 ? Number.MAX_VALUE : 0;
+      } else {
+        factor = 0;
+      }
+    }
     const futureCost = a * factor;
-    const purchasingPower = a / factor;
-    return { a, n, i, factor, futureCost, purchasingPower };
+    // When factor is 0 (100% deflation), purchasing power is effectively unbounded.
+    // Display the original amount as a safe proxy: at 100% deflation prices went to 0,
+    // so $a today still buys $a worth of goods at the new (zero) price level.
+    const purchasingPower =
+      factor > 0 ? a / factor : a;
+    const realValueLoss = factor > 0 ? (1 - 1 / factor) * 100 : -Infinity;
+    return { a, n, i, factor, futureCost, purchasingPower, realValueLoss };
   }, [amount, years, rate]);
 
   return (
@@ -70,7 +89,7 @@ export default function InflationCalculator() {
             />
             <ResultCard
               label="Real Value Loss"
-              value={fmtPct((1 - r.purchasingPower / r.a) * 100)}
+              value={fmtPct(r.realValueLoss)}
               highlight={false}
             />
           </div>

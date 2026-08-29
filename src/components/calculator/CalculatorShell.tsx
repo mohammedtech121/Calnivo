@@ -108,9 +108,26 @@ export function CalculatorShell({
           </div>
 
           <div className="rounded-xl border border-brand bg-gradient-to-br from-accent to-white p-4 shadow-brand">
-            <p className="text-xs leading-relaxed text-brand-muted">
-              All calculations run locally in your browser. Nothing is sent to a server.
+            <h4 className="text-xs font-semibold uppercase tracking-wide text-brand-accent-deep">
+              How this works
+            </h4>
+            <p className="mt-2 text-xs leading-relaxed text-brand-muted">
+              All calculations run locally in your browser — nothing is sent to a server. Results
+              are estimates for planning purposes only and use standard formulas.
             </p>
+            {meta.category === "financial" && (
+              <p className="mt-2 text-xs leading-relaxed text-brand-muted">
+                Not financial advice. Actual loan terms, tax, and returns depend on your lender,
+                jurisdiction, and market conditions. Verify with a qualified professional before
+                making financial decisions.
+              </p>
+            )}
+            {meta.category === "health" && (
+              <p className="mt-2 text-xs leading-relaxed text-brand-muted">
+                For general wellness information only — not a medical diagnosis. Consult a
+                healthcare professional for personal advice.
+              </p>
+            )}
           </div>
         </aside>
       </div>

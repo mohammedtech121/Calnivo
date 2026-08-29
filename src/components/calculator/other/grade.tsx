@@ -44,7 +44,8 @@ export default function GradeCalculator() {
 
   const computed = useMemo(() => {
     return comps.map((c) => {
-      const w = parseNum(c.weight);
+      // Weights must be non-negative; clamp to 0 (defensive against "-10" / garbage input).
+      const w = Math.max(0, parseNum(c.weight));
       let earnedPct: number;
       if (c.mode === "percent") {
         earnedPct = parseNum(c.earned);
@@ -53,6 +54,7 @@ export default function GradeCalculator() {
         const total = parseNum(c.total) || 1;
         earnedPct = (score / total) * 100;
       }
+      if (!isFinite(earnedPct)) earnedPct = 0;
       return { ...c, weightNum: w, earnedPct };
     });
   }, [comps]);
@@ -64,9 +66,10 @@ export default function GradeCalculator() {
     ? weightedEarned / (sumExistingWeights + parseNum(finalWeight))
     : 0;
 
-  const targetNum = parseNum(target);
-  const finalWeightNum = parseNum(finalWeight);
+  const targetNum = Math.max(0, parseNum(target));
+  const finalWeightNum = Math.max(0, parseNum(finalWeight));
   const totalAllWeight = sumExistingWeights + finalWeightNum;
+  // neededFinal intentionally NaN when finalWeightNum is 0; UI displays "—".
   const neededFinal = finalWeightNum > 0
     ? (targetNum * totalAllWeight - weightedEarned) / finalWeightNum
     : NaN;

@@ -9,10 +9,8 @@ import {
   differenceInCalendarDays,
   differenceInMonths,
   differenceInYears,
-  eachDayOfInterval,
   format,
   isValid,
-  isWeekend,
   parse,
 } from "date-fns";
 import {
@@ -77,6 +75,7 @@ function AddMode() {
   const [dir, setDir] = useState<"add" | "sub">("add");
 
   const result = useMemo(() => {
+    if (!start) return null;
     const d = parse(start, "yyyy-MM-dd", new Date());
     if (!isValid(d)) return null;
     const n = parseInt(amount || "0", 10);
@@ -87,6 +86,7 @@ function AddMode() {
     else if (unit === "weeks") r = addWeeks(d, signed);
     else if (unit === "months") r = addMonths(d, signed);
     else r = addYears(d, signed);
+    if (!isValid(r)) return null;
     return { date: r, dow: DOW[r.getDay()] };
   }, [start, amount, unit, dir]);
 
@@ -152,6 +152,7 @@ function DurationMode() {
   const [end, setEnd] = useState<string>(format(addDays(new Date(), 365), "yyyy-MM-dd"));
 
   const result = useMemo(() => {
+    if (!start || !end) return null;
     const a = parse(start, "yyyy-MM-dd", new Date());
     const b = parse(end, "yyyy-MM-dd", new Date());
     if (!isValid(a) || !isValid(b)) return null;
@@ -173,9 +174,9 @@ function DurationMode() {
     const afterRemMonths = addMonths(afterYears, remMonths);
     const remDaysY = differenceInCalendarDays(hi, afterRemMonths);
 
-    // Business days: Mon-Fri between lo and hi inclusive (hi exclusive handled)
-    const days = eachDayOfInterval({ start: lo, end: hi });
-    const businessDays = days.filter((d) => !isWeekend(d)).length;
+    // Business days (Mon-Fri) inclusive of both endpoints — computed via O(1) math
+    // rather than eachDayOfInterval to handle arbitrarily large ranges safely.
+    const businessDays = countBusinessDays(lo, hi);
 
     return {
       totalDays,
@@ -262,4 +263,23 @@ function Stat({ label, value }: { label: string; value: string }) {
       </div>
     </div>
   );
+}
+
+/**
+ * Count Mon-Fri weekdays in the inclusive [lo, hi] interval using O(1) math.
+ * Mirrors the inclusive semantics of date-fns `eachDayOfInterval({start:lo,end:hi})`
+ * so the displayed weekend count (= (totalDays + 1) - businessDays) remains correct.
+ */
+function countBusinessDays(lo: Date, hi: Date): number {
+  if (lo > hi) return 0;
+  const totalDaysInclusive = differenceInCalendarDays(hi, lo) + 1;
+  const fullWeeks = Math.floor(totalDaysInclusive / 7);
+  const remainder = totalDaysInclusive % 7;
+  let businessDays = fullWeeks * 5;
+  // lo.getDay(): 0=Sun, 1=Mon, ... 6=Sat
+  for (let i = 0; i < remainder; i++) {
+    const dow = (lo.getDay() + i) % 7;
+    if (dow !== 0 && dow !== 6) businessDays += 1;
+  }
+  return businessDays;
 }

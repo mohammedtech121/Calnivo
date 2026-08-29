@@ -29,16 +29,24 @@ function randomIntInclusive(min: number, max: number): number {
   const span = max - min + 1;
   // span must be a positive integer <= 2^32
   if (span <= 0) return min;
-  // Mask to nearest power-of-2 upper bound, then reject overflow
-  const mask = span - 1;
+  if (span === 1) return min;
+  // Rejection sampling: the largest multiple of `span` that fits in 2^32
+  // is `2^32 - (2^32 mod span)`. Any random uint32 >= that threshold would
+  // bias the modulo result, so we reject and re-roll.
+  const limit = 0x100000000 - (0x100000000 % span);
   let x: number;
   let tries = 0;
   do {
-    x = secureRandomUint32() & 0xffffffff;
+    // secureRandomUint32 already returns an unsigned value in [0, 2^32-1].
+    // Do NOT apply `& 0xffffffff` — that coerces to a signed 32-bit int,
+    // producing negative values whose `% span` falls outside [0, span-1].
+    x = secureRandomUint32();
     tries++;
+    // Safety fallback (effectively unreachable: rejection probability is
+    // always < span/2^32 ≤ 1/2^32, so even 2 tries is astronomically rare).
     if (tries > 100) return min + (x % span);
-  } while (span > 1 && x >= span - (0x100000000 % span));
-  return min + (mask === 0 ? 0 : (x % span));
+  } while (x >= limit);
+  return min + (x % span);
 }
 
 function pickUnique(min: number, max: number, count: number): number[] {

@@ -2,12 +2,7 @@
 
 import { useMemo, useState } from "react";
 import {
-  addDays,
-  addMonths,
   differenceInCalendarDays,
-  differenceInDays,
-  differenceInMonths,
-  differenceInYears,
   format,
   isValid,
   parse,
@@ -40,16 +35,43 @@ export default function AgeCalculator() {
   const [ageAt, setAgeAt] = useState<string>(todayStr());
 
   const result = useMemo(() => {
+    if (!birth || !ageAt) return null;
     const b = parse(birth, "yyyy-MM-dd", new Date());
     const a = parse(ageAt, "yyyy-MM-dd", new Date());
     if (!isValid(b) || !isValid(a)) return null;
     if (a < b) return { error: "Age-at date must be on or after birth date." } as const;
 
-    const years = differenceInYears(a, b);
-    const afterYears = addMonths(b, years * 12);
-    const months = differenceInMonths(a, afterYears);
-    const afterMonths = addMonths(afterYears, months);
-    const days = differenceInDays(a, afterMonths);
+    // Calendar-math approach for years/months/days.
+    // Correctly handles Feb 29 birthdays in non-leap years (treats anniversary
+    // as the next valid day-of-year). Borrow logic normalizes negative deltas.
+    let years = a.getFullYear() - b.getFullYear();
+    let months = a.getMonth() - b.getMonth();
+    let days = a.getDate() - b.getDate();
+    if (days < 0) {
+      months -= 1;
+      // Last day of the month preceding `a`
+      const prevMonthLastDay = new Date(a.getFullYear(), a.getMonth(), 0).getDate();
+      days += prevMonthLastDay;
+    }
+    if (months < 0) {
+      years -= 1;
+      months += 12;
+    }
+    // Defensive normalization (should already be in [0,11]; guard against any
+    // unexpected negative or >= 12 values caused by DST/leap quirks).
+    if (months >= 12) {
+      years += Math.floor(months / 12);
+      months = months % 12;
+    }
+    if (months < 0) {
+      years -= 1;
+      months += 12;
+    }
+    if (years < 0) {
+      years = 0;
+      months = 0;
+      days = 0;
+    }
 
     const totalMonths = years * 12 + months;
     const totalDays = differenceInCalendarDays(a, b);

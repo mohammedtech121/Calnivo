@@ -32,12 +32,23 @@ export default function PaymentCalculator() {
     const n = monthsPerPeriod > 0 ? months / monthsPerPeriod : 0;
     const periodRate = parseNum(rate) / 100 / periodsPerYear;
     let payment = 0;
-    if (periodRate === 0) {
-      payment = n > 0 ? P / n : 0;
+    if (n <= 0) {
+      payment = 0;
+    } else if (periodRate === 0) {
+      payment = P / n;
+    } else if (periodRate <= -1) {
+      payment = 0;
     } else {
       const f = Math.pow(1 + periodRate, n);
-      payment = (P * periodRate * f) / (f - 1);
+      if (!isFinite(f)) {
+        payment = P * periodRate; // asymptotic
+      } else if (f !== 1) {
+        payment = (P * periodRate * f) / (f - 1);
+      } else {
+        payment = P / n;
+      }
     }
+    if (!isFinite(payment)) payment = 0;
     const totalPaid = payment * n;
     const totalInterest = totalPaid - P;
     const monthlyEquiv = payment / monthsPerPeriod;

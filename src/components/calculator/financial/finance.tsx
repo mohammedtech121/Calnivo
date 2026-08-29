@@ -67,6 +67,10 @@ export default function FinanceCalculator() {
     }
     // Solve for Rate — Newton-Raphson with bisection fallback
     // f(r) = PV*(1+r)^N + PMT*((1+r)^N - 1)/r + FV = 0
+    // Guard: trivially-zero equation (no constraint on rate) or N=0 (rate undefined)
+    if (N <= 0 || (PV === 0 && PMT === 0 && FV === 0)) {
+      return { value: NaN, fmtAs: "pct" as const };
+    }
     const f = (rr: number): number => {
       if (rr === 0) return PV + PMT * N + FV;
       const p = Math.pow(1 + rr, N);

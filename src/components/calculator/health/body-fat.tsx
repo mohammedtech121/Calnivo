@@ -133,8 +133,10 @@ export default function BodyFatCalculator() {
   const weightValKg =
     weightUnit === "kg" ? parseNum(weightKg) : parseNum(weightLb) / 2.2046226218;
 
-  const fatMassKg = isFinite(bfClamped) ? (bfClamped / 100) * weightValKg : NaN;
-  const leanMassKg = isFinite(bfClamped) ? weightValKg - fatMassKg : NaN;
+  // Mass breakdown only valid when weight > 0 and BF% is finite.
+  const massValid = isFinite(bfClamped) && weightValKg > 0;
+  const fatMassKg = massValid ? (bfClamped / 100) * weightValKg : NaN;
+  const leanMassKg = massValid ? weightValKg - fatMassKg : NaN;
 
   const fmtMass = (kg: number) =>
     weightUnit === "kg"

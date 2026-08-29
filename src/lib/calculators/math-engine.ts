@@ -68,6 +68,12 @@ function tokenize(expr: string): Tok[] {
     const c = s[i];
     if (/[0-9.]/.test(c)) {
       let j = i + 1;
+      // Consume the full mantissa (all digits and dots) before checking
+      // for an `e`/`E` exponent. Without this, multi-digit numbers like
+      // `10` are tokenized as `1` then `0`, corrupting every expression
+      // that contains numbers with more than one digit (e.g. `10-4*2`,
+      // `2^10`, `sin(30)` all threw "Malformed expression").
+      while (j < s.length && /[0-9.]/.test(s[j])) j++;
       if (j < s.length && (s[j] === "e" || s[j] === "E")) {
         const after = s[j + 1];
         if (after === "+" || after === "-" || /[0-9]/.test(after)) {

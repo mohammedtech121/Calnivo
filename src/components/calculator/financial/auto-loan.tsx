@@ -28,12 +28,23 @@ export default function AutoLoanCalculator() {
     const taxAmount = Math.max(0, p - ti) * taxRate;
     const monthlyRate = parseNum(rate) / 100 / 12;
     let monthly = 0;
-    if (monthlyRate === 0) {
-      monthly = months > 0 ? financed / months : 0;
+    if (months <= 0) {
+      monthly = 0;
+    } else if (monthlyRate === 0) {
+      monthly = financed / months;
+    } else if (monthlyRate <= -1) {
+      monthly = 0;
     } else {
       const f = Math.pow(1 + monthlyRate, months);
-      monthly = (financed * monthlyRate * f) / (f - 1);
+      if (!isFinite(f)) {
+        monthly = financed * monthlyRate; // asymptotic
+      } else if (f !== 1) {
+        monthly = (financed * monthlyRate * f) / (f - 1);
+      } else {
+        monthly = financed / months;
+      }
     }
+    if (!isFinite(monthly)) monthly = 0;
     const totalPaid = monthly * months;
     const totalInterest = totalPaid - financed;
     const totalCost = dp + ti + totalPaid + taxAmount;

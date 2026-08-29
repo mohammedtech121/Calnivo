@@ -72,8 +72,10 @@ export default function SubnetCalculator() {
     const totalHosts = cidr >= 32 ? 1 : 2 ** (32 - cidr);
     const usableHosts =
       cidr === 32 ? 1 : cidr === 31 ? 2 : Math.max(0, totalHosts - 2);
-    const firstHost = cidr === 32 ? network : (network + 1) >>> 0;
-    const lastHost = cidr === 32 ? network : (broadcast - 1) >>> 0;
+    // RFC 3021: in /31 networks both addresses are usable hosts.
+    // For /32 the single address is the host itself.
+    const firstHost = cidr === 32 ? network : cidr === 31 ? network : (network + 1) >>> 0;
+    const lastHost = cidr === 32 ? network : cidr === 31 ? broadcast : (broadcast - 1) >>> 0;
 
     const binaryIp = [(ip >>> 24) & 0xff, (ip >>> 16) & 0xff, (ip >>> 8) & 0xff, ip & 0xff]
       .map((o) => o.toString(2).padStart(8, "0"))

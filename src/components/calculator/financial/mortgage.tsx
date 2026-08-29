@@ -34,12 +34,25 @@ export default function MortgageCalculator() {
     const monthlyRate = annualRate / 100 / 12;
     const n = parseNum(loanYears) * 12;
     let pi = 0;
-    if (monthlyRate === 0) {
-      pi = n > 0 ? principal / n : 0;
+    if (n <= 0) {
+      pi = 0;
+    } else if (monthlyRate === 0) {
+      pi = principal / n;
+    } else if (monthlyRate <= -1) {
+      // Pathological negative rate — no meaningful amortization
+      pi = 0;
     } else {
       const f = Math.pow(1 + monthlyRate, n);
-      pi = (principal * monthlyRate * f) / (f - 1);
+      if (!isFinite(f)) {
+        // Math.pow overflowed — use asymptotic formula (f → ∞ ⇒ pi → principal × monthlyRate)
+        pi = principal * monthlyRate;
+      } else if (f !== 1) {
+        pi = (principal * monthlyRate * f) / (f - 1);
+      } else {
+        pi = principal / n;
+      }
     }
+    if (!isFinite(pi)) pi = 0;
 
     const monthlyTax =
       includeCosts && home ? (home * (parseNum(propertyTax) / 100)) / 12 : 0;

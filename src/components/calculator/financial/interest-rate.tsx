@@ -42,6 +42,17 @@ export default function InterestRateCalculator() {
     let fhi = f(hi);
     let monthlyRate = NaN;
 
+    // Guard: empty / non-positive inputs — no meaningful rate to solve for
+    if (P <= 0 || PMT <= 0 || n <= 0) {
+      return {
+        monthlyRate: NaN,
+        apr: NaN,
+        totalInterest: NaN,
+        totalPaid: PMT * n,
+        invalid: true,
+        reason: "inputs",
+      };
+    }
     // Sanity: payment must be high enough to cover a 0% loan: PMT * n >= P
     if (PMT * n < P) {
       // Payment too small to ever pay off — no positive rate solution
@@ -50,7 +61,8 @@ export default function InterestRateCalculator() {
         apr: NaN,
         totalInterest: NaN,
         totalPaid: PMT * n,
-        invalid: true as const,
+        invalid: true,
+        reason: "tooSmall",
       };
     }
 
@@ -97,7 +109,8 @@ export default function InterestRateCalculator() {
       apr,
       totalInterest,
       totalPaid,
-      invalid: false as const,
+      invalid: false,
+      reason: null,
     };
   }, [amount, payment, term]);
 
@@ -139,7 +152,9 @@ export default function InterestRateCalculator() {
             value={isFinite(r.apr) ? fmtPct(r.apr, 3) : "—"}
             sub={
               r.invalid
-                ? "Payment too small to pay off loan"
+                ? r.reason === "inputs"
+                  ? "Enter loan amount, payment and term"
+                  : "Payment too small to pay off loan"
                 : `Monthly rate ${isFinite(r.monthlyRate) ? fmtPct(r.monthlyRate * 100, 4) : "—"}`
             }
           />

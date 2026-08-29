@@ -57,8 +57,12 @@ function computeStats(nums: number[]): Stats | null {
   const sumSqDiff = sorted.reduce((s, x) => s + (x - mean) ** 2, 0);
   const popVar = sumSqDiff / n;
   const popStd = Math.sqrt(popVar);
-  const sampleVar = n > 1 ? sumSqDiff / (n - 1) : 0;
-  const sampleStd = Math.sqrt(sampleVar);
+  // Sample variance requires at least 2 data points (denominator n−1).
+  // For n === 1, sample variance / std dev are mathematically undefined
+  // (division by zero). Return NaN so the display layer renders "—" rather
+  // than misleading the user with a value of 0.
+  const sampleVar = n > 1 ? sumSqDiff / (n - 1) : NaN;
+  const sampleStd = n > 1 ? Math.sqrt(sampleVar) : NaN;
 
   return {
     n,
@@ -157,7 +161,7 @@ export default function StandardDeviationCalculator() {
               <Stat
                 label="Coefficient of variation"
                 value={
-                  stats.mean !== 0
+                  stats.mean !== 0 && isFinite(stats.sampleStd)
                     ? `${fmtNum((stats.sampleStd / Math.abs(stats.mean)) * 100, 4)}%`
                     : "—"
                 }

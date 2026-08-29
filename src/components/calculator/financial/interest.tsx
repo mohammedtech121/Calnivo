@@ -28,9 +28,26 @@ export default function InterestCalculator() {
       total = P + interest;
     } else {
       const n = parseNum(freq);
-      total = P * Math.pow(1 + annualRate / n, n * t);
-      interest = total - P;
+      if (n > 0 && annualRate > -n) {
+        const base = 1 + annualRate / n;
+        const exponent = n * t;
+        if (base > 0 || Number.isInteger(exponent)) {
+          const f = Math.pow(base, exponent);
+          if (isFinite(f)) {
+            total = P * f;
+            interest = total - P;
+          } else {
+            total = P;
+            interest = 0;
+          }
+        } else {
+          total = P;
+          interest = 0;
+        }
+      }
     }
+    if (!isFinite(total)) total = P;
+    if (!isFinite(interest)) interest = total - P;
     return { P, total, interest };
   }, [principal, rate, years, mode, freq]);
 

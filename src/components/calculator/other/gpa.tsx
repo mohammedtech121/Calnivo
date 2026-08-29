@@ -57,7 +57,8 @@ export default function GpaCalculator() {
 
   const computed = useMemo(() => {
     return courses.map((c) => {
-      const credits = parseNum(c.credits);
+      // Credits must be non-negative; clamp to 0 (defensive against "-3" / garbage input).
+      const credits = Math.max(0, parseNum(c.credits));
       const gp = GRADE_POINTS[c.grade] ?? 0;
       return { ...c, credits, gp, points: credits * gp };
     });
@@ -68,6 +69,7 @@ export default function GpaCalculator() {
   const gpa = totalCredits > 0 ? totalPoints / totalCredits : 0;
   const scaleNum = parseNum(scaleMax) || 4.0;
   const scaledGpa = scaleNum === 4.0 ? gpa : (gpa / 4.0) * scaleNum;
+  const safeGpa = isFinite(scaledGpa) ? scaledGpa : 0;
 
   function addCourse() {
     setCourses((prev) => [
@@ -165,7 +167,7 @@ export default function GpaCalculator() {
         <div className="grid gap-3 sm:grid-cols-3">
           <ResultCard
             label="GPA"
-            value={fmtNum(scaledGpa, 2)}
+            value={fmtNum(safeGpa, 2)}
             sub={`on a ${scaleNum.toFixed(1)} scale`}
           />
           <ResultCard

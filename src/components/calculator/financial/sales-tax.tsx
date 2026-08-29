@@ -28,10 +28,20 @@ export default function SalesTaxCalculator() {
       total = a + tax;
     } else {
       // Amount is tax-inclusive; back out the tax
-      net = a / (1 + taxRate);
-      tax = a - net;
-      total = a;
+      // Guard against taxRate = -1 (division by zero) and other pathological cases
+      if (taxRate <= -1) {
+        net = a;
+        tax = 0;
+        total = a;
+      } else {
+        net = a / (1 + taxRate);
+        tax = a - net;
+        total = a;
+      }
     }
+    if (!isFinite(net)) net = a;
+    if (!isFinite(tax)) tax = 0;
+    if (!isFinite(total)) total = a;
     return { net, tax, total };
   }, [amount, rate, mode]);
 

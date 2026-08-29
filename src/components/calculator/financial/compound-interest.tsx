@@ -38,36 +38,45 @@ export default function CompoundInterestCalculator() {
     const fInfo = FREQ[freq];
     const isContinuous = fInfo.continuous === true;
     let final = P;
-    let principalTotal = P;
+    let principalTotal = P + PMT * 12 * t;
 
     if (isContinuous) {
       // P·e^(rt) + monthly contributions treated as continuous stream
-      // Future value of continuous PMT_annual = PMT*12 over t years: PMT_a·(e^(rt)-1)/r
       const ert = Math.exp(annualRate * t);
-      final = P * ert;
-      if (annualRate > 0 && PMT > 0) {
-        final += PMT * 12 * ((ert - 1) / annualRate);
-      } else if (PMT > 0) {
-        final += PMT * 12 * t;
+      if (isFinite(ert)) {
+        final = P * ert;
+        if (annualRate > 0 && PMT > 0) {
+          final += PMT * 12 * ((ert - 1) / annualRate);
+        } else if (PMT > 0) {
+          final += PMT * 12 * t;
+        }
+      } else {
+        final = P;
       }
-      principalTotal = P + PMT * 12 * t;
     } else {
       const n = fInfo.n;
-      const periods = n * t;
-      const periodRate = annualRate / n;
-      const f = Math.pow(1 + periodRate, periods);
-      final = P * f;
-      // Monthly contributions compounded at the chosen frequency
-      // Convert monthly PMT to per-period PMT (PMT_per_period = PMT * 12 / n)
-      const pmtPerPeriod = (PMT * 12) / n;
-      if (periodRate > 0) {
-        final += pmtPerPeriod * ((f - 1) / periodRate);
-      } else {
-        final += pmtPerPeriod * periods;
+      if (n > 0 && annualRate > -n) {
+        const periods = n * t;
+        const periodRate = annualRate / n;
+        const base = 1 + periodRate;
+        if (base > 0 || Number.isInteger(periods)) {
+          const f = Math.pow(base, periods);
+          if (isFinite(f)) {
+            final = P * f;
+            // Monthly contributions compounded at the chosen frequency
+            const pmtPerPeriod = (PMT * 12) / n;
+            if (periodRate !== 0) {
+              final += pmtPerPeriod * ((f - 1) / periodRate);
+            } else {
+              final += pmtPerPeriod * periods;
+            }
+          } else {
+            final = P;
+          }
+        }
       }
-      principalTotal = P + PMT * 12 * t;
     }
-
+    if (!isFinite(final)) final = P;
     const interest = final - principalTotal;
     return { P, PMT, final, principalTotal, interest, t, isContinuous };
   }, [principal, rate, freq, years, monthlyContribution]);
@@ -75,27 +84,37 @@ export default function CompoundInterestCalculator() {
   const chartData = useMemo(() => {
     const P = parseNum(principal);
     const annualRate = parseNum(rate) / 100;
-    const t = parseNum(years);
+    const t = Math.min(parseNum(years), 100); // cap iterations
     const PMT = parseNum(monthlyContribution);
     const fInfo = FREQ[freq];
     const data: number[] = [];
     for (let y = 0; y <= t; y++) {
-      let v: number;
+      let v = P;
       if (fInfo.continuous === true) {
         const ert = Math.exp(annualRate * y);
-        v = P * ert;
-        if (annualRate > 0 && PMT > 0) v += PMT * 12 * ((ert - 1) / annualRate);
-        else if (PMT > 0) v += PMT * 12 * y;
+        if (isFinite(ert)) {
+          v = P * ert;
+          if (annualRate > 0 && PMT > 0) v += PMT * 12 * ((ert - 1) / annualRate);
+          else if (PMT > 0) v += PMT * 12 * y;
+        }
       } else {
         const n = fInfo.n;
-        const periods = n * y;
-        const periodRate = annualRate / n;
-        const f = Math.pow(1 + periodRate, periods);
-        v = P * f;
-        const pmtPerPeriod = (PMT * 12) / n;
-        if (periodRate > 0) v += pmtPerPeriod * ((f - 1) / periodRate);
-        else v += pmtPerPeriod * periods;
+        if (n > 0 && annualRate > -n) {
+          const periods = n * y;
+          const periodRate = annualRate / n;
+          const base = 1 + periodRate;
+          if (base > 0 || Number.isInteger(periods)) {
+            const f = Math.pow(base, periods);
+            if (isFinite(f)) {
+              v = P * f;
+              const pmtPerPeriod = (PMT * 12) / n;
+              if (periodRate !== 0) v += pmtPerPeriod * ((f - 1) / periodRate);
+              else v += pmtPerPeriod * periods;
+            }
+          }
+        }
       }
+      if (!isFinite(v)) v = P;
       data.push(v);
     }
     return data;

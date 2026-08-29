@@ -26,12 +26,17 @@ export default function RetirementCalculator() {
     const P = parseNum(savings);
     const PMT = parseNum(monthly);
     let fv = P;
-    if (monthlyRate === 0) {
+    if (months <= 0) {
+      fv = P;
+    } else if (monthlyRate === 0) {
       fv = P + PMT * months;
+    } else if (monthlyRate <= -1) {
+      fv = P;
     } else {
       const f = Math.pow(1 + monthlyRate, months);
-      fv = P * f + PMT * ((f - 1) / monthlyRate);
+      fv = isFinite(f) ? P * f + PMT * ((f - 1) / monthlyRate) : P;
     }
+    if (!isFinite(fv)) fv = P;
     const totalContributions = PMT * months;
     const totalGrowth = fv - P - totalContributions;
     return { years, months, P, PMT, fv, totalContributions, totalGrowth };
@@ -42,14 +47,18 @@ export default function RetirementCalculator() {
     const P = parseNum(savings);
     const PMT = parseNum(monthly);
     const data: number[] = [];
-    for (let y = 0; y <= r.years; y++) {
+    const maxY = Math.min(r.years, 100);
+    for (let y = 0; y <= maxY; y++) {
       const m = y * 12;
+      let v = P;
       if (monthlyRate === 0) {
-        data.push(P + PMT * m);
-      } else {
+        v = P + PMT * m;
+      } else if (monthlyRate > -1) {
         const f = Math.pow(1 + monthlyRate, m);
-        data.push(P * f + PMT * ((f - 1) / monthlyRate));
+        v = isFinite(f) ? P * f + PMT * ((f - 1) / monthlyRate) : P;
       }
+      if (!isFinite(v)) v = P;
+      data.push(v);
     }
     return data;
   }, [rate, savings, monthly, r.years]);

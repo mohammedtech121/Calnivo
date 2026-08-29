@@ -12,7 +12,7 @@ export default function Home() {
   return (
     <div className="flex min-h-screen flex-col bg-brand-canvas">
       <Header />
-      <main className="flex-1">
+      <main id="main-content" className="flex-1">
         {view.type === "home" ? (
           <HomePage />
         ) : (

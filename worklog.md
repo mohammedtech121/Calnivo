@@ -775,3 +775,36 @@ Stage Summary:
 - The app is fully static client-side — no server runtime, no database, no API routes. Perfect for Netlify.
 - Firebase is OPTIONAL (only needed if user wants accounts/history sync). The .env.example documents how to add it later without touching the calculators.
 - Ready to: git init → git add . → git commit → push to GitHub → connect repo in Netlify → auto-deploy.
+
+---
+Task ID: FIREBASE-AUTH
+Agent: main
+Task: Wire up Firebase Authentication (email/password + Google) before GitHub/Netlify push
+
+Work Log:
+- Installed `firebase@12.18.0` package.
+- Created `src/lib/firebase.ts` — initializes Firebase app + auth from NEXT_PUBLIC_FIREBASE_* env vars. Singleton pattern (safe under Next.js hot reload). Exports `isFirebaseConfigured()` helper so the app gracefully no-ops when env vars are absent (all 40 calculators keep working).
+- Created `src/hooks/use-auth.ts` — `useAuth()` hook exposing: `user`, `loading`, `configured`, `error`, plus `signInEmail()`, `signUpEmail(name,email,pw)`, `signInGoogle()`, `signOut()`, `clearError()`. Uses `onAuthStateChanged` subscription (avoids setState-in-effect lint by deferring the not-configured case via setTimeout).
+- Created `src/components/layout/AuthDialog.tsx` — full sign-in/sign-up modal with:
+  - Email + password fields (with icons, labels, validation, autocomplete)
+  - Sign-up mode toggle (collects name, calls updateProfile for displayName)
+  - "Continue with Google" button (Google logo SVG)
+  - Humanized Firebase error messages (invalid-credential → "Incorrect email or password", etc.)
+  - Loading spinner, busy state, graceful "unavailable" state if Firebase not configured
+- Updated `src/components/layout/Header.tsx` — replaced the fake "Sign in" button with real auth flow:
+  - Shows a loading spinner while auth state resolves
+  - Shows "Sign in" button (opens AuthDialog) when signed-out
+  - Shows a user avatar (initials) with a hover/click dropdown menu showing displayName, email, and a "Sign out" button when signed-in
+  - Works on mobile (icon button) and desktop (full button with label)
+- Updated `.env.example` with step-by-step Firebase setup instructions (project creation, web app config, enabling Email/Password + Google sign-in methods, authorized domains).
+
+Graceful fallback verified:
+- When NEXT_PUBLIC_FIREBASE_* env vars are absent, clicking "Sign in" shows a friendly dialog: "Firebase isn't configured on this deployment. Set the NEXT_PUBLIC_FIREBASE_* environment variables to enable accounts." — no crash, no error.
+- All 40 calculators render and compute correctly with or without Firebase configured (auth is fully decoupled from calculator logic).
+- `bun run lint` → 0 errors / 0 warnings.
+- Dev server HTTP 200, no runtime errors.
+
+Stage Summary:
+- Firebase auth is fully integrated and ready — just needs the env vars.
+- When the user provides their Firebase config, I'll drop the values into `.env` and the Sign-in button becomes live immediately.
+- Architecture: auth lives entirely in client-side React (firebase/auth), no server code, no API routes — perfect for Netlify static hosting.

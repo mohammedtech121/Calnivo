@@ -808,3 +808,28 @@ Stage Summary:
 - Firebase auth is fully integrated and ready — just needs the env vars.
 - When the user provides their Firebase config, I'll drop the values into `.env` and the Sign-in button becomes live immediately.
 - Architecture: auth lives entirely in client-side React (firebase/auth), no server code, no API routes — perfect for Netlify static hosting.
+
+---
+Task ID: REMOVE-AUTH
+Agent: main
+Task: Remove Firebase auth entirely — site is free, no login, by design
+
+Work Log:
+- Deleted src/lib/firebase.ts (Firebase init)
+- Deleted src/hooks/use-auth.ts (useAuth hook)
+- Deleted src/components/layout/AuthDialog.tsx (sign-in/sign-up modal)
+- Uninstalled `firebase` npm package (1 package removed)
+- Restored src/components/layout/Header.tsx to its simple state — logo + search bar only, NO Sign-in button, NO user avatar/menu. Header is now: [Calnivo logo] ... [Search] (nothing on the right).
+- Updated .env.example to remove all NEXT_PUBLIC_FIREBASE_* vars — now only contains NEXT_PUBLIC_SITE_URL. Added comment: "The site is free with no sign-up required — by design."
+- Updated README "Adding Firebase" section to note the site is intentionally free/no-login, with instructions on how to add auth later only if ever wanted.
+
+Verification:
+- `bun run lint` → 0 errors / 0 warnings
+- Dev server HTTP 200
+- Browser check: "Sign in" button → GONE ✓ (header shows only "Calnivo" logo text + search bar)
+- No remaining "sign in" / "firebase" / "auth" / "login" references in app code (only library internals like class-variance-authority and metadata "authors")
+- Sample calculators (BMI, Mortgage, Percentage) render correctly
+
+Stage Summary:
+- Auth fully removed. The site is now 100% free tools, no login, no backend — exactly as intended.
+- Ready for GitHub push + Netlify deploy. No env vars needed at all (NEXT_PUBLIC_SITE_URL is optional).

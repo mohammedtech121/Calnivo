@@ -1,33 +1,17 @@
 "use client";
 
 import { useState } from "react";
-import { Search, X, ChevronRight, LogOut, User as UserIcon, Loader2 } from "lucide-react";
+import { Search, X, ChevronRight } from "lucide-react";
 import { useCalcNav } from "@/store/calculator-nav";
 import { searchCalculators, type CalculatorMeta } from "@/lib/calculators/registry";
-import { useAuth } from "@/hooks/use-auth";
 import { Logo } from "./Logo";
-import { AuthDialog } from "./AuthDialog";
 import { cn } from "@/lib/utils";
 
 export function Header() {
   const [focused, setFocused] = useState(false);
-  const [authOpen, setAuthOpen] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
   const { query, setQuery, go, setHome } = useCalcNav();
-  const { user, loading, configured, signOut } = useAuth();
 
   const results: CalculatorMeta[] = focused && query ? searchCalculators(query).slice(0, 8) : [];
-
-  const initials = user?.displayName
-    ? user.displayName
-        .split(" ")
-        .map((w) => w[0])
-        .join("")
-        .slice(0, 2)
-        .toUpperCase()
-    : user?.email
-      ? user.email[0].toUpperCase()
-      : "?";
 
   return (
     <header className="sticky top-0 z-40 w-full border-b border-brand bg-brand-canvas/85 backdrop-blur-md">
@@ -103,67 +87,7 @@ export function Header() {
             </div>
           )}
         </div>
-
-        {/* Account area */}
-        {loading ? (
-          <div className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-muted">
-            <Loader2 className="h-4 w-4 animate-spin text-brand-muted" />
-          </div>
-        ) : user ? (
-          <div
-            className="relative shrink-0"
-            onMouseEnter={() => setMenuOpen(true)}
-            onMouseLeave={() => setMenuOpen(false)}
-          >
-            <button
-              onClick={() => setMenuOpen((v) => !v)}
-              className="grid h-9 w-9 place-items-center rounded-full bg-brand-accent-gradient text-sm font-bold text-white shadow-accent transition-transform hover:scale-105"
-              aria-label="Account menu"
-            >
-              {initials}
-            </button>
-            {menuOpen && (
-              <div className="absolute right-0 top-[calc(100%+6px)] z-50 w-60 overflow-hidden rounded-xl border border-brand bg-white shadow-brand-lg">
-                <div className="border-b border-brand px-4 py-3">
-                  <p className="truncate text-sm font-semibold text-brand-ink">
-                    {user.displayName || "Account"}
-                  </p>
-                  <p className="truncate text-xs text-brand-muted">{user.email}</p>
-                </div>
-                <button
-                  onClick={() => {
-                    setMenuOpen(false);
-                    signOut();
-                  }}
-                  className="flex w-full items-center gap-2.5 px-4 py-2.5 text-left text-sm text-brand-ink transition-colors hover:bg-accent/60"
-                >
-                  <LogOut className="h-4 w-4 text-brand-muted" />
-                  Sign out
-                </button>
-              </div>
-            )}
-          </div>
-        ) : (
-          <>
-            <button
-              onClick={() => setAuthOpen(true)}
-              className="hidden shrink-0 items-center gap-2 rounded-xl bg-brand-accent-gradient px-4 py-2 text-sm font-semibold text-white shadow-accent transition-transform hover:scale-[1.03] sm:flex"
-            >
-              <UserIcon className="h-4 w-4" />
-              Sign in
-            </button>
-            <button
-              onClick={() => setAuthOpen(true)}
-              className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-brand-accent-gradient text-white shadow-accent sm:hidden"
-              aria-label="Sign in"
-            >
-              <UserIcon className="h-4 w-4" />
-            </button>
-          </>
-        )}
       </div>
-
-      <AuthDialog open={authOpen} onOpenChange={setAuthOpen} />
     </header>
   );
 }

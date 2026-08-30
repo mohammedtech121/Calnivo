@@ -59,13 +59,16 @@ auto-detects Next.js via `@netlify/plugin-nextjs` (pinned in `netlify.toml`).
 
 ## Adding Firebase (optional)
 
-The calculators need no backend. Add Firebase only if you want user accounts or
-cloud-synced history:
+The site is intentionally free with no sign-up. The calculators need no
+backend, no database, and no authentication — by design.
 
-1. Copy `.env.example` → `.env` and fill in `NEXT_PUBLIC_FIREBASE_*` vars.
-2. `bun add firebase`
-3. Initialize in `src/lib/firebase.ts` and wire up the "Sign in" button in
-   `src/components/layout/Header.tsx`.
+If you ever want to add user accounts or cloud-synced history later:
+
+1. `bun add firebase`
+2. Initialize in `src/lib/firebase.ts`
+3. Add a sign-in component and wire it into `src/components/layout/Header.tsx`.
+
+The 40 calculators will keep working without any changes.
 
 ## Project structure
 

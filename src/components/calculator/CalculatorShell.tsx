@@ -9,6 +9,7 @@ import {
 } from "@/lib/calculators/registry";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
+import { CalculatorContent } from "./CalculatorContent";
 
 export function CalculatorShell({
   id,
@@ -131,6 +132,9 @@ export function CalculatorShell({
           </div>
         </aside>
       </div>
+
+      {/* SEO content section — definition, formula, how-to, example, FAQ */}
+      <CalculatorContent id={id} />
     </div>
   );
 }

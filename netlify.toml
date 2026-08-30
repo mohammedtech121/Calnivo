@@ -1,0 +1,13 @@
+[build]
+  command = "bun run build"
+  publish = ".next"
+
+[build.environment]
+  NODE_VERSION = "20"
+  # Use Bun for install + build (matches local dev).
+  NETLIFY_USE_BUN = "true"
+
+# The @netlify/plugin-nextjs handles Next.js routing (including the SPA
+# root, sitemap.xml, robots.txt) automatically — no manual redirects needed.
+[[plugins]]
+  package = "@netlify/plugin-nextjs"

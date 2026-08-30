@@ -739,3 +739,39 @@ Recommended next-phase improvements (not blocking):
 3. Add dark-mode toggle (theme tokens already defined in globals.css).
 4. Add "Favorites / recent calculators" with localStorage.
 5. Consider per-calculator dynamic metadata (title/description per view) for deeper SEO — currently single-route SPA shares one canonical.
+
+---
+Task ID: DEPLOY-READY
+Agent: main
+Task: Make the project deploy-ready for GitHub + Netlify
+
+Work Log:
+- Removed `output: "standalone"` from next.config.ts (Netlify uses @netlify/plugin-nextjs, standalone is for self-hosting/Docker and breaks Netlify).
+- Simplified build script from `next build && cp -r .next/static .next/standalone/.next/ && cp -r public .next/standalone/` to plain `next build`.
+- Simplified start script to `next start -p 3000`.
+- Removed dead backend scaffolding (none of it was imported by any calculator):
+  - `src/app/api/route.ts` (Hello World stub)
+  - `src/app/api/` directory
+  - `src/lib/db.ts` (Prisma client)
+  - `prisma/` directory (schema + migrations)
+  - `db/` directory (SQLite db file)
+- Removed 10 unused heavy npm dependencies: @mdxeditor/editor, @prisma/client, next-auth, next-intl, prisma, react-markdown, react-syntax-highlighter, recharts, sharp, z-ai-web-dev-sdk.
+- Removed unused `src/components/ui/chart.tsx` (recharts wrapper — recharts was removed).
+- Renamed project in package.json from "nextjs_tailwind_shadcn_ts" to "calnivo" v1.0.0.
+- Created `netlify.toml` pinning @netlify/plugin-nextjs, Bun install, Node 20.
+- Created `.env.example` documenting optional Firebase env vars (all calculators work without any backend).
+- Created `README.md` with full project docs, deploy instructions, and Firebase integration guide.
+- Updated `.gitignore` to exclude skills/, examples/, tests/, .zscripts/, download/, .z-ai-config/, .netlify/, .vercel/, and all log files so the GitHub repo stays clean.
+
+Verification:
+- `bun run lint` → 0 errors / 0 warnings
+- Dev server HTTP 200, no runtime errors
+- All 40 calculators render: 40/40 PASS, 0 NaN/Infinity
+- sitemap.xml HTTP 200, robots.txt HTTP 200
+- 10 deps removed cleanly (lockfile updated, bun install succeeded)
+
+Stage Summary:
+- Project is now deploy-ready for GitHub + Netlify.
+- The app is fully static client-side — no server runtime, no database, no API routes. Perfect for Netlify.
+- Firebase is OPTIONAL (only needed if user wants accounts/history sync). The .env.example documents how to add it later without touching the calculators.
+- Ready to: git init → git add . → git commit → push to GitHub → connect repo in Netlify → auto-deploy.

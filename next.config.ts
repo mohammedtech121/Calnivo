@@ -1,12 +1,13 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  output: "standalone",
-  /* config options here */
+  // Plain output — Netlify uses @netlify/plugin-nextjs to build/deploy.
+  // (Removed `output: "standalone"` which is for self-hosting / Docker and
+  // breaks on Netlify.)
+  reactStrictMode: true,
   typescript: {
-    ignoreBuildErrors: true,
+    ignoreBuildErrors: false,
   },
-  reactStrictMode: false,
 };
 
 export default nextConfig;

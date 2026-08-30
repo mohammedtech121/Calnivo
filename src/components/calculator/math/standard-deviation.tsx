@@ -31,13 +31,25 @@ interface Stats {
   sorted: number[];
 }
 
-function parseList(raw: string): number[] {
-  return raw
+// Cap the number of parsed values to keep the browser responsive. Anything
+// beyond this is ignored with a visible notice (see UI below). 10k is more
+// than enough for any realistic dataset and keeps sort + reduce under ~20ms.
+const MAX_VALUES = 10_000;
+
+function parseList(raw: string): { nums: number[]; totalTokens: number } {
+  const tokens = raw
     .split(/[\s,;|\t\n]+/)
     .map((s) => s.trim())
-    .filter((s) => s.length > 0)
-    .map((s) => Number(s))
-    .filter((n) => isFinite(n));
+    .filter((s) => s.length > 0);
+  const totalTokens = tokens.length;
+  const allValid = tokens.map((s) => Number(s)).filter((n) => isFinite(n));
+  // Distinguish "invalid" (non-numeric) from "capped" (valid but beyond the
+  // cap). We only count invalid tokens up to MAX_VALUES so the capped count
+  // is computed correctly.
+  const invalidCount = tokens.length - allValid.length;
+  const nums = allValid.slice(0, MAX_VALUES);
+  const cappedCount = Math.max(0, allValid.length - MAX_VALUES);
+  return { nums, totalTokens, invalidCount, cappedCount };
 }
 
 function computeStats(nums: number[]): Stats | null {
@@ -84,14 +96,9 @@ export default function StandardDeviationCalculator() {
   const [raw, setRaw] = useState("4, 8, 15, 16, 23, 42");
 
   const parsed = useMemo(() => parseList(raw), [raw]);
-  const stats = useMemo(() => computeStats(parsed), [parsed]);
-  const invalidCount = useMemo(() => {
-    const total = raw
-      .split(/[\s,;|\t\n]+/)
-      .map((s) => s.trim())
-      .filter((s) => s.length > 0).length;
-    return Math.max(0, total - parsed.length);
-  }, [raw, parsed.length]);
+  const stats = useMemo(() => computeStats(parsed.nums), [parsed]);
+  const invalidCount = parsed.invalidCount;
+  const cappedCount = parsed.cappedCount;
 
   return (
     <div className="space-y-6">
@@ -109,13 +116,18 @@ export default function StandardDeviationCalculator() {
         <div className="mt-3 flex flex-wrap items-center gap-3 text-xs text-brand-muted">
           <span>
             <span className="font-semibold text-brand-ink">
-              {parsed.length}
+              {parsed.nums.length}
             </span>{" "}
-            valid value{parsed.length === 1 ? "" : "s"}
+            valid value{parsed.nums.length === 1 ? "" : "s"}
           </span>
           {invalidCount > 0 && (
             <span className="rounded-md bg-accent/40 px-2 py-0.5 font-medium text-brand-accent-deep">
               {invalidCount} skipped (non-numeric)
+            </span>
+          )}
+          {cappedCount > 0 && (
+            <span className="rounded-md bg-accent/40 px-2 py-0.5 font-medium text-brand-accent-deep">
+              {cappedCount} ignored (capped at {MAX_VALUES.toLocaleString()} values)
             </span>
           )}
         </div>

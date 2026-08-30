@@ -1,0 +1,34 @@
+# Dependabot — keeps npm dependencies and GitHub Actions up to date.
+# https://docs.github.com/en/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
+
+version: 2
+updates:
+  # npm dependencies (production + dev)
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 5
+    # Group minor/patch updates so we get one PR per ecosystem instead of
+    # a flood. Major versions still get their own PR.
+    groups:
+      next:
+        patterns: ["next", "eslint-config-next"]
+      react:
+        patterns: ["react", "react-dom", "@types/react", "@types/react-dom"]
+      radix:
+        patterns: ["@radix-ui/*"]
+      tailwind:
+        patterns: ["tailwindcss", "@tailwindcss/*", "tw-animate-css", "tailwind-merge", "tailwindcss-animate"]
+    commit-message:
+      prefix: "deps"
+      include: "scope"
+
+  # GitHub Actions used in any workflows we add later
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+    commit-message:
+      prefix: "ci"

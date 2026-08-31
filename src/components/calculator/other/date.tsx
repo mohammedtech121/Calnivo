@@ -69,7 +69,7 @@ export default function DateCalculator() {
 }
 
 function AddMode() {
-  const [start, setStart] = useState<string>(todayStr());
+  const [start, setStart] = useState<string>("2024-01-01");
   const [amount, setAmount] = useState<string>("30");
   const [unit, setUnit] = useState<Unit>("days");
   const [dir, setDir] = useState<"add" | "sub">("add");
@@ -148,8 +148,8 @@ function AddMode() {
 }
 
 function DurationMode() {
-  const [start, setStart] = useState<string>(todayStr());
-  const [end, setEnd] = useState<string>(format(addDays(new Date(), 365), "yyyy-MM-dd"));
+  const [start, setStart] = useState<string>("2024-01-01");
+  const [end, setEnd] = useState<string>("2024-12-31");
 
   const result = useMemo(() => {
     if (!start || !end) return null;

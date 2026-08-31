@@ -59,6 +59,8 @@ const nextConfig: NextConfig = {
   // Defense-in-depth: never expose browser source maps in production.
   // (Next.js default is false, but we set it explicitly so it can't drift.)
   productionBrowserSourceMaps: false,
+  // Allow the sandbox preview domain to hot-reload without CORS errors.
+  allowedDevOrigins: ["*.space-z.ai", "*.z.ai"],
   async headers() {
     return [
       {

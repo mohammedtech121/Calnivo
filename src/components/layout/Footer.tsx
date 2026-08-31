@@ -10,6 +10,11 @@ const FOOTER_LINKS = [
   { label: "Privacy Policy", id: "privacy" },
 ] as const;
 
+// Current year — update when bumping the copyright. Kept as a constant (not
+// `new Date().getFullYear()`) to avoid SSR/CSR hydration mismatches around
+// year boundaries and across timezones. Calnivo is client-rendered anyway.
+const CURRENT_YEAR = 2026;
+
 export function Footer() {
   const setHome = useCalcNav((s) => s.setHome);
   return (
@@ -17,7 +22,7 @@ export function Footer() {
       <div className="mx-auto max-w-[1200px] px-4 py-8 sm:px-6">
         <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
           <div className="flex items-center gap-2 text-sm text-brand-muted">
-            <span>© 2008 - {new Date().getFullYear()} Calnivo</span>
+            <span>© 2008 - {CURRENT_YEAR} Calnivo</span>
             <span className="hidden sm:inline">·</span>
             <span className="hidden sm:inline">Free online calculators</span>
           </div>

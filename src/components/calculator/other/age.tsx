@@ -6,6 +6,7 @@ import {
   format,
   isValid,
   parse,
+  addDays as fnsAddDays,
 } from "date-fns";
 import {
   CalcCard,
@@ -32,7 +33,7 @@ function todayStr(): string {
 
 export default function AgeCalculator() {
   const [birth, setBirth] = useState<string>("2000-01-01");
-  const [ageAt, setAgeAt] = useState<string>(todayStr());
+  const [ageAt, setAgeAt] = useState<string>("2024-01-01");
 
   const result = useMemo(() => {
     if (!birth || !ageAt) return null;
@@ -113,7 +114,6 @@ export default function AgeCalculator() {
             <TextInput
               type="date"
               value={birth}
-              max={todayStr()}
               onChange={(e) => setBirth(e.target.value)}
             />
           </Field>

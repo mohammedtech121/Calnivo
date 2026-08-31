@@ -62,3 +62,6 @@ server.log
 /download/
 /.zscripts/
 /.z-ai-config/
+
+# local-only CI workflow (token lacks workflow scope)
+.github/workflows/

@@ -145,8 +145,8 @@ export function CalculatorContent({ id }: Props) {
             const Icon = c.icon;
             return (
               <li key={c.id}>
-                <button
-                  onClick={() => go(c.id)}
+                <a
+                  href={`/calculators/${c.id}`}
                   className="group flex w-full items-center gap-2.5 rounded-lg border border-brand bg-brand-canvas px-3 py-2.5 text-left text-sm transition-colors hover:border-brand-accent hover:bg-accent/40"
                 >
                   <Icon className="h-4 w-4 shrink-0 text-brand-muted group-hover:text-brand-accent-deep" />
@@ -154,7 +154,7 @@ export function CalculatorContent({ id }: Props) {
                     {c.name}
                   </span>
                   <ChevronRight className="h-4 w-4 shrink-0 text-brand-muted/40 group-hover:text-brand-accent-deep" />
-                </button>
+                </a>
               </li>
             );
           })}

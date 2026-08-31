@@ -203,15 +203,15 @@ function CategoryColumn({
       <ul className="mt-4 space-y-0.5">
         {items.map((c) => (
           <li key={c.id}>
-            <button
-              onClick={() => onGo(c.id)}
+            <a
+              href={`/calculators/${c.id}`}
               className="group flex w-full items-center justify-between rounded-lg px-2.5 py-2 text-left text-sm text-brand-ink transition-colors hover:bg-accent/60"
             >
               <span className="font-medium group-hover:text-brand-accent-deep">{c.short}</span>
               <span className="text-brand-muted/0 transition-colors group-hover:text-brand-accent-deep">
                 →
               </span>
-            </button>
+            </a>
           </li>
         ))}
       </ul>
@@ -230,10 +230,9 @@ function CalcCard({
   desc: string;
   icon: React.ComponentType<{ className?: string }>;
 }) {
-  const go = useCalcNav((s) => s.go);
   return (
-    <button
-      onClick={() => go(id)}
+    <a
+      href={`/calculators/${id}`}
       className={cn(
         "group flex flex-col gap-3 rounded-xl border border-brand bg-white p-5 text-left shadow-brand transition-all hover:-translate-y-0.5 hover:shadow-brand-lg",
       )}
@@ -245,7 +244,7 @@ function CalcCard({
         <h3 className="font-semibold text-brand-ink group-hover:text-brand-accent-deep">{name}</h3>
         <p className="mt-1 text-sm text-brand-muted line-clamp-2">{desc}</p>
       </div>
-    </button>
+    </a>
   );
 }
 
@@ -262,7 +261,6 @@ const POPULAR_IDS = [
 ];
 
 function PopularCalculators() {
-  const go = useCalcNav((s) => s.go);
   const popular = POPULAR_IDS.map((id) => CALCULATOR_MAP[id]).filter(Boolean);
   return (
     <div className="rounded-2xl border border-brand bg-white p-6 shadow-brand sm:p-8">
@@ -276,16 +274,16 @@ function PopularCalculators() {
         {popular.map((c) => {
           const Icon = c.icon;
           return (
-            <button
+            <a
               key={c.id}
-              onClick={() => go(c.id)}
+              href={`/calculators/${c.id}`}
               className="group flex flex-col items-start gap-2 rounded-xl border border-brand bg-brand-canvas p-4 text-left transition-all hover:border-brand-accent hover:bg-accent/40"
             >
               <Icon className="h-5 w-5 text-brand-accent-deep" />
               <span className="text-sm font-semibold leading-tight text-brand-ink group-hover:text-brand-accent-deep">
                 {c.short}
               </span>
-            </button>
+            </a>
           );
         })}
       </div>

@@ -14,11 +14,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
   ];
 
-  // Calculator pages are surfaced via in-app SPA navigation but we still list
-  // them so crawlers / AI search systems can discover the full calculator set.
+  // Each calculator has its own crawlable URL.
   for (const calc of CALCULATORS) {
     entries.push({
-      url: `${SITE_URL}/#calc-${calc.id}`,
+      url: `${SITE_URL}/calculators/${calc.id}`,
       lastModified: now,
       changeFrequency: "monthly",
       priority: 0.8,

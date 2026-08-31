@@ -12,6 +12,31 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "weekly",
       priority: 1,
     },
+    // Legal / trust pages
+    {
+      url: `${SITE_URL}/about`,
+      lastModified: now,
+      changeFrequency: "yearly",
+      priority: 0.4,
+    },
+    {
+      url: `${SITE_URL}/privacy`,
+      lastModified: now,
+      changeFrequency: "yearly",
+      priority: 0.3,
+    },
+    {
+      url: `${SITE_URL}/terms`,
+      lastModified: now,
+      changeFrequency: "yearly",
+      priority: 0.3,
+    },
+    {
+      url: `${SITE_URL}/contact`,
+      lastModified: now,
+      changeFrequency: "yearly",
+      priority: 0.3,
+    },
   ];
 
   // Each calculator has its own crawlable URL.

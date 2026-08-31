@@ -14,32 +14,44 @@ interface Props {
    * without the user having to click.
    */
   calculatorId?: string;
+  /**
+   * If provided, render this content directly instead of the SPA home/calculator
+   * view. Used by static pages (Privacy, Terms, About, Contact).
+   */
+  children?: React.ReactNode;
 }
 
 /**
- * Top-level layout shared by the home route and every
- * /calculators/[id] route. Renders the sticky Header, main content, and
- * sticky Footer. Syncs the SPA navigation store with the URL on mount.
+ * Top-level layout shared by the home route, every /calculators/[id] route,
+ * and static content pages (privacy, terms, about, contact). Renders the
+ * sticky Header, main content, and sticky Footer. Syncs the SPA navigation
+ * store with the URL on mount.
  */
-export function Layout({ calculatorId }: Props) {
+export function Layout({ calculatorId, children }: Props) {
   const { view, go, setHome } = useCalcNav();
 
   // If we landed on /calculators/[id], switch the SPA view to that calculator
   // (without pushing to history — the URL is already correct).
   useEffect(() => {
+    if (children) {
+      // Static content page — no SPA sync needed.
+      return;
+    }
     if (calculatorId) {
       go(calculatorId);
     } else {
       // If we're on "/" but the SPA still shows a calculator, reset to home.
       setHome();
     }
-  }, [calculatorId, go, setHome]);
+  }, [calculatorId, children, go, setHome]);
 
   return (
     <div className="flex min-h-screen flex-col bg-brand-canvas">
       <Header />
       <main id="main-content" className="flex-1">
-        {view.type === "calculator" ? (
+        {children ? (
+          children
+        ) : view.type === "calculator" ? (
           <CalculatorPage id={view.id} />
         ) : (
           <HomePage />

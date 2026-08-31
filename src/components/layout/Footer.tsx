@@ -1,13 +1,15 @@
 "use client";
 
+import Link from "next/link";
 import { useCalcNav } from "@/store/calculator-nav";
 import { Logo } from "./Logo";
 
 const FOOTER_LINKS = [
-  { label: "About Us", id: "about" },
-  { label: "Sitemap", id: "sitemap" },
-  { label: "Terms of Use", id: "terms" },
-  { label: "Privacy Policy", id: "privacy" },
+  { label: "About", href: "/about" },
+  { label: "Sitemap", href: "/sitemap.xml" },
+  { label: "Terms", href: "/terms" },
+  { label: "Privacy", href: "/privacy" },
+  { label: "Contact", href: "/contact" },
 ] as const;
 
 // Current year — update when bumping the copyright. Kept as a constant (not
@@ -22,27 +24,30 @@ export function Footer() {
       <div className="mx-auto max-w-[1200px] px-4 py-8 sm:px-6">
         <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
           <div className="flex items-center gap-2 text-sm text-brand-muted">
-            <span>© 2008 - {CURRENT_YEAR} Calnivo</span>
-            <span className="hidden sm:inline">·</span>
-            <span className="hidden sm:inline">Free online calculators</span>
+            <button onClick={setHome} className="transition-opacity hover:opacity-80">
+              <Logo />
+            </button>
           </div>
           <nav className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2">
             {FOOTER_LINKS.map((l) => (
-              <button
-                key={l.id}
-                onClick={setHome}
+              <Link
+                key={l.href}
+                href={l.href}
                 className="text-sm text-brand-muted transition-colors hover:text-brand-accent-deep"
               >
                 {l.label}
-              </button>
+              </Link>
             ))}
           </nav>
         </div>
-        <p className="mt-5 text-center text-xs leading-relaxed text-brand-muted/80 sm:text-left">
-          Calnivo&apos;s sole focus is to provide fast, comprehensive, convenient, free online
-          calculators across finance, fitness, health, math and everyday utilities. All tools are
-          completely free, with no registration required.
-        </p>
+        <div className="mt-5 flex flex-col items-center justify-between gap-2 sm:flex-row">
+          <p className="text-xs text-brand-muted">
+            © 2008 - {CURRENT_YEAR} Calnivo · Free online calculators
+          </p>
+          <p className="text-xs text-brand-muted/80">
+            Calculations run in your browser. No data collected.
+          </p>
+        </div>
       </div>
     </footer>
   );

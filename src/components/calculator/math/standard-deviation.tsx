@@ -36,7 +36,12 @@ interface Stats {
 // than enough for any realistic dataset and keeps sort + reduce under ~20ms.
 const MAX_VALUES = 10_000;
 
-function parseList(raw: string): { nums: number[]; totalTokens: number } {
+function parseList(raw: string): {
+  nums: number[];
+  totalTokens: number;
+  invalidCount: number;
+  cappedCount: number;
+} {
   const tokens = raw
     .split(/[\s,;|\t\n]+/)
     .map((s) => s.trim())

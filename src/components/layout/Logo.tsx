@@ -1,6 +1,6 @@
 "use client";
 
-import { Calculator } from "lucide-react";
+import Image from "next/image";
 import { useCalcNav } from "@/store/calculator-nav";
 
 export function Logo({ onClick }: { onClick?: () => void }) {
@@ -10,9 +10,14 @@ export function Logo({ onClick }: { onClick?: () => void }) {
       className="group flex items-center gap-2.5 select-none"
       aria-label="Calnivo home"
     >
-      <span className="relative grid h-9 w-9 place-items-center rounded-xl bg-brand-accent-gradient shadow-accent transition-transform group-hover:scale-105">
-        <Calculator className="h-5 w-5 text-white" strokeWidth={2.2} />
-      </span>
+      <Image
+        src="/calnivo-logo.jpeg"
+        alt="Calnivo"
+        width={36}
+        height={36}
+        className="h-9 w-auto rounded-lg transition-transform group-hover:scale-105"
+        priority
+      />
       <span className="text-[22px] font-bold tracking-tight text-brand-ink">
         Calnivo
       </span>

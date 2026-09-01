@@ -44,6 +44,17 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "/",
   },
+  // Brand favicon + app icons
+  icons: {
+    icon: [
+      { url: "/calnivo-logo.jpeg", sizes: "any", type: "image/jpeg" },
+      { url: "/icon-192.jpeg", sizes: "192x192", type: "image/jpeg" },
+      { url: "/icon-512.jpeg", sizes: "512x512", type: "image/jpeg" },
+    ],
+    apple: [{ url: "/apple-touch-icon.jpeg", sizes: "180x180", type: "image/jpeg" }],
+    shortcut: "/calnivo-logo.jpeg",
+  },
+  manifest: "/manifest.json",
   robots: {
     index: true,
     follow: true,
@@ -63,12 +74,21 @@ export const metadata: Metadata = {
     siteName: "Calnivo",
     type: "website",
     locale: "en_US",
+    images: [
+      {
+        url: "/og-image.jpeg",
+        width: 1254,
+        height: 1254,
+        alt: "Calnivo — Free Online Calculators",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Calnivo — Free Online Calculators",
     description:
       "40+ free online calculators for finance, fitness, health, math and everyday utilities.",
+    images: ["/og-image.jpeg"],
   },
   category: "technology",
 };

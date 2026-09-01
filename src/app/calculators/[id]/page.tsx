@@ -59,5 +59,40 @@ export default async function Page({
   const meta = CALCULATOR_MAP[id];
   if (!meta) notFound();
 
-  return <Layout calculatorId={id} />;
+  // Breadcrumb structured data — helps Google show breadcrumbs in search
+  // results and improves crawlability.
+  const breadcrumb = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: "https://calnivocalc.com",
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: CATEGORY_META[meta.category].label,
+        item: `https://calnivocalc.com/calculators#category-${meta.category}`,
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: meta.name,
+        item: `https://calnivocalc.com/calculators/${meta.id}`,
+      },
+    ],
+  };
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }}
+      />
+      <Layout calculatorId={id} />
+    </>
+  );
 }

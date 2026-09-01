@@ -1,6 +1,7 @@
 "use client";
 
-import { Search } from "lucide-react";
+import { Search, LayoutGrid } from "lucide-react";
+import Link from "next/link";
 import { useCalcNav } from "@/store/calculator-nav";
 import {
   CALCULATORS,
@@ -36,8 +37,17 @@ export function HomePage() {
             everyday utilities — built to help you make quick, confident decisions.
           </p>
 
-          <div className="mt-6 max-w-xl">
-            <SearchBar />
+          <div className="mt-6 flex flex-wrap items-center gap-3">
+            <div className="min-w-0 flex-1">
+              <SearchBar />
+            </div>
+            <Link
+              href="/calculators"
+              className="inline-flex shrink-0 items-center gap-2 rounded-xl border border-brand bg-white px-4 py-3 text-sm font-semibold text-brand-ink shadow-brand transition-all hover:border-brand-accent hover:bg-accent/40"
+            >
+              <LayoutGrid className="h-4 w-4 text-brand-accent-deep" />
+              Browse all
+            </Link>
           </div>
 
           {/* Scientific calculator */}

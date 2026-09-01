@@ -1284,3 +1284,28 @@ Stage Summary:
   - Security headers, hydration safety, accessibility all intact
 - Netlify auto-deployed commit 0d82743 — verified live.
 - Ready for Google Search Console submission + custom domain DNS propagation.
+
+---
+Task ID: SEO-HUB-PAGE
+Agent: main
+Task: Add /calculators index page + BreadcrumbList structured data
+
+Work Log:
+- Created /calculators — browse-all hub page showing all 40 calculators grouped by category, with quick-jump category pills, breadcrumb nav, trust footer. 5,293 chars of content, 40 calculator links.
+- Homepage: added "Browse all" button (LayoutGrid icon) linking to /calculators, next to the search bar.
+- /calculators/[id]: injected BreadcrumbList JSON-LD (Home > Category > Calculator) for Google rich results with breadcrumb display.
+- Sitemap: added /calculators index page (priority 0.9, weekly changefreq).
+
+Verification (live on https://calnivo.netlify.app):
+- /calculators: HTTP 200, title "All Calculators — Browse 40+ Free Online Tools | Calnivo", H1 "All 40 Calculators", 4 category sections, 40 calc links, 5,293 chars
+- BreadcrumbList JSON-LD present on mortgage page (verified)
+- Sitemap: 46 URLs total (1 home + 1 index + 40 calculators + 4 legal)
+- Lint: 0 errors / 0 warnings
+- Build: 50 static pages prerendered
+
+DNS status: calnivocalc.com now resolves to Netlify IPs (54.149.79.189, 34.216.117.25) — DNS propagated. SSL cert still provisioning (normal, takes 5-30 min).
+
+Stage Summary:
+- Added the missing SEO hub page + breadcrumb rich-result eligibility.
+- 50 static pages now live. Site is fully crawlable with proper internal linking hub.
+- Custom domain DNS propagated; SSL provisioning in progress.

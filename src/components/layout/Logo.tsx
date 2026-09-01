@@ -11,7 +11,7 @@ export function Logo({ onClick }: { onClick?: () => void }) {
       aria-label="Calnivo home"
     >
       <Image
-        src="/calnivo-logo.jpeg"
+        src="/calnivo-logo.png"
         alt="Calnivo"
         width={36}
         height={36}

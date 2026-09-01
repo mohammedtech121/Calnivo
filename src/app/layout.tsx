@@ -44,15 +44,15 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "/",
   },
-  // Brand favicon + app icons
+  // Brand favicon + app icons (transparent PNG)
   icons: {
     icon: [
-      { url: "/calnivo-logo.jpeg", sizes: "any", type: "image/jpeg" },
-      { url: "/icon-192.jpeg", sizes: "192x192", type: "image/jpeg" },
-      { url: "/icon-512.jpeg", sizes: "512x512", type: "image/jpeg" },
+      { url: "/favicon-32.png", sizes: "32x32", type: "image/png" },
+      { url: "/icon-192.png", sizes: "192x192", type: "image/png" },
+      { url: "/icon-512.png", sizes: "512x512", type: "image/png" },
     ],
-    apple: [{ url: "/apple-touch-icon.jpeg", sizes: "180x180", type: "image/jpeg" }],
-    shortcut: "/calnivo-logo.jpeg",
+    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
+    shortcut: "/favicon-32.png",
   },
   manifest: "/manifest.json",
   robots: {
@@ -76,9 +76,9 @@ export const metadata: Metadata = {
     locale: "en_US",
     images: [
       {
-        url: "/og-image.jpeg",
-        width: 1254,
-        height: 1254,
+        url: "/og-image.png",
+        width: 1200,
+        height: 1200,
         alt: "Calnivo — Free Online Calculators",
       },
     ],
@@ -88,7 +88,7 @@ export const metadata: Metadata = {
     title: "Calnivo — Free Online Calculators",
     description:
       "40+ free online calculators for finance, fitness, health, math and everyday utilities.",
-    images: ["/og-image.jpeg"],
+    images: ["/og-image.png"],
   },
   category: "technology",
 };

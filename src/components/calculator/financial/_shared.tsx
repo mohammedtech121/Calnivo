@@ -157,6 +157,123 @@ export function LineChart({
   );
 }
 
+/* Labeled line chart — shows x-axis labels and a y-axis max/min.
+ * Use this when axis labels (year/month) genuinely aid understanding.
+ * Falls back to a plain line when no labels are provided. */
+export function LabeledLineChart({
+  points,
+  height = 200,
+  color = "#FF6A00",
+  fill = "rgba(255, 106, 0, 0.12)",
+  yLabel,
+  formatY = (n: number) => fmtShort(n),
+}: {
+  points: { x: string; y: number }[];
+  height?: number;
+  color?: string;
+  fill?: string;
+  yLabel?: string;
+  formatY?: (n: number) => string;
+}) {
+  if (points.length === 0) return null;
+  const width = 520;
+  const padX = 8;
+  const padTop = 12;
+  const padBottom = 28; // room for x labels
+  const padLeft = 44; // room for y labels
+  const ys = points.map((p) => p.y);
+  const max = Math.max(...ys, 0);
+  const min = Math.min(...ys, 0);
+  const range = max - min || 1;
+  const plotW = width - padX - padLeft;
+  const plotH = height - padTop - padBottom;
+  const step = plotW / Math.max(1, points.length - 1);
+  const coords = points.map((p, i) => {
+    const px = padLeft + i * step;
+    const py = padTop + (1 - (p.y - min) / range) * plotH;
+    return { px, py, label: p.x, value: p.y } as const;
+  });
+  const linePath = coords
+    .map((c, i) => `${i === 0 ? "M" : "L"}${c.px.toFixed(1)},${c.py.toFixed(1)}`)
+    .join(" ");
+  const fillPath = `${linePath} L${coords[coords.length - 1].px.toFixed(1)},${padTop + plotH} L${coords[0].px.toFixed(1)},${padTop + plotH} Z`;
+
+  // Show at most ~6 x-axis labels to avoid crowding on mobile.
+  const labelEvery = Math.max(1, Math.ceil(points.length / 6));
+  const yTicks = [max, min + (max - min) * 0.5, min];
+
+  return (
+    <svg
+      viewBox={`0 0 ${width} ${height}`}
+      className="w-full"
+      preserveAspectRatio="xMidYMid meet"
+      style={{ height, maxWidth: "100%" }}
+      role="img"
+      aria-label={`${yLabel || "Value"} over time line chart`}
+    >
+      <path d={fillPath} fill={fill} stroke="none" />
+      <path
+        d={linePath}
+        fill="none"
+        stroke={color}
+        strokeWidth={2}
+        strokeLinejoin="round"
+        strokeLinecap="round"
+      />
+      {/* y-axis labels */}
+      {yTicks.map((v, i) => {
+        const y = padTop + (1 - (v - min) / range) * plotH;
+        return (
+          <text
+            key={i}
+            x={padLeft - 6}
+            y={y + 3}
+            textAnchor="end"
+            className="fill-[#66727C]"
+            style={{ fontSize: 9 }}
+          >
+            {formatY(v)}
+          </text>
+        );
+      })}
+      {/* x-axis labels */}
+      {coords.map((c, i) =>
+        i % labelEvery === 0 || i === coords.length - 1 ? (
+          <text
+            key={i}
+            x={c.px}
+            y={height - 8}
+            textAnchor="middle"
+            className="fill-[#66727C]"
+            style={{ fontSize: 9 }}
+          >
+            {c.label}
+          </text>
+        ) : null,
+      )}
+      {yLabel && (
+        <text
+          x={padLeft}
+          y={8}
+          textAnchor="start"
+          className="fill-[#66727C]"
+          style={{ fontSize: 9, fontWeight: 600 }}
+        >
+          {yLabel}
+        </text>
+      )}
+    </svg>
+  );
+}
+
+function fmtShort(n: number): string {
+  if (!isFinite(n)) return "—";
+  const abs = Math.abs(n);
+  if (abs >= 1_000_000) return (n / 1_000_000).toFixed(1) + "M";
+  if (abs >= 1_000) return (n / 1_000).toFixed(1) + "k";
+  return Math.round(n).toString();
+}
+
 /* Horizontal proportion bar with legend */
 export function ProportionBar({
   segments,

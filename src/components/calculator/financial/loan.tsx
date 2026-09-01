@@ -10,6 +10,7 @@ import {
 } from "@/components/calculator/CalculatorShell";
 import { fmtMoney, fmtPct, parseNum } from "@/lib/format";
 import { ProportionBar } from "./_shared";
+import { CopyResultButton } from "@/components/calculator/CopyResultButton";
 
 export default function LoanCalculator() {
   const [amount, setAmount] = useState("25000");
@@ -44,6 +45,23 @@ export default function LoanCalculator() {
     const totalInterest = totalPaid - P;
     return { P, months, monthly, totalPaid, totalInterest };
   }, [amount, term, termUnit, rate]);
+
+  const copyText = useMemo(() => {
+    return [
+      "Calnivo Loan Calculator",
+      "",
+      `Loan Amount: ${fmtMoney(r.P)}`,
+      `Interest Rate: ${parseNum(rate)}% / yr`,
+      `Term: ${term} ${termUnit}`,
+      "",
+      `Monthly Payment: ${fmtMoney(r.monthly)}`,
+      `Total Interest: ${fmtMoney(r.totalInterest)}`,
+      `Total Paid: ${fmtMoney(r.totalPaid)}`,
+      "",
+      "Calculated with Calnivo",
+      "https://calnivocalc.com/calculators/loan",
+    ].join("\n");
+  }, [r, rate, term, termUnit]);
 
   return (
     <div className="space-y-4">
@@ -105,6 +123,9 @@ export default function LoanCalculator() {
               value={fmtMoney(r.totalPaid)}
               highlight={false}
             />
+          </div>
+          <div className="flex justify-end">
+            <CopyResultButton getText={() => copyText} disabled={!r.monthly} />
           </div>
         </div>
       </div>

@@ -9,7 +9,8 @@ import {
   ResultCard,
 } from "@/components/calculator/CalculatorShell";
 import { fmtMoney, parseNum } from "@/lib/format";
-import { LineChart } from "./_shared";
+import { LabeledLineChart } from "./_shared";
+import { CopyResultButton } from "@/components/calculator/CopyResultButton";
 
 const FREQ: Record<
   string,
@@ -81,14 +82,16 @@ export default function CompoundInterestCalculator() {
     return { P, PMT, final, principalTotal, interest, t, isContinuous };
   }, [principal, rate, freq, years, monthlyContribution]);
 
-  const chartData = useMemo(() => {
+  const chartPoints = useMemo(() => {
     const P = parseNum(principal);
     const annualRate = parseNum(rate) / 100;
-    const t = Math.min(parseNum(years), 100); // cap iterations
+    const t = Math.min(Math.round(parseNum(years)), 100); // cap iterations
     const PMT = parseNum(monthlyContribution);
     const fInfo = FREQ[freq];
-    const data: number[] = [];
-    for (let y = 0; y <= t; y++) {
+    const pts: { x: string; y: number }[] = [];
+    // Sample yearly; for long durations, sample every few years to avoid crowding.
+    const step = t > 30 ? Math.ceil(t / 15) : 1;
+    for (let y = 0; y <= t; y += step) {
       let v = P;
       if (fInfo.continuous === true) {
         const ert = Math.exp(annualRate * y);
@@ -115,10 +118,29 @@ export default function CompoundInterestCalculator() {
         }
       }
       if (!isFinite(v)) v = P;
-      data.push(v);
+      pts.push({ x: `Yr ${y}`, y: Math.round(v) });
     }
-    return data;
+    return pts;
   }, [principal, rate, freq, years, monthlyContribution]);
+
+  const copyText = useMemo(() => {
+    return [
+      "Calnivo Compound Interest Calculator",
+      "",
+      `Principal: ${fmtMoney(r.P)}`,
+      `Annual Rate: ${parseNum(rate)}%`,
+      `Compounding: ${r.isContinuous ? "Continuous" : FREQ[freq].label}`,
+      `Years: ${r.t}`,
+      r.PMT ? `Monthly Contribution: ${fmtMoney(r.PMT)}` : "",
+      "",
+      `Final Balance: ${fmtMoney(r.final)}`,
+      `Total Principal: ${fmtMoney(r.principalTotal)}`,
+      `Total Interest: ${fmtMoney(r.interest)}`,
+      "",
+      "Projected value, not guaranteed. Calculated with Calnivo",
+      "https://calnivocalc.com/calculators/compound-interest",
+    ].filter(Boolean).join("\n");
+  }, [r, rate, freq]);
 
   return (
     <div className="space-y-4">
@@ -188,16 +210,26 @@ export default function CompoundInterestCalculator() {
               highlight={false}
             />
           </div>
+          <div className="flex justify-end">
+            <CopyResultButton getText={() => copyText} disabled={!isFinite(r.final)} />
+          </div>
         </div>
       </div>
 
-      <CalcCard title="Growth Over Time">
-        <LineChart data={chartData} />
-        <div className="mt-2 flex justify-between text-xs text-brand-muted">
-          <span>Year 0</span>
-          <span>Year {r.t}</span>
-        </div>
-      </CalcCard>
+      {chartPoints.length > 1 && (
+        <CalcCard title="Account value over time">
+          <p className="mb-3 text-sm text-brand-muted">
+            Projected growth of your <strong className="text-brand-ink">{fmtMoney(r.principalTotal)}</strong> in
+            contributions to <strong className="text-brand-ink">{fmtMoney(r.final)}</strong> over {r.t} years —
+            earning <strong className="text-brand-ink">{fmtMoney(r.interest)}</strong> in interest. Projected value, not guaranteed.
+          </p>
+          <LabeledLineChart
+            points={chartPoints}
+            yLabel="Value ($)"
+            formatY={(n) => (n >= 1000 ? "$" + Math.round(n / 1000) + "k" : "$" + Math.round(n))}
+          />
+        </CalcCard>
+      )}
     </div>
   );
 }

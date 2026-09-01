@@ -9,7 +9,8 @@ import {
   ResultCard,
 } from "@/components/calculator/CalculatorShell";
 import { fmtMoney, parseNum } from "@/lib/format";
-import { DonutChart } from "./_shared";
+import { DonutChart, LabeledLineChart } from "./_shared";
+import { CopyResultButton } from "@/components/calculator/CopyResultButton";
 
 export default function MortgageCalculator() {
   const [homePrice, setHomePrice] = useState("400000");
@@ -100,6 +101,45 @@ export default function MortgageCalculator() {
     { label: "Insurance", value: r.monthlyIns, color: "#17232D" },
     { label: "HOA + Other", value: r.monthlyHoa + r.monthlyOther, color: "#C9A227" },
   ];
+
+  // Balance-over-time: same amortization formula, sampled yearly (max ~31 points).
+  // Derived from the same r.pi / principal / monthlyRate — no duplicate logic.
+  const balanceOverTime = useMemo(() => {
+    if (!r.pi || !r.principal || r.n <= 0) return [];
+    const monthlyRate = parseNum(rate) / 100 / 12;
+    const years = Math.ceil(r.n / 12);
+    const pts: { x: string; y: number }[] = [];
+    pts.push({ x: "Yr 0", y: Math.round(r.principal) });
+    for (let y = 1; y <= years && y <= 31; y++) {
+      const month = y * 12;
+      if (monthlyRate === 0) {
+        pts.push({ x: `Yr ${y}`, y: Math.max(0, Math.round(r.principal - r.pi * month)) });
+      } else {
+        const f = Math.pow(1 + monthlyRate, month);
+        const bal = (r.principal * f - r.pi * (f - 1) / monthlyRate);
+        pts.push({ x: `Yr ${y}`, y: Math.max(0, Math.round(bal)) });
+      }
+    }
+    return pts;
+  }, [r.pi, r.principal, r.n, rate]);
+
+  const copyText = useMemo(() => {
+    return [
+      "Calnivo Mortgage Calculator",
+      "",
+      `Home Price: ${fmtMoney(r.home)}`,
+      `Down Payment: ${fmtMoney(parseNum(downPayment))}${downUnit === "pct" ? " (" + parseNum(downPayment) + "%)" : ""}`,
+      `Loan Term: ${loanYears} years`,
+      `Interest Rate: ${parseNum(rate)}%`,
+      "",
+      `Monthly Payment: ${fmtMoney(r.totalMonthly)}`,
+      `Loan Principal: ${fmtMoney(r.principal)}`,
+      `Total of Payments: ${fmtMoney(grandTotal)}`,
+      "",
+      "Calculated with Calnivo",
+      "https://calnivocalc.com/calculators/mortgage",
+    ].join("\n");
+  }, [r, homePrice, downPayment, downUnit, loanYears, rate, grandTotal]);
 
   return (
     <div className="space-y-4">
@@ -226,8 +266,26 @@ export default function MortgageCalculator() {
               centerValue={fmtMoney(r.totalMonthly, { decimals: 0 })}
             />
           </CalcCard>
+          <div className="flex justify-end">
+            <CopyResultButton getText={() => copyText} disabled={!r.totalMonthly} />
+          </div>
         </div>
       </div>
+
+      {balanceOverTime.length > 0 && (
+        <CalcCard title="Loan balance over time">
+          <p className="mb-3 text-sm text-brand-muted">
+            How your loan principal declines year-by-year. Over the {loanYears}-year term you&apos;ll
+            pay approximately <strong className="text-brand-ink">{fmtMoney(grandTotal - r.principal)}</strong> in
+            total payments, of which <strong className="text-brand-ink">{fmtMoney(totalPi - r.principal)}</strong> is interest.
+          </p>
+          <LabeledLineChart
+            points={balanceOverTime}
+            yLabel="Balance ($)"
+            formatY={(n) => (n >= 1000 ? "$" + Math.round(n / 1000) + "k" : "$" + Math.round(n))}
+          />
+        </CalcCard>
+      )}
 
       <CalcCard title="Payment Breakdown">
         <div className="overflow-hidden rounded-lg border border-brand">

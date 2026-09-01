@@ -1377,3 +1377,74 @@ Task: Comprehensive production-readiness audit (28 phases) + critical SEO fix
 ## Production Verdict: 🟢 READY FOR PRODUCTION
 
 Commit b64442d pushed to GitHub. Netlify auto-deployed. All 28 audit phases pass.
+
+---
+Task ID: CHARTS-COPY-ENHANCEMENT
+Agent: main
+Task: Add Copy Result + visualizations to financial calculators (enhancement, not rebuild)
+
+## Feature Matrix (per the audit prompt)
+
+| Calculator | Copy | Chart | Chart Type | Reason |
+|---|---|---|---|---|
+| mortgage | ✅ NEW | ✅ NEW | LabeledLineChart (balance over time) | Shows how principal declines year-by-year |
+| loan | ✅ NEW | already had | ProportionBar (principal vs interest) | Existing chart retained |
+| auto-loan | — | already had | — | Existing chart retained |
+| compound-interest | ✅ NEW | ✅ UPGRADED | LabeledLineChart (account value over time) | Shows growth curve with year labels |
+| investment | — | already had LineChart | — | Existing chart retained |
+| retirement | — | already had LineChart | — | Existing chart retained |
+| amortization | — | already had table | — | Existing schedule table retained |
+| bmi | — | already had scale bar | — | BMI category range already present |
+| body-fat | — | already had scale bar | — | Body-fat range already present |
+| calorie | — | already had macro split | — | Macro table already present |
+| scientific/percentage/triangle/age/date/etc | — | NO | — | Charts add no value for these |
+
+## What was added
+
+### Reusable CopyResultButton (src/components/calculator/CopyResultButton.tsx)
+- Clipboard API (navigator.clipboard.writeText) with secure-context check
+- Legacy fallback: hidden <textarea> + document.execCommand("copy") for HTTP/old browsers
+- "✓ Copied" success state for 2 seconds (color change + text + aria-live region)
+- Keyboard accessible (native <button>), visible focus ring, disabled when no result
+- Copies clean plain-text summary: calculator name, inputs, key results, "Calculated with Calnivo", permalink
+- Never copies HTML/icons/internal state
+
+### LabeledLineChart (new in _shared.tsx)
+- SVG line chart with x-axis labels (Yr 0, Yr 1, ...) and y-axis ticks (max/mid/min)
+- Accessible: role="img" + aria-label ("Balance over time line chart")
+- Max ~6 x-labels shown (labelEvery) to avoid mobile crowding
+- formatY callback for currency ($k) / number formatting
+- Area fill + line stroke in Calnivo accent color
+
+### Mortgage calculator enhancements
+- NEW "Loan balance over time" line chart (yearly balance, capped at 31 points)
+- Chart data derived from SAME amortization formula (r.pi, r.principal, monthlyRate) — no duplicate logic
+- Copy Result button: summary includes home price, down payment, rate, term, monthly payment, principal, total
+- Crawlable caption text: "you'll pay approximately $X in total payments, of which $Y is interest"
+
+### Compound-interest calculator enhancements
+- UPGRADED: plain LineChart → LabeledLineChart with year labels + value axis
+- NEW "Account value over time" section with projection disclaimer
+- Copy Result button: principal, rate, compounding, years, final balance, total interest
+- "Projected value, not guaranteed" wording per Phase 11 (SIP/investment rules)
+
+### Loan calculator enhancement
+- Copy Result button: amount, rate, term, monthly payment, total interest, total paid
+
+## Design principles followed
+- Existing UI preserved (inputs, layout, colors, branding unchanged)
+- Existing formulas NOT modified (chart data derived from same calculation)
+- Charts use Calnivo brand colors (#FF6A00 accent, #17232D ink)
+- Important numbers exist as crawlable text (not only in charts) — SEO safe
+- No fake data: charts empty state handled (charts only render when result valid)
+- Mobile: charts responsive (viewBox + maxWidth 100%), labels capped at 6
+
+## Verification (live on https://calnivo.netlify.app)
+- /calculators/mortgage: line chart present, copy button works, caption text present
+- /calculators/compound-interest: labeled chart with year labels, disclaimer present
+- /calculators/loan: copy button works
+- Lint: 0 errors / 0 warnings
+- Build: 50 static pages, clean
+- Copy button tested: shows "Copy result" → click → "✓ Copied" → reverts after 2s
+
+Commit 1502476 pushed. Netlify auto-deployed and verified live.

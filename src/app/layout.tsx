@@ -45,14 +45,18 @@ export const metadata: Metadata = {
     canonical: "/",
   },
   // Brand favicon + app icons (transparent PNG)
+  // Includes legacy favicon.ico (root) + 48x48 (Google minimum) + 16x16
   icons: {
     icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/icon-16.png", sizes: "16x16", type: "image/png" },
       { url: "/favicon-32.png", sizes: "32x32", type: "image/png" },
+      { url: "/icon-48.png", sizes: "48x48", type: "image/png" },
       { url: "/icon-192.png", sizes: "192x192", type: "image/png" },
       { url: "/icon-512.png", sizes: "512x512", type: "image/png" },
     ],
     apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
-    shortcut: "/favicon-32.png",
+    shortcut: "/favicon.ico",
   },
   manifest: "/manifest.json",
   robots: {
@@ -99,6 +103,8 @@ export const viewport: Viewport = {
   themeColor: "#FF6A00",
 };
 
+const LOGO_URL = `${SITE_URL}/calnivo-logo.png`;
+
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "WebApplication",
@@ -137,6 +143,31 @@ const jsonLd = {
     "@type": "Organization",
     name: "Calnivo",
     url: SITE_URL,
+    logo: {
+      "@type": "ImageObject",
+      url: LOGO_URL,
+      width: 512,
+      height: 512,
+    },
+  },
+};
+
+// WebSite structured data — enables Google Sitelinks + brand entity recognition
+const websiteLd = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: "Calnivo",
+  url: SITE_URL,
+  publisher: {
+    "@type": "Organization",
+    name: "Calnivo",
+    url: SITE_URL,
+    logo: {
+      "@type": "ImageObject",
+      url: LOGO_URL,
+      width: 512,
+      height: 512,
+    },
   },
 };
 
@@ -151,6 +182,10 @@ export default function RootLayout({
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteLd) }}
         />
       </head>
       <body

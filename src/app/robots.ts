@@ -9,6 +9,5 @@ export default function robots(): MetadataRoute.Robots {
       },
     ],
     sitemap: "https://calnivocalc.com/sitemap.xml",
-    host: "https://calnivocalc.com",
   };
 }

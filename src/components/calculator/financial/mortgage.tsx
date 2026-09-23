@@ -11,6 +11,42 @@ import {
 import { fmtMoney, parseNum } from "@/lib/format";
 import { DonutChart, LabeledLineChart } from "./_shared";
 import { CopyResultButton } from "@/components/calculator/CopyResultButton";
+import { ResultActions } from "@/components/calculator/ResultActions";
+import { ExplainResult } from "@/components/calculator/ExplainResult";
+import { ExpandableSection } from "@/components/calculator/ExpandableSection";
+import { ScenarioBuilder } from "@/components/calculator/ScenarioBuilder";
+import { LocalHistory, saveToHistory } from "@/components/calculator/LocalHistory";
+
+// Shared compute function — used by both the primary calculator AND the
+// ScenarioBuilder. No duplicate formula logic (spec §3).
+function computeMortgage(inputs: Record<string, string>): Record<string, string> {
+  const home = parseNum(inputs.homePrice ?? "0");
+  const dp =
+    (inputs.downUnit ?? "usd") === "usd"
+      ? parseNum(inputs.downPayment ?? "0")
+      : (parseNum(inputs.downPayment ?? "0") / 100) * home;
+  const principal = Math.max(0, home - dp);
+  const annualRate = parseNum(inputs.rate ?? "0");
+  const monthlyRate = annualRate / 100 / 12;
+  const n = parseNum(inputs.loanYears ?? "0") * 12;
+  let pi = 0;
+  if (n <= 0) pi = 0;
+  else if (monthlyRate === 0) pi = principal / n;
+  else if (monthlyRate <= -1) pi = 0;
+  else {
+    const f = Math.pow(1 + monthlyRate, n);
+    if (!isFinite(f)) pi = principal * monthlyRate;
+    else if (f !== 1) pi = (principal * monthlyRate * f) / (f - 1);
+    else pi = principal / n;
+  }
+  if (!isFinite(pi)) pi = 0;
+  const totalInterest = pi * n - principal;
+  return {
+    monthlyPayment: fmtMoney(pi),
+    totalInterest: fmtMoney(totalInterest),
+    totalPaid: fmtMoney(pi * n),
+  };
+}
 
 export default function MortgageCalculator() {
   const [homePrice, setHomePrice] = useState("400000");
@@ -269,8 +305,23 @@ export default function MortgageCalculator() {
           <div className="flex justify-end">
             <CopyResultButton getText={() => copyText} disabled={!r.totalMonthly} />
           </div>
+          <ResultActions summaryText={copyText} disabled={!r.totalMonthly} />
         </div>
       </div>
+
+      {/* Explain My Result — concise, calculation-derived (spec §7) */}
+      {r.totalMonthly > 0 && (
+        <ExplainResult>
+          On a <strong>{fmtMoney(r.home)}</strong> home with a{" "}
+          <strong>{fmtMoney(r.principal)}</strong> loan at <strong>{parseNum(rate)}%</strong> for{" "}
+          <strong>{loanYears} years</strong>, your monthly principal-and-interest payment is{" "}
+          <strong>{fmtMoney(r.pi)}</strong>. Over the full term you&apos;ll pay approximately{" "}
+          <strong>{fmtMoney(totalPi - r.principal)}</strong> in interest — that&apos;s{" "}
+          <strong>{((totalPi - r.principal) / r.principal * 100).toFixed(0)}%</strong> of the loan
+          amount. Paying extra each month or choosing a shorter term can significantly reduce total
+          interest.
+        </ExplainResult>
+      )}
 
       {balanceOverTime.length > 0 && (
         <CalcCard title="Loan balance over time">
@@ -326,6 +377,37 @@ export default function MortgageCalculator() {
           </table>
         </div>
       </CalcCard>
+
+      {/* Scenario Comparison — progressive disclosure (spec §4 + §7) */}
+      <ExpandableSection
+        title="Compare scenarios"
+        subtitle="See how different rates, prices, or terms affect your payment"
+        badge="A/B"
+      >
+        <ScenarioBuilder
+          compute={computeMortgage}
+          baseInputs={{
+            homePrice,
+            downPayment,
+            downUnit,
+            loanYears,
+            rate,
+          }}
+          resultKeys={[
+            { key: "monthlyPayment", label: "Monthly Payment" },
+            { key: "totalInterest", label: "Total Interest" },
+            { key: "totalPaid", label: "Total Paid" },
+          ]}
+          inputFields={[
+            { key: "rate", label: "Rate %" },
+            { key: "homePrice", label: "Home $" },
+            { key: "loanYears", label: "Years" },
+          ]}
+        />
+      </ExpandableSection>
+
+      {/* Recent calculations — local, no account (spec §7) */}
+      <LocalHistory calculatorId="mortgage" />
     </div>
   );
 }

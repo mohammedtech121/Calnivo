@@ -65,3 +65,11 @@ server.log
 
 # local-only CI workflow (token lacks workflow scope)
 .github/workflows/
+
+# Orphaned scaffold files (removed — prevent git from re-adding)
+src/hooks/use-auth.ts
+src/lib/firebase.ts
+src/lib/db.ts
+src/components/layout/AuthDialog.tsx
+src/components/ui/chart.tsx
+src/app/api/

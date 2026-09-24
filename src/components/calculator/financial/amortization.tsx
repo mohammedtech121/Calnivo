@@ -9,6 +9,10 @@ import {
 } from "@/components/calculator/CalculatorShell";
 import { fmtMoney, fmtNum, fmtPct, parseNum } from "@/lib/format";
 import { DataTable } from "./_shared";
+import { ResultActions } from "@/components/calculator/ResultActions";
+import { ExplainResult } from "@/components/calculator/ExplainResult";
+import { ExpandableSection } from "@/components/calculator/ExpandableSection";
+import { LocalHistory } from "@/components/calculator/LocalHistory";
 
 export default function AmortizationCalculator() {
   const [amount, setAmount] = useState("250000");
@@ -148,6 +152,18 @@ export default function AmortizationCalculator() {
           rows={rows}
         />
       </CalcCard>
+
+      <ResultActions summaryText="Calnivo calculation result" disabled={false} />
+
+      <ExpandableSection
+        title="Compare scenarios"
+        subtitle="See how different inputs affect your result"
+        badge="A/B"
+      >
+        <p className="text-sm text-brand-muted">Scenario comparison will appear here.</p>
+      </ExpandableSection>
+
+      <LocalHistory calculatorId="amortization" />
     </div>
   );
 }

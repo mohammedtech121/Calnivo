@@ -9,6 +9,10 @@ import {
   ResultCard,
 } from "@/components/calculator/CalculatorShell";
 import { fmtMoney, fmtNum, fmtPct, parseNum } from "@/lib/format";
+import { ResultActions } from "@/components/calculator/ResultActions";
+import { ExplainResult } from "@/components/calculator/ExplainResult";
+import { ExpandableSection } from "@/components/calculator/ExpandableSection";
+import { LocalHistory } from "@/components/calculator/LocalHistory";
 
 type SolveFor = "PV" | "FV" | "PMT" | "Rate" | "N";
 
@@ -230,6 +234,18 @@ export default function FinanceCalculator() {
           period rate into APR.
         </p>
       </CalcCard>
+
+      <ResultActions summaryText="Calnivo calculation result" disabled={false} />
+
+      <ExpandableSection
+        title="Compare scenarios"
+        subtitle="See how different inputs affect your result"
+        badge="A/B"
+      >
+        <p className="text-sm text-brand-muted">Scenario comparison will appear here.</p>
+      </ExpandableSection>
+
+      <LocalHistory calculatorId="finance" />
     </div>
   );
 }

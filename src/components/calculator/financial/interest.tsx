@@ -9,6 +9,10 @@ import {
   ResultCard,
 } from "@/components/calculator/CalculatorShell";
 import { fmtMoney, fmtPct, parseNum } from "@/lib/format";
+import { ResultActions } from "@/components/calculator/ResultActions";
+import { ExplainResult } from "@/components/calculator/ExplainResult";
+import { ExpandableSection } from "@/components/calculator/ExpandableSection";
+import { LocalHistory } from "@/components/calculator/LocalHistory";
 
 export default function InterestCalculator() {
   const [principal, setPrincipal] = useState("10000");
@@ -144,6 +148,18 @@ export default function InterestCalculator() {
           )}
         </div>
       </CalcCard>
+
+      <ResultActions summaryText="Calnivo calculation result" disabled={false} />
+
+      <ExpandableSection
+        title="Compare scenarios"
+        subtitle="See how different inputs affect your result"
+        badge="A/B"
+      >
+        <p className="text-sm text-brand-muted">Scenario comparison will appear here.</p>
+      </ExpandableSection>
+
+      <LocalHistory calculatorId="interest" />
     </div>
   );
 }

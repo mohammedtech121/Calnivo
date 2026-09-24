@@ -15,6 +15,10 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { fmtNum } from "@/lib/format";
+import { ResultActions } from "@/components/calculator/ResultActions";
+import { ExplainResult } from "@/components/calculator/ExplainResult";
+import { ExpandableSection } from "@/components/calculator/ExpandableSection";
+import { LocalHistory } from "@/components/calculator/LocalHistory";
 
 interface Stats {
   n: number;
@@ -270,6 +274,18 @@ function Stat({ label, value }: { label: string; value: string }) {
       <div className="mt-1 font-mono text-base font-semibold text-brand-ink tabular-nums">
         {value}
       </div>
+
+      <ResultActions summaryText="Calnivo calculation result" disabled={false} />
+
+      <ExpandableSection
+        title="Compare scenarios"
+        subtitle="See how different inputs affect your result"
+        badge="A/B"
+      >
+        <p className="text-sm text-brand-muted">Scenario comparison will appear here.</p>
+      </ExpandableSection>
+
+      <LocalHistory calculatorId="standard-deviation" />
     </div>
   );
 }

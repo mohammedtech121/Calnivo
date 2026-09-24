@@ -9,6 +9,10 @@ import {
   ResultCard,
 } from "@/components/calculator/CalculatorShell";
 import { fmtNum, parseNum } from "@/lib/format";
+import { ResultActions } from "@/components/calculator/ResultActions";
+import { ExplainResult } from "@/components/calculator/ExplainResult";
+import { ExpandableSection } from "@/components/calculator/ExpandableSection";
+import { LocalHistory } from "@/components/calculator/LocalHistory";
 
 const LB_PER_KG = 2.2046226218;
 const IN_PER_CM = 0.3937007874;
@@ -258,6 +262,18 @@ export default function IdealWeightCalculator() {
           </div>
         </CalcCard>
       )}
+
+      <ResultActions summaryText="Calnivo calculation result" disabled={false} />
+
+      <ExpandableSection
+        title="Compare scenarios"
+        subtitle="See how different inputs affect your result"
+        badge="A/B"
+      >
+        <p className="text-sm text-brand-muted">Scenario comparison will appear here.</p>
+      </ExpandableSection>
+
+      <LocalHistory calculatorId="ideal-weight" />
     </div>
   );
 }

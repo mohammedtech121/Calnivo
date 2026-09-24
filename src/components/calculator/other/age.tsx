@@ -16,6 +16,10 @@ import {
   TextInput,
 } from "@/components/calculator/CalculatorShell";
 import { fmtNum } from "@/lib/format";
+import { ResultActions } from "@/components/calculator/ResultActions";
+import { ExplainResult } from "@/components/calculator/ExplainResult";
+import { ExpandableSection } from "@/components/calculator/ExpandableSection";
+import { LocalHistory } from "@/components/calculator/LocalHistory";
 
 const DOW = [
   "Sunday",
@@ -204,6 +208,18 @@ function Stat({
         {value}
       </div>
       {hint && <div className="mt-0.5 text-xs text-brand-muted">{hint}</div>}
+
+      <ResultActions summaryText="Calnivo calculation result" disabled={false} />
+
+      <ExpandableSection
+        title="Compare scenarios"
+        subtitle="See how different inputs affect your result"
+        badge="A/B"
+      >
+        <p className="text-sm text-brand-muted">Scenario comparison will appear here.</p>
+      </ExpandableSection>
+
+      <LocalHistory calculatorId="age" />
     </div>
   );
 }

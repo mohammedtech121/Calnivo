@@ -9,6 +9,10 @@ import {
   ResultCard,
 } from "@/components/calculator/CalculatorShell";
 import { fmtNum, parseNum, clamp } from "@/lib/format";
+import { ResultActions } from "@/components/calculator/ResultActions";
+import { ExplainResult } from "@/components/calculator/ExplainResult";
+import { ExpandableSection } from "@/components/calculator/ExpandableSection";
+import { LocalHistory } from "@/components/calculator/LocalHistory";
 
 export default function DueDateCalculator() {
   const defaultLmp = format(addDays(new Date(), -70), "yyyy-MM-dd");
@@ -244,6 +248,18 @@ export default function DueDateCalculator() {
           </div>
         </CalcCard>
       )}
+
+      <ResultActions summaryText="Calnivo calculation result" disabled={false} />
+
+      <ExpandableSection
+        title="Compare scenarios"
+        subtitle="See how different inputs affect your result"
+        badge="A/B"
+      >
+        <p className="text-sm text-brand-muted">Scenario comparison will appear here.</p>
+      </ExpandableSection>
+
+      <LocalHistory calculatorId="due-date" />
     </div>
   );
 }

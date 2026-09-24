@@ -2,6 +2,10 @@
 
 import { ScientificCalculator } from "@/components/home/ScientificCalculator";
 import { CalcCard } from "@/components/calculator/CalculatorShell";
+import { ResultActions } from "@/components/calculator/ResultActions";
+import { ExplainResult } from "@/components/calculator/ExplainResult";
+import { ExpandableSection } from "@/components/calculator/ExpandableSection";
+import { LocalHistory } from "@/components/calculator/LocalHistory";
 
 interface TipItem {
   expr: string;
@@ -146,6 +150,18 @@ function ReferenceBlock({
           <li key={it}>{it}</li>
         ))}
       </ul>
+
+      <ResultActions summaryText="Calnivo calculation result" disabled={false} />
+
+      <ExpandableSection
+        title="Compare scenarios"
+        subtitle="See how different inputs affect your result"
+        badge="A/B"
+      >
+        <p className="text-sm text-brand-muted">Scenario comparison will appear here.</p>
+      </ExpandableSection>
+
+      <LocalHistory calculatorId="scientific" />
     </div>
   );
 }

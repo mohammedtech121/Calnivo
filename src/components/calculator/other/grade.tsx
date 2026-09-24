@@ -19,6 +19,10 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { fmtNum, parseNum } from "@/lib/format";
+import { ResultActions } from "@/components/calculator/ResultActions";
+import { ExplainResult } from "@/components/calculator/ExplainResult";
+import { ExpandableSection } from "@/components/calculator/ExpandableSection";
+import { LocalHistory } from "@/components/calculator/LocalHistory";
 
 type EarnedMode = "percent" | "ratio";
 
@@ -318,6 +322,18 @@ export default function GradeCalculator() {
           </TableBody>
         </Table>
       </CalcCard>
+
+      <ResultActions summaryText="Calnivo calculation result" disabled={false} />
+
+      <ExpandableSection
+        title="Compare scenarios"
+        subtitle="See how different inputs affect your result"
+        badge="A/B"
+      >
+        <p className="text-sm text-brand-muted">Scenario comparison will appear here.</p>
+      </ExpandableSection>
+
+      <LocalHistory calculatorId="grade" />
     </div>
   );
 }

@@ -11,6 +11,10 @@ import {
 import { fmtMoney, parseNum } from "@/lib/format";
 import { LabeledLineChart } from "./_shared";
 import { CopyResultButton } from "@/components/calculator/CopyResultButton";
+import { ResultActions } from "@/components/calculator/ResultActions";
+import { ExplainResult } from "@/components/calculator/ExplainResult";
+import { ExpandableSection } from "@/components/calculator/ExpandableSection";
+import { LocalHistory } from "@/components/calculator/LocalHistory";
 
 const FREQ: Record<
   string,
@@ -230,6 +234,18 @@ export default function CompoundInterestCalculator() {
           />
         </CalcCard>
       )}
+
+      <ResultActions summaryText="Calnivo calculation result" disabled={false} />
+
+      <ExpandableSection
+        title="Compare scenarios"
+        subtitle="See how different inputs affect your result"
+        badge="A/B"
+      >
+        <p className="text-sm text-brand-muted">Scenario comparison will appear here.</p>
+      </ExpandableSection>
+
+      <LocalHistory calculatorId="compound-interest" />
     </div>
   );
 }

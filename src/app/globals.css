@@ -254,3 +254,123 @@ input[type="number"]::-webkit-inner-spin-button {
 input[type="number"] {
   -moz-appearance: textfield;
 }
+
+/* ========================================
+   PRINT STYLES — Calculator-only report
+   Hides all website chrome (header, footer, SEO content,
+   related calculators, navigation). Only the calculator
+   content marked with .printable-area is shown.
+   ======================================== */
+@media print {
+  /* Hide everything by default */
+  body * {
+    visibility: hidden;
+  }
+
+  /* Show only the printable calculator area and its children */
+  .printable-area,
+  .printable-area * {
+    visibility: visible;
+  }
+
+  /* Position the printable area at the top of the page */
+  .printable-area {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    padding: 24px !important;
+    background: white !important;
+  }
+
+  /* Remove shadows and borders that don't print well */
+  .printable-area .shadow-brand,
+  .printable-area .shadow-brand-lg,
+  .printable-area .shadow-accent {
+    box-shadow: none !important;
+  }
+
+  /* Force light background for print */
+  .printable-area,
+  .printable-area .bg-brand-canvas,
+  .printable-area .bg-white,
+  .printable-area .bg-accent\/40,
+  .printable-area .bg-gradient-to-br {
+    background: white !important;
+  }
+
+  /* Ensure colors print (not background-images which browsers skip) */
+  .printable-area .bg-brand-accent-gradient {
+    background: #FF6A00 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* Expand full width — no sidebars */
+  .printable-area .grid {
+    display: block !important;
+  }
+  .printable-area .lg\:grid-cols-\[1fr_1fr\],
+  .printable-area .lg\:grid-cols-\[minmax\(0\2c 1fr\)_300px\] {
+    display: block !important;
+  }
+
+  /* Hide interactive elements that have no print value */
+  .printable-area button,
+  .printable-area .no-print {
+    display: none !important;
+  }
+
+  /* Hide expandable sections that are closed (only show expanded content) */
+  .printable-area [data-collapsed="true"] {
+    display: none !important;
+  }
+
+  /* Make tables full width and readable */
+  .printable-area table {
+    width: 100% !important;
+    font-size: 11pt !important;
+  }
+  .printable-area th {
+    background: #F3F2EF !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* Ensure SVG charts print with color */
+  .printable-area svg {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    max-width: 100% !important;
+    height: auto !important;
+  }
+
+  /* Page setup */
+  @page {
+    margin: 1.5cm;
+    size: A4;
+  }
+
+  /* Avoid breaking inside cards/charts */
+  .printable-area .rounded-xl,
+  .printable-area .rounded-2xl,
+  .printable-area svg,
+  .printable-area table {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  /* Force dark text on light backgrounds for readability */
+  .printable-area .text-brand-ink {
+    color: #17232D !important;
+  }
+  .printable-area .text-brand-muted {
+    color: #66727C !important;
+  }
+  .printable-area .text-brand-accent-deep {
+    color: #F4511E !important;
+  }
+  .printable-area .text-white {
+    color: #FFFFFF !important;
+  }
+}

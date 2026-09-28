@@ -143,7 +143,7 @@ export default async function Page({
           {/* Breadcrumb */}
           <nav
             aria-label="Breadcrumb"
-            className="mb-5 flex items-center gap-1.5 text-sm text-brand-muted"
+            className="no-print mb-5 flex items-center gap-1.5 text-sm text-brand-muted"
           >
             <Link href="/" className="hover:text-brand-ink">
               Home
@@ -162,34 +162,36 @@ export default async function Page({
           {/* Back button */}
           <Link
             href="/calculators"
-            className="mb-4 inline-flex items-center gap-1.5 rounded-lg border border-brand bg-white px-3 py-1.5 text-sm font-medium text-brand-ink shadow-sm transition-colors hover:bg-accent/50"
+            className="no-print mb-4 inline-flex items-center gap-1.5 rounded-lg border border-brand bg-white px-3 py-1.5 text-sm font-medium text-brand-ink shadow-sm transition-colors hover:bg-accent/50"
           >
             <ArrowLeft className="h-4 w-4" />
             All calculators
           </Link>
 
-          {/* Title (H1 — server-rendered, crawlable) */}
-          <div className="mb-6 flex items-start gap-4">
-            <span className="hidden h-12 w-12 shrink-0 place-items-center rounded-xl bg-brand-accent-gradient text-white shadow-accent sm:grid">
-              <Icon className="h-6 w-6" />
-            </span>
-            <div>
-              <h1 className="text-2xl font-bold tracking-tight text-brand-ink sm:text-3xl">
-                {meta.name}
-              </h1>
-              <p className="mt-1.5 max-w-2xl text-sm leading-relaxed text-brand-muted">
-                {meta.description}
-              </p>
-            </div>
-          </div>
-
-          {/* Body: calculator + sidebar */}
-          <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_300px]">
-            <div className="min-w-0">
-              {CalcComponent ? <CalcComponent /> : null}
+          {/* Printable calculator area — only this shows when printing */}
+          <div className="printable-area">
+            {/* Title (H1 — server-rendered, crawlable) */}
+            <div className="mb-6 flex items-start gap-4">
+              <span className="hidden h-12 w-12 shrink-0 place-items-center rounded-xl bg-brand-accent-gradient text-white shadow-accent sm:grid">
+                <Icon className="h-6 w-6" />
+              </span>
+              <div>
+                <h1 className="text-2xl font-bold tracking-tight text-brand-ink sm:text-3xl">
+                  {meta.name}
+                </h1>
+                <p className="mt-1.5 max-w-2xl text-sm leading-relaxed text-brand-muted">
+                  {meta.description}
+                </p>
+              </div>
             </div>
 
-            <aside className="space-y-4">
+            {/* Body: calculator + sidebar */}
+            <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_300px]">
+              <div className="min-w-0">
+                {CalcComponent ? <CalcComponent /> : null}
+              </div>
+
+              <aside className="no-print space-y-4">
               {/* Related */}
               <div className="rounded-xl border border-brand bg-white p-4 shadow-brand">
                 <h3 className="mb-3 text-xs font-semibold uppercase tracking-wide text-brand-muted">
@@ -237,6 +239,7 @@ export default async function Page({
                 )}
               </div>
             </aside>
+          </div>
           </div>
 
           {/* Server-rendered SEO content (definition, formula, how-to, example, FAQ, related) */}

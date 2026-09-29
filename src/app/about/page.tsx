@@ -53,17 +53,7 @@ export default function AboutPage() {
           <section>
             <h2 className="text-xl font-semibold text-brand-ink">Meet the Founders</h2>
             <div className="mt-4 grid gap-4 sm:grid-cols-2">
-              <div className="rounded-2xl border border-brand bg-white p-5 shadow-brand">
-                <div className="mb-3 grid h-12 w-12 place-items-center rounded-xl bg-brand-accent-gradient text-white shadow-accent">
-                  <span className="text-lg font-bold">HK</span>
-                </div>
-                <h3 className="text-lg font-semibold text-brand-ink">Hammad Khan</h3>
-                <p className="text-sm font-medium text-brand-accent-deep">Founder, Calnivo</p>
-                <p className="mt-2 text-sm text-brand-muted">
-                  Hammad Khan is one of the founders of Calnivo and contributes to the research and
-                  direction of the platform.
-                </p>
-              </div>
+              {/* Mohammed Khan — left side */}
               <div className="rounded-2xl border border-brand bg-white p-5 shadow-brand">
                 <div className="mb-3 grid h-12 w-12 place-items-center rounded-xl bg-brand-accent-gradient text-white shadow-accent">
                   <span className="text-lg font-bold">MK</span>
@@ -73,6 +63,18 @@ export default function AboutPage() {
                 <p className="mt-2 text-sm text-brand-muted">
                   Mohammed Khan is one of the founders of Calnivo and contributes to the development
                   of the platform.
+                </p>
+              </div>
+              {/* Hammad Khan — right side */}
+              <div className="rounded-2xl border border-brand bg-white p-5 shadow-brand">
+                <div className="mb-3 grid h-12 w-12 place-items-center rounded-xl bg-brand-accent-gradient text-white shadow-accent">
+                  <span className="text-lg font-bold">HK</span>
+                </div>
+                <h3 className="text-lg font-semibold text-brand-ink">Hammad Khan</h3>
+                <p className="text-sm font-medium text-brand-accent-deep">Founder, Calnivo</p>
+                <p className="mt-2 text-sm text-brand-muted">
+                  Hammad Khan is one of the founders of Calnivo and contributes to the research and
+                  direction of the platform.
                 </p>
               </div>
             </div>

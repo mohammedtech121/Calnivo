@@ -184,12 +184,12 @@ const organizationLd = {
   founder: [
     {
       "@type": "Person",
-      name: "Hammad Khan",
+      name: "Mohammed Khan",
       jobTitle: "Founder",
     },
     {
       "@type": "Person",
-      name: "Mohammed Khan",
+      name: "Hammad Khan",
       jobTitle: "Founder",
     },
   ],

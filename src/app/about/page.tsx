@@ -31,8 +31,8 @@ export default function AboutPage() {
           <section>
             <h2 className="text-xl font-semibold text-brand-ink">Our Story</h2>
             <p className="mt-2">
-              Calnivo was founded by <strong className="text-brand-ink">Hammad Khan</strong> and{" "}
-              <strong className="text-brand-ink">Mohammed Khan</strong>, who started the platform
+              Calnivo was founded by <strong className="text-brand-ink">Mohammed Khan</strong> and{" "}
+              <strong className="text-brand-ink">Hammad Khan</strong>, who started the platform
               together with a shared goal of making online calculations more accurate,
               understandable and useful.
             </p>

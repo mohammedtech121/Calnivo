@@ -171,6 +171,30 @@ const websiteLd = {
   },
 };
 
+// Organization structured data — connects Calnivo with both founders
+const organizationLd = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "@id": `${SITE_URL}/#organization`,
+  name: "Calnivo",
+  url: SITE_URL,
+  logo: LOGO_URL,
+  description:
+    "Free online calculators for finance, fitness, health, math and everyday utilities. 40+ tools, all client-side, no registration required.",
+  founder: [
+    {
+      "@type": "Person",
+      name: "Hammad Khan",
+      jobTitle: "Founder",
+    },
+    {
+      "@type": "Person",
+      name: "Mohammed Khan",
+      jobTitle: "Founder",
+    },
+  ],
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -186,6 +210,10 @@ export default function RootLayout({
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteLd) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationLd) }}
         />
       </head>
       <body

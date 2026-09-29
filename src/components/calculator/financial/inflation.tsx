@@ -44,7 +44,8 @@ export default function InflationCalculator() {
     const purchasingPower =
       factor > 0 ? a / factor : a;
     const realValueLoss = factor > 0 ? (1 - 1 / factor) * 100 : -Infinity;
-    return { a, n, i, factor, futureCost, purchasingPower, realValueLoss };
+    const realReturn = i > 0 ? ((1 + 0) / (1 + i / 100) - 1) * 100 : 0; // nominal=0 assumption placeholder
+    return { a, n, i, factor, futureCost, purchasingPower, realValueLoss, realReturn };
   }, [amount, years, rate]);
 
   return (

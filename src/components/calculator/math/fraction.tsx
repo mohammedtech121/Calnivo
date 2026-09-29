@@ -64,6 +64,9 @@ function fmtFraction(n: number, d: number): string {
   if (!isFinite(n) || !isFinite(d)) return "—";
   if (d === 0) return "undefined (division by zero)";
   if (n === 0) return "0";
+  const wholePart = Math.trunc(n / d);
+  const remainder = Math.abs(n % d);
+  const mixedNumber = wholePart !== 0 && remainder !== 0 ? `${wholePart} ${remainder}/${d}` : null;
   if (d === 1) return `${n}`;
   const sign = n < 0 ? "-" : "";
   return `${sign}${Math.abs(n)}/${Math.abs(d)}`;

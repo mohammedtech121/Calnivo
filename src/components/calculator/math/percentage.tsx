@@ -13,7 +13,7 @@ import { ExplainResult } from "@/components/calculator/ExplainResult";
 import { ExpandableSection } from "@/components/calculator/ExpandableSection";
 import { LocalHistory } from "@/components/calculator/LocalHistory";
 
-type Mode = "of" | "isWhat" | "change" | "incrDecr";
+type Mode = "of" | "isWhat" | "change" | "incrDecr" | "margin";
 
 interface ModeDef {
   value: Mode;
@@ -26,6 +26,7 @@ const MODES: ModeDef[] = [
   { value: "isWhat", label: "X is what % of Y?", short: "% of total" },
   { value: "change", label: "% change from X to Y", short: "% change" },
   { value: "incrDecr", label: "Increase / decrease Y by X%", short: "± %" },
+  { value: "margin", label: "Profit margin (price vs cost)", short: "Margin" },
 ];
 
 interface ModeResult {
@@ -127,13 +128,33 @@ function compute(
   };
 }
 
+// Spec: margin = (price−cost)/price × 100
+function computeMargin(a: string, b: string): ModeResult | null {
+  const price = parseNum(a);
+  const cost = parseNum(b);
+  if (price === 0) return null;
+  const profit = price - cost;
+  const marginPct = (profit / price) * 100;
+  const markupPct = cost > 0 ? (profit / cost) * 100 : 0;
+  return {
+    value: marginPct,
+    display: fmtNum(marginPct, 4) + "%",
+    sub: `Price ${fmtNum(price, 2)} − Cost ${fmtNum(cost, 2)} = Profit ${fmtNum(profit, 2)}`,
+    formula: "Margin = (Price − Cost) ÷ Price × 100",
+    extra: [
+      { label: "Profit", value: fmtNum(profit, 2) },
+      { label: "Markup on cost", value: fmtNum(markupPct, 4) + "%" },
+    ],
+  };
+}
+
 export default function PercentageCalculator() {
   const [mode, setMode] = useState<Mode>("of");
   const [a, setA] = useState("20");
   const [b, setB] = useState("150");
   const [sign, setSign] = useState<"up" | "down">("up");
 
-  const res = compute(mode, a, b, sign);
+  const res = mode === "margin" ? computeMargin(a, b) : compute(mode, a, b, sign);
 
   return (
     <div className="space-y-6">

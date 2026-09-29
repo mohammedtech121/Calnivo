@@ -27,9 +27,10 @@ export default function AutoLoanCalculator() {
     const ti = parseNum(tradeIn);
     const taxRate = parseNum(salesTax) / 100;
     const months = parseNum(term);
-    const financed = Math.max(0, p - dp - ti);
-    // Sales tax is typically assessed on (price - trade-in)
+    // Sales tax is assessed on (price - trade-in)
     const taxAmount = Math.max(0, p - ti) * taxRate;
+    // Per spec: financed = price + taxes/fees − down payment − trade-in
+    const financed = Math.max(0, p - dp - ti + taxAmount);
     const monthlyRate = parseNum(rate) / 100 / 12;
     let monthly = 0;
     if (months <= 0) {
@@ -51,7 +52,8 @@ export default function AutoLoanCalculator() {
     if (!isFinite(monthly)) monthly = 0;
     const totalPaid = monthly * months;
     const totalInterest = totalPaid - financed;
-    const totalCost = dp + ti + totalPaid + taxAmount;
+    // totalCost = down payment + trade-in + total loan payments (tax already in financed)
+    const totalCost = dp + ti + totalPaid;
     return {
       financed,
       taxAmount,

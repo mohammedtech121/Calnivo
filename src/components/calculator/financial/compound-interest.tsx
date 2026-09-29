@@ -34,6 +34,8 @@ export default function CompoundInterestCalculator() {
   const [freq, setFreq] = useState("monthly");
   const [years, setYears] = useState("10");
   const [monthlyContribution, setMonthlyContribution] = useState("200");
+  // Spec: "Beginning-of-period contributions multiply the contribution FV term by (1+r/m)"
+  const [timing, setTiming] = useState<"end" | "beginning">("end");
 
   const r = useMemo(() => {
     const P = parseNum(principal);
@@ -42,16 +44,20 @@ export default function CompoundInterestCalculator() {
     const PMT = parseNum(monthlyContribution);
     const fInfo = FREQ[freq];
     const isContinuous = fInfo.continuous === true;
+    // Beginning-of-period multiplier: (1+r/m) for discrete, e^(r/n·(1/n)) approx for continuous
+    const timingMult = timing === "beginning" ? 1 : 0; // applied below
     let final = P;
     let principalTotal = P + PMT * 12 * t;
 
     if (isContinuous) {
-      // P·e^(rt) + monthly contributions treated as continuous stream
       const ert = Math.exp(annualRate * t);
       if (isFinite(ert)) {
         final = P * ert;
         if (annualRate > 0 && PMT > 0) {
-          final += PMT * 12 * ((ert - 1) / annualRate);
+          let contribFV = PMT * 12 * ((ert - 1) / annualRate);
+          // Beginning-of-period: multiply by e^(r/n) for continuous (approx)
+          if (timing === "beginning") contribFV *= Math.exp(annualRate / 365);
+          final += contribFV;
         } else if (PMT > 0) {
           final += PMT * 12 * t;
         }
@@ -68,23 +74,23 @@ export default function CompoundInterestCalculator() {
           const f = Math.pow(base, periods);
           if (isFinite(f)) {
             final = P * f;
-            // Monthly contributions compounded at the chosen frequency
             const pmtPerPeriod = (PMT * 12) / n;
             if (periodRate !== 0) {
-              final += pmtPerPeriod * ((f - 1) / periodRate);
+              let contribFV = pmtPerPeriod * ((f - 1) / periodRate);
+              // Beginning-of-period: multiply contribution FV by (1+r/m)
+              if (timing === "beginning") contribFV *= (1 + periodRate);
+              final += contribFV;
             } else {
               final += pmtPerPeriod * periods;
             }
-          } else {
-            final = P;
           }
         }
       }
     }
     if (!isFinite(final)) final = P;
     const interest = final - principalTotal;
-    return { P, PMT, final, principalTotal, interest, t, isContinuous };
-  }, [principal, rate, freq, years, monthlyContribution]);
+    return { P, PMT, final, principalTotal, interest, t, isContinuous, timing };
+  }, [principal, rate, freq, years, monthlyContribution, timing]);
 
   const chartPoints = useMemo(() => {
     const P = parseNum(principal);
@@ -192,6 +198,12 @@ export default function CompoundInterestCalculator() {
                 value={monthlyContribution}
                 onChange={(e) => setMonthlyContribution(e.target.value)}
               />
+            </Field>
+            <Field label="Contribution Timing">
+              <SelectInput value={timing} onChange={(e) => setTiming(e.target.value as "end" | "beginning")}>
+                <option value="end">End of period</option>
+                <option value="beginning">Beginning of period</option>
+              </SelectInput>
             </Field>
           </div>
         </CalcCard>

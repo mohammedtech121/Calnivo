@@ -80,6 +80,7 @@ export default function RandomNumberCalculator() {
   const [minStr, setMinStr] = useState("1");
   const [maxStr, setMaxStr] = useState("100");
   const [countStr, setCountStr] = useState("1");
+  const [entropy, setEntropy] = useState(0);
   const [unique, setUnique] = useState(false);
   const [sortMode, setSortMode] = useState<SortMode>("none");
   const [numbers, setNumbers] = useState<number[]>([]);

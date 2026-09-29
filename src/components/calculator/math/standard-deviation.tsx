@@ -33,6 +33,9 @@ interface Stats {
   sampleVar: number;
   sampleStd: number;
   sorted: number[];
+  q1: number;
+  q3: number;
+  iqr: number;
 }
 
 // Cap the number of parsed values to keep the browser responsive. Anything
@@ -67,6 +70,11 @@ function computeStats(nums: number[]): Stats | null {
   const n = sorted.length;
   const sum = sorted.reduce((s, x) => s + x, 0);
   const mean = sum / n;
+  const q1Idx = Math.floor(n * 0.25);
+  const q3Idx = Math.floor(n * 0.75);
+  const q1 = n > 0 ? sorted[Math.min(q1Idx, n - 1)] : 0;
+  const q3 = n > 0 ? sorted[Math.min(q3Idx, n - 1)] : 0;
+  const iqr = q3 - q1;
   const median =
     n % 2 === 0
       ? (sorted[n / 2 - 1] + sorted[n / 2]) / 2
@@ -98,6 +106,9 @@ function computeStats(nums: number[]): Stats | null {
     sampleVar,
     sampleStd,
     sorted,
+    q1,
+    q3,
+    iqr,
   };
 }
 

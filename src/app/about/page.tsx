@@ -3,15 +3,57 @@ import { Layout } from "@/components/layout/Layout";
 import { Calculator, Heart, Lock, Zap } from "lucide-react";
 
 export const metadata = {
-  title: "About — Founders, Mission & Our Story",
+  title: "About Calnivo — Founders Mohammed Khan & Hammad Khan",
   description:
-    "Learn about Calnivo, founded by Hammad Khan and Mohammed Khan, and our mission to build accurate, understandable and useful online calculators.",
-  alternates: { canonical: "/about" },
+    "Calnivo was founded by Mohammed Khan and Hammad Khan. Learn about our mission to build accurate, understandable and useful online calculators for finance, health, math and everyday use.",
+  alternates: { canonical: "https://calnivocalc.com/about" },
+  openGraph: {
+    title: "About Calnivo — Founders Mohammed Khan & Hammad Khan",
+    description:
+      "Calnivo was founded by Mohammed Khan and Hammad Khan. Learn about our mission to build accurate, understandable and useful online calculators.",
+    url: "https://calnivocalc.com/about",
+    siteName: "Calnivo",
+    type: "website",
+  },
+  twitter: {
+    card: "summary",
+    title: "About Calnivo — Founders Mohammed Khan & Hammad Khan",
+    description:
+      "Calnivo was founded by Mohammed Khan and Hammad Khan. Learn about our mission.",
+  },
 };
 
 export default function AboutPage() {
+  // Page-specific Organization JSON-LD — reinforces founder connection on /about
+  const aboutOrgLd = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "@id": "https://calnivocalc.com/#organization",
+    name: "Calnivo",
+    url: "https://calnivocalc.com/",
+    logo: "https://calnivocalc.com/calnivo-logo.png",
+    description:
+      "Calnivo is an online calculator platform founded by Mohammed Khan and Hammad Khan.",
+    founder: [
+      {
+        "@type": "Person",
+        name: "Mohammed Khan",
+        jobTitle: "Founder",
+      },
+      {
+        "@type": "Person",
+        name: "Hammad Khan",
+        jobTitle: "Founder",
+      },
+    ],
+  };
+
   return (
     <Layout>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(aboutOrgLd) }}
+      />
       <div className="mx-auto max-w-4xl px-4 py-10 sm:px-6 sm:py-12">
         <h1 className="text-3xl font-bold tracking-tight text-brand-ink sm:text-4xl">
           About Calnivo

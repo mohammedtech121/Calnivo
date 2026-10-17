@@ -37,7 +37,7 @@ function todayStr(): string {
 
 export default function AgeCalculator() {
   const [birth, setBirth] = useState<string>("2000-01-01");
-  const [ageAt, setAgeAt] = useState<string>("2024-01-01");
+  const [ageAt, setAgeAt] = useState<string>("2026-01-01");
 
   const result = useMemo(() => {
     if (!birth || !ageAt) return null;
@@ -216,7 +216,7 @@ function Stat({
         subtitle="See how different inputs affect your result"
         badge="A/B"
       >
-        <p className="text-sm text-brand-muted">Scenario comparison will appear here.</p>
+        <p className="text-sm text-brand-muted">Enter different values above to compare scenarios. Results update automatically.</p>
       </ExpandableSection>
 
       <LocalHistory calculatorId="age" />

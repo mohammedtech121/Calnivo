@@ -150,8 +150,10 @@ export default function IncomeTaxCalculator() {
             </Field>
           </div>
           <p className="mt-3 text-xs text-brand-muted">
-            Using IRS 2024 federal income tax brackets for {LABELS[status]}.
-            State taxes, deductions and credits are not included.
+            Using <strong className="text-brand-ink">IRS 2024 federal income tax brackets</strong> for {LABELS[status]}.
+            These are for the 2024 tax year (taxes filed in 2025). State taxes, most deductions and
+            credits are not included. Actual tax liability depends on your specific situation —
+            consult a qualified tax professional.
           </p>
         </CalcCard>
 
@@ -253,7 +255,7 @@ export default function IncomeTaxCalculator() {
         subtitle="See how different inputs affect your result"
         badge="A/B"
       >
-        <p className="text-sm text-brand-muted">Scenario comparison will appear here.</p>
+        <p className="text-sm text-brand-muted">Enter different values above to compare scenarios. Results update automatically.</p>
       </ExpandableSection>
 
       <LocalHistory calculatorId="income-tax" />

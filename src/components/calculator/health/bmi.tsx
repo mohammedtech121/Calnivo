@@ -311,6 +311,18 @@ export default function BMICalculator() {
         </CalcCard>
       )}
 
+      {hasResult && (
+        <div className="rounded-lg border border-brand bg-gradient-to-br from-accent/30 to-white p-4">
+          <p className="text-xs leading-relaxed text-brand-muted">
+            <strong className="text-brand-ink">About this result:</strong> BMI is calculated using
+            the standard adult formula (weight ÷ height²) and applies to adults aged 20 and over.
+            The category thresholds (underweight, normal, overweight, obese) follow WHO guidelines
+            for adults. BMI is a screening metric, not a diagnostic of body fatness or health —
+            consult a healthcare professional for personal medical advice.
+          </p>
+        </div>
+      )}
+
       <ResultActions summaryText="Calnivo calculation result" disabled={false} />
 
       <ExpandableSection
@@ -318,7 +330,7 @@ export default function BMICalculator() {
         subtitle="See how different inputs affect your result"
         badge="A/B"
       >
-        <p className="text-sm text-brand-muted">Scenario comparison will appear here.</p>
+        <p className="text-sm text-brand-muted">Enter different values above to compare scenarios. Results update automatically.</p>
       </ExpandableSection>
 
       <LocalHistory calculatorId="bmi" />

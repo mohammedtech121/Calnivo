@@ -27,6 +27,18 @@ export default function PrivacyPage() {
               calculations run entirely in your browser.</strong> We do not collect, store, or
               transmit the numbers you enter into any calculator. We have no user accounts, no
               database, and no backend. You don&apos;t need to register or sign in to use any tool.
+              However, our hosting provider (Netlify) may automatically log standard server request
+              metadata (such as IP address and browser type) for security and operational purposes.
+              This is standard for any website and is governed by{" "}
+              <a
+                href="https://www.netlify.com/privacy-policy/"
+                rel="noopener noreferrer"
+                target="_blank"
+                className="font-medium text-brand-accent-deep hover:underline"
+              >
+                Netlify&apos;s privacy policy
+              </a>
+              .
             </p>
           </section>
 

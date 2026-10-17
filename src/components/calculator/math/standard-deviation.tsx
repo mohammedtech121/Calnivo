@@ -293,7 +293,7 @@ function Stat({ label, value }: { label: string; value: string }) {
         subtitle="See how different inputs affect your result"
         badge="A/B"
       >
-        <p className="text-sm text-brand-muted">Scenario comparison will appear here.</p>
+        <p className="text-sm text-brand-muted">Enter different values above to compare scenarios. Results update automatically.</p>
       </ExpandableSection>
 
       <LocalHistory calculatorId="standard-deviation" />

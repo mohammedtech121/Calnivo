@@ -1,32 +1,20 @@
 import type { NextConfig } from "next";
 
-// Security headers applied to every route. These are evaluated by browsers
-// on every response and materially raise the bar for XSS, clickjacking,
-// MIME-sniffing and mixed-content attacks.
+// Security headers applied to every route.
 //
-// Notes on the chosen policy:
-//  - script-src 'self' 'unsafe-inline'  → Next.js injects inline hydration
-//    scripts and runtime bootstrap chunks. A strict nonce-based policy would
-//    require SSR + a per-request nonce, which is overkill for a fully static
-//    client-side SPA. 'unsafe-inline' is safe here because the app renders
-//    no user-controlled HTML (React escapes everything by default).
-//  - style-src 'self' 'unsafe-inline'  → Tailwind + Next.js inject critical
-//    CSS inline; blocking inline styles would break first paint.
-//  - connect-src 'self'                 → the app makes NO outbound network
-//    calls, so we lock this down hard. If you later add analytics or a real
-//    backend, add that origin here.
-//  - frame-ancestors 'none'             → hard block clickjacking (stronger
-//    than X-Frame-Options: DENY).
+// Updated to allow Google Analytics (GA4) scripts + connections:
+// - script-src: adds googletagmanager.com (gtag.js loader)
+// - connect-src: adds google-analytics.com (data sending)
 const securityHeaders = [
   {
     key: "Content-Security-Policy",
     value: [
       "default-src 'self'",
-      "script-src 'self' 'unsafe-inline'",
+      "script-src 'self' 'unsafe-inline' https://www.googletagmanager.com",
       "style-src 'self' 'unsafe-inline'",
-      "img-src 'self' data:",
+      "img-src 'self' data: https://www.google-analytics.com https://www.googletagmanager.com",
       "font-src 'self'",
-      "connect-src 'self'",
+      "connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://region1.google-analytics.com",
       "frame-ancestors 'none'",
       "base-uri 'self'",
       "form-action 'self'",

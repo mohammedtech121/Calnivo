@@ -72,6 +72,27 @@ export default function PrivacyPage() {
           </section>
 
           <section>
+            <h2 className="text-xl font-semibold text-brand-ink">Analytics</h2>
+            <p className="mt-2">
+              Calnivo uses <strong className="text-brand-ink">Google Analytics 4</strong> to
+              collect aggregate, anonymized usage statistics (such as which calculator pages are
+              visited and general geographic region). Google Analytics uses cookies to track
+              sessions. You can opt out of Google Analytics cookies, use a browser extension like
+              the{" "}
+              <a
+                href="https://tools.google.com/dlpage/gaoptout"
+                rel="noopener noreferrer"
+                target="_blank"
+                className="font-medium text-brand-accent-deep hover:underline"
+              >
+                Google Analytics Opt-out Browser Add-on
+              </a>
+              , or enable &ldquo;Do Not Track&rdquo; in your browser settings. We do NOT send your
+              calculator input values to Google Analytics — only page view events.
+            </p>
+          </section>
+
+          <section>
             <h2 className="text-xl font-semibold text-brand-ink">Hosting</h2>
             <p className="mt-2">
               The website is hosted on Netlify. Netlify&apos;s servers may log standard request

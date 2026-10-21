@@ -4,7 +4,7 @@ import { Layout } from "@/components/layout/Layout";
 export const metadata = {
   title: "Privacy Policy",
   description:
-    "Calnivo's privacy policy. All calculators run 100% client-side. We collect no personal data, no financial inputs, and require no registration.",
+    "Calnivo's privacy policy. Calculator inputs run in your browser. We use Google Analytics 4 with consent. Read the full details here.",
   alternates: { canonical: "/privacy" },
 };
 
@@ -16,20 +16,94 @@ export default function PrivacyPage() {
           Privacy Policy
         </h1>
         <p className="mt-2 text-sm text-brand-muted">
-          Last updated: August 2026
+          Last updated: October 2026
         </p>
 
         <div className="mt-8 space-y-6 text-[15px] leading-relaxed text-brand-muted">
+          {/* Short version */}
           <section>
             <h2 className="text-xl font-semibold text-brand-ink">The short version</h2>
             <p className="mt-2">
-              Calnivo is a free calculator website. <strong className="text-brand-ink">All
-              calculations run entirely in your browser.</strong> We do not collect, store, or
-              transmit the numbers you enter into any calculator. We have no user accounts, no
-              database, and no backend. You don&apos;t need to register or sign in to use any tool.
-              However, our hosting provider (Netlify) may automatically log standard server request
-              metadata (such as IP address and browser type) for security and operational purposes.
-              This is standard for any website and is governed by{" "}
+              <strong className="text-brand-ink">Calculator inputs and results stay in your
+              browser.</strong> Calnivo does not transmit, store, or process the numbers you enter
+              into any calculator. However, the website itself uses hosting services and, with your
+              consent, Google Analytics to collect basic usage statistics. This policy explains
+              exactly what is and isn&apos;t processed.
+            </p>
+          </section>
+
+          {/* Calculator inputs */}
+          <section>
+            <h2 className="text-xl font-semibold text-brand-ink">Calculator inputs and results</h2>
+            <p className="mt-2">
+              All calculations (mortgage payments, BMI, compound interest, password generation,
+              etc.) run entirely in your browser using JavaScript. The values you type into
+              calculator fields are never sent to our servers, Google Analytics, or any third
+              party. There is no database that stores your calculator inputs. You do not need to
+              register or sign in to use any tool.
+            </p>
+            <p className="mt-2">
+              We do NOT collect or transmit: your name, email, financial values you enter (loan
+              amounts, income, etc.), health measurements, calculation history, generated
+              passwords, or any personal information you type into a calculator.
+            </p>
+          </section>
+
+          {/* Analytics — single accurate section */}
+          <section>
+            <h2 className="text-xl font-semibold text-brand-ink">
+              Google Analytics 4
+            </h2>
+            <p className="mt-2">
+              Calnivo uses <strong className="text-brand-ink">Google Analytics 4</strong> (GA4,
+              Measurement ID: G-L38QJ6QYWQ) to collect basic, aggregate usage statistics — such as
+              which calculator pages are visited, approximate geographic region, and general device
+              type. This helps us understand which tools are useful and improve the site.
+            </p>
+            <p className="mt-2">
+              <strong className="text-brand-ink">GA4 does not load until you grant consent.</strong>{" "}
+              When you first visit Calnivo, you will see a consent banner asking whether you accept
+              analytics tracking. If you reject, no GA4 scripts load, no GA4 cookies are set, and
+              no usage data is sent to Google. If you accept, GA4 may use cookies or similar
+              technologies to track your session.
+            </p>
+            <p className="mt-2">
+              Google Analytics processes usage and technical information that may include: pages
+              visited, duration, approximate location (country/region), browser type, and referral
+              source. This data is processed by Google under{" "}
+              <a
+                href="https://policies.google.com/technologies/partner-sites"
+                rel="noopener noreferrer"
+                target="_blank"
+                className="font-medium text-brand-accent-deep hover:underline"
+              >
+                Google&apos;s privacy policy
+              </a>
+              . We do not send calculator inputs, results, health data, financial values, or
+              generated passwords to Google Analytics.
+            </p>
+            <p className="mt-2">
+              You can change your analytics preference at any time by clicking{" "}
+              &ldquo;Privacy settings&rdquo; in the footer. You can also use the{" "}
+              <a
+                href="https://tools.google.com/dlpage/gaoptout"
+                rel="noopener noreferrer"
+                target="_blank"
+                className="font-medium text-brand-accent-deep hover:underline"
+              >
+                Google Analytics Opt-out Browser Add-on
+              </a>{" "}
+              or configure your browser to block third-party cookies.
+            </p>
+          </section>
+
+          {/* Hosting */}
+          <section>
+            <h2 className="text-xl font-semibold text-brand-ink">Hosting</h2>
+            <p className="mt-2">
+              The website is hosted on Netlify. Netlify&apos;s servers may log standard request
+              metadata (IP address, browser type, timestamp) for security and uptime purposes, as
+              described in{" "}
               <a
                 href="https://www.netlify.com/privacy-policy/"
                 rel="noopener noreferrer"
@@ -38,94 +112,86 @@ export default function PrivacyPage() {
               >
                 Netlify&apos;s privacy policy
               </a>
-              .
+              . We do not control or have access to those logs. Retention of hosting logs is
+              governed by Netlify&apos;s configuration and documentation.
             </p>
           </section>
 
+          {/* Email contact */}
           <section>
-            <h2 className="text-xl font-semibold text-brand-ink">What we don&apos;t collect</h2>
-            <ul className="mt-2 list-disc space-y-1 pl-6">
-              <li>Your name, email, or any personal information</li>
-              <li>The financial values you enter into calculators (loan amounts, income, etc.)</li>
-              <li>Your calculation history or results</li>
-              <li>Cookies for tracking or advertising</li>
-              <li>Account credentials (there are no accounts)</li>
-            </ul>
-          </section>
-
-          <section>
-            <h2 className="text-xl font-semibold text-brand-ink">What is processed locally</h2>
+            <h2 className="text-xl font-semibold text-brand-ink">Contacting Calnivo</h2>
             <p className="mt-2">
-              Every calculation (mortgage payments, BMI, compound interest, etc.) is computed by
-              JavaScript running in your own browser. The values you type never leave your device.
-              There is no server that receives your inputs.
-            </p>
-          </section>
-
-          <section>
-            <h2 className="text-xl font-semibold text-brand-ink">Analytics</h2>
-            <p className="mt-2">
-              Calnivo currently does not use Google Analytics, Facebook Pixel, or any third-party
-              analytics or advertising scripts. If we add analytics in the future, this policy will
-              be updated and we will use privacy-respecting, aggregate-only metrics.
-            </p>
-          </section>
-
-          <section>
-            <h2 className="text-xl font-semibold text-brand-ink">Analytics</h2>
-            <p className="mt-2">
-              Calnivo uses <strong className="text-brand-ink">Google Analytics 4</strong> to
-              collect aggregate, anonymized usage statistics (such as which calculator pages are
-              visited and general geographic region). Google Analytics uses cookies to track
-              sessions. You can opt out of Google Analytics cookies, use a browser extension like
-              the{" "}
+              If you email us at{" "}
               <a
-                href="https://tools.google.com/dlpage/gaoptout"
-                rel="noopener noreferrer"
-                target="_blank"
+                href="mailto:hello@calnivocalc.com"
                 className="font-medium text-brand-accent-deep hover:underline"
               >
-                Google Analytics Opt-out Browser Add-on
+                hello@calnivocalc.com
               </a>
-              , or enable &ldquo;Do Not Track&rdquo; in your browser settings. We do NOT send your
-              calculator input values to Google Analytics — only page view events.
+              , the contents of your message and your email address are necessarily transmitted to
+              our email provider. We do not share your email with third parties for marketing.
             </p>
           </section>
 
+          {/* Children */}
           <section>
-            <h2 className="text-xl font-semibold text-brand-ink">Hosting</h2>
+            <h2 className="text-xl font-semibold text-brand-ink">Children</h2>
             <p className="mt-2">
-              The website is hosted on Netlify. Netlify&apos;s servers may log standard request
-              metadata (IP address, browser type, timestamp) for security and uptime purposes, as
-              described in their{" "}
+              Calnivo is intended for general use by adults. We do not knowingly collect personal
+              information from children. If you believe a child has provided personal information
+              to us, please contact us and we will take appropriate action.
+            </p>
+          </section>
+
+          {/* Privacy requests */}
+          <section>
+            <h2 className="text-xl font-semibold text-brand-ink">Your privacy rights</h2>
+            <p className="mt-2">
+              Depending on your location (e.g., EEA, UK, California), you may have rights to
+              access, correct, or request deletion of personal data. Since Calnivo does not maintain
+              a user database and calculator inputs are not transmitted, most personal data we may
+              process is limited to analytics and hosting metadata. To make a privacy request,
+              contact us at{" "}
               <a
-                href="https://www.netlify.com/privacy-policy/"
-                rel="noopener noreferrer"
-                target="_blank"
+                href="mailto:hello@calnivocalc.com"
                 className="font-medium text-brand-accent-deep hover:underline"
               >
-                privacy policy
-              </a>
-              . We do not control or have access to those logs.
+                hello@calnivocalc.com
+              </a>{" "}
+              or via our{" "}
+              <Link
+                href="/contact"
+                className="font-medium text-brand-accent-deep hover:underline"
+              >
+                contact page
+              </Link>
+              . Your rights depend on applicable law.
             </p>
           </section>
 
+          {/* Retention */}
           <section>
-            <h2 className="text-xl font-semibold text-brand-ink">Children&apos;s privacy</h2>
+            <h2 className="text-xl font-semibold text-brand-ink">Data retention</h2>
             <p className="mt-2">
-              Calnivo is safe for users of all ages. We do not knowingly collect any information
-              from children or anyone else.
+              Calculator inputs are not retained at all — they exist only in your browser session.
+              Google Analytics data retention depends on the GA4 property configuration (you can
+              review Google&apos;s documentation for default retention periods). Hosting logs are
+              managed by Netlify according to their policies. We do not maintain a separate database
+              of user data.
             </p>
           </section>
 
+          {/* Changes */}
           <section>
             <h2 className="text-xl font-semibold text-brand-ink">Changes to this policy</h2>
             <p className="mt-2">
               If we change this privacy policy, we will update the &ldquo;Last updated&rdquo; date
-              at the top of this page.
+              at the top of this page and review whether material changes require a new consent
+              prompt.
             </p>
           </section>
 
+          {/* Contact */}
           <section>
             <h2 className="text-xl font-semibold text-brand-ink">Contact</h2>
             <p className="mt-2">

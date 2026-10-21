@@ -1,8 +1,9 @@
 import type { Metadata, Viewport } from "next";
-import Script from "next/script";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
+import { ConsentBanner } from "@/components/layout/ConsentBanner";
+import { AnalyticsLoader } from "@/components/layout/AnalyticsLoader";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -228,20 +229,8 @@ export default function RootLayout({
         </a>
         {children}
         <Toaster />
-
-        {/* Google Analytics (GA4) — Measurement ID: G-L38QJ6QYWQ */}
-        <Script
-          src="https://www.googletagmanager.com/gtag/js?id=G-L38QJ6QYWQ"
-          strategy="afterInteractive"
-        />
-        <Script id="ga4-init" strategy="afterInteractive">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'G-L38QJ6QYWQ');
-          `}
-        </Script>
+        <ConsentBanner />
+        <AnalyticsLoader />
       </body>
     </html>
   );

@@ -68,8 +68,8 @@ export function HomePage() {
             <ul className="mt-4 space-y-4 text-sm">
               {[
                 ["100% Free", "Every tool, every time. No registration required."],
-                ["Trusted logic", "Each calculator is tested for accuracy."],
-                ["Privacy first", "All math happens in your browser."],
+                ["Trusted logic", "Formulas verified against authoritative references."],
+                ["Private by design", "Calculator inputs stay in your browser."],
                 ["40+ tools", "Finance, health, math & everyday utilities."],
               ].map(([t, d]) => (
                 <li key={t} className="flex gap-3">

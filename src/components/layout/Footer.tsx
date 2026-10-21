@@ -6,18 +6,29 @@ import { Logo } from "./Logo";
 
 const FOOTER_LINKS = [
   { label: "About", href: "/about" },
-  { label: "Sitemap", href: "/calculators" },
+  { label: "Calculators", href: "/calculators" },
+  { label: "Disclaimer", href: "/disclaimer" },
   { label: "Terms", href: "/terms" },
   { label: "Privacy", href: "/privacy" },
   { label: "Contact", href: "/contact" },
 ] as const;
 
-// Launch year of Calnivo. Used in the copyright line. Kept as a constant
-// (not `new Date().getFullYear()`) to avoid SSR/CSR hydration mismatches.
 const LAUNCH_YEAR = 2026;
 
 export function Footer() {
   const setHome = useCalcNav((s) => s.setHome);
+
+  const handlePrivacySettings = () => {
+    if (typeof window !== "undefined") {
+      const resetFn = (window as unknown as { __calnivoResetConsent?: () => void }).__calnivoResetConsent;
+      if (resetFn) {
+        resetFn();
+      } else {
+        window.location.href = "/privacy";
+      }
+    }
+  };
+
   return (
     <footer className="mt-auto border-t border-brand bg-brand-canvas">
       <div className="mx-auto max-w-[1200px] px-4 py-8 sm:px-6">
@@ -37,6 +48,12 @@ export function Footer() {
                 {l.label}
               </Link>
             ))}
+            <button
+              onClick={handlePrivacySettings}
+              className="text-sm text-brand-muted transition-colors hover:text-brand-accent-deep"
+            >
+              Privacy settings
+            </button>
           </nav>
         </div>
         <div className="mt-5 flex flex-col items-center justify-between gap-2 sm:flex-row">
@@ -44,7 +61,10 @@ export function Footer() {
             © {LAUNCH_YEAR} Calnivo · Free online calculators
           </p>
           <p className="text-xs text-brand-muted/80">
-            Calculations run in your browser. No data collected.
+            Calculator inputs stay in your browser.{" "}
+            <Link href="/privacy" className="hover:text-brand-accent-deep hover:underline">
+              Privacy Policy
+            </Link>
           </p>
         </div>
       </div>

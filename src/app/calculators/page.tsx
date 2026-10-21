@@ -114,7 +114,11 @@ export default function AllCalculatorsPage() {
         <div className="mt-14 rounded-2xl border border-brand bg-gradient-to-br from-accent/40 to-white p-6 shadow-brand sm:p-8">
           <h2 className="text-lg font-bold text-brand-ink">Why Calnivo?</h2>
           <p className="mt-2 text-sm leading-relaxed text-brand-muted">
-            Every calculator runs locally in your browser — no backend, no database, no tracking.
+            Every calculator runs locally in your browser. See our{" "}
+            <a href="/privacy" className="font-medium text-brand-accent-deep hover:underline">
+              Privacy Policy
+            </a>{" "}
+            for hosting and analytics details.
             Results are estimates for planning purposes. For financial or medical decisions,
             consult a qualified professional. Read our{" "}
             <Link

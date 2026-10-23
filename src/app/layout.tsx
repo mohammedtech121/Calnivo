@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     template: "%s | Calnivo",
   },
   description:
-    "Fast, comprehensive, free online calculators across finance, fitness, health, math and everyday utilities. 40+ tools, all client-side, no registration required.",
+    "Fast, comprehensive, free online calculators across finance, fitness, health, math and everyday utilities. 40+ tools, all client-side, no sign-up required.",
   applicationName: "Calnivo",
   keywords: [
     "calculator",
@@ -75,7 +75,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Calnivo — Free Online Calculators",
     description:
-      "Fast, comprehensive, free online calculators across finance, fitness, health, math and everyday utilities. 40+ tools, all client-side, no registration required.",
+      "Fast, comprehensive, free online calculators across finance, fitness, health, math and everyday utilities. 40+ tools, all client-side, no sign-up required.",
     url: SITE_URL,
     siteName: "Calnivo",
     type: "website",
@@ -113,7 +113,7 @@ const jsonLd = {
   name: "Calnivo",
   url: SITE_URL,
   description:
-    "Free online calculators for finance, fitness, health, math and everyday utilities. 40+ tools, all client-side, no registration required.",
+    "Free online calculators for finance, fitness, health, math and everyday utilities. 40+ tools, all client-side, no sign-up required.",
   applicationCategory: "UtilitiesApplication",
   operatingSystem: "Any",
   browserRequirements: "Requires a modern web browser with JavaScript enabled.",
@@ -182,7 +182,7 @@ const organizationLd = {
   url: SITE_URL,
   logo: LOGO_URL,
   description:
-    "Free online calculators for finance, fitness, health, math and everyday utilities. 40+ tools, all client-side, no registration required.",
+    "Free online calculators for finance, fitness, health, math and everyday utilities. 40+ tools, all client-side, no sign-up required.",
   founder: [
     {
       "@type": "Person",

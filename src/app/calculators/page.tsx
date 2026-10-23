@@ -36,7 +36,7 @@ export default function AllCalculatorsPage() {
         </h1>
         <p className="mt-3 max-w-2xl text-base leading-relaxed text-brand-muted">
           Browse every free online calculator on Calnivo. Filter by category, or jump straight to
-          the tool you need. All calculators run 100% in your browser — no sign-up, no data
+          the tool you need. All calculators run 100% in your browser — no sign-up required. Calculator inputs
           collected.
         </p>
 

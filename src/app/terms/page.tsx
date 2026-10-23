@@ -15,7 +15,7 @@ export default function TermsPage() {
         <h1 className="text-3xl font-bold tracking-tight text-brand-ink sm:text-4xl">
           Terms of Use
         </h1>
-        <p className="mt-2 text-sm text-brand-muted">Last updated: August 2026</p>
+        <p className="mt-2 text-sm text-brand-muted">Last updated: October 2026</p>
 
         <div className="mt-8 space-y-6 text-[15px] leading-relaxed text-brand-muted">
           <section>

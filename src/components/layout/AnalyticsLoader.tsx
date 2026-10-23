@@ -2,34 +2,62 @@
 
 import { useState, useEffect } from "react";
 import Script from "next/script";
+import {
+  subscribeConsent,
+  getCurrentConsent,
+  type ConsentChoice,
+} from "./ConsentBanner";
 
-const STORAGE_KEY = "calnivo:consent";
 const GA_ID = "G-L38QJ6QYWQ";
 
 /**
- * Client-only GA4 loader.
+ * Client-only GA4 loader with reactive consent.
  *
- * Renders GA4 scripts ONLY after the user has accepted analytics consent.
- * Checks localStorage on mount — if consent is "accepted", loads gtag.js.
- * If consent is not yet given or rejected, no scripts render (no network
- * requests, no cookies).
+ * Per the Privacy/Consent Audit Fix Report P0-01:
+ * - GA4 loads ONLY after user accepts consent
+ * - If user withdraws consent, GA4 is immediately disabled (no reload needed)
+ * - Uses subscribeConsent() for reactive state sharing with ConsentBanner
+ * - No duplicate GA4 initialization
  */
 export function AnalyticsLoader() {
   const [consented, setConsented] = useState(false);
 
   useEffect(() => {
+    // Check initial consent
     const id = window.setTimeout(() => {
-      try {
-        const stored = localStorage.getItem(STORAGE_KEY);
-        if (stored === "accepted") {
-          setConsented(true);
-        }
-      } catch {
-        /* noop */
-      }
+      const initial = getCurrentConsent();
+      setConsented(initial === "accepted");
     }, 0);
-    return () => window.clearTimeout(id);
+
+    // Subscribe to consent changes — reactively enable/disable
+    const unsubscribe = subscribeConsent((choice: ConsentChoice) => {
+      setConsented(choice === "accepted");
+    });
+
+    return () => {
+      window.clearTimeout(id);
+      unsubscribe();
+    };
   }, []);
+
+  // When consent is withdrawn, remove gtag from window to stop further events
+  useEffect(() => {
+    if (!consented && typeof window !== "undefined") {
+      // Clear dataLayer to prevent further events
+      const w = window as unknown as { dataLayer?: unknown[] };
+      if (w.dataLayer) {
+        w.dataLayer.length = 0;
+      }
+      // Remove GA cookies (best-effort)
+      document.cookie.split(";").forEach((c) => {
+        const eq = c.indexOf("=");
+        const name = c.slice(0, eq > -1 ? eq : c.length).trim();
+        if (name.startsWith("_ga") || name.startsWith("_gid") || name.startsWith("_gat")) {
+          document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/`;
+        }
+      });
+    }
+  }, [consented]);
 
   if (!consented) return null;
 

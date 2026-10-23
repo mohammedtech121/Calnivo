@@ -56,21 +56,11 @@ export default function PrivacyPage() {
             </h2>
             <p className="mt-2">
               Calnivo uses <strong className="text-brand-ink">Google Analytics 4</strong> (GA4,
-              Measurement ID: G-L38QJ6QYWQ) to collect basic, aggregate usage statistics — such as
-              which calculator pages are visited, approximate geographic region, and general device
-              type. This helps us understand which tools are useful and improve the site.
-            </p>
-            <p className="mt-2">
-              <strong className="text-brand-ink">GA4 does not load until you grant consent.</strong>{" "}
-              When you first visit Calnivo, you will see a consent banner asking whether you accept
-              analytics tracking. If you reject, no GA4 scripts load, no GA4 cookies are set, and
-              no usage data is sent to Google. If you accept, GA4 may use cookies or similar
-              technologies to track your session.
-            </p>
-            <p className="mt-2">
-              Google Analytics processes usage and technical information that may include: pages
-              visited, duration, approximate location (country/region), browser type, and referral
-              source. This data is processed by Google under{" "}
+              Measurement ID: G-L38QJ6QYWQ) to process usage and technical information — such as
+              which calculator pages are visited, session duration, approximate geographic region,
+              browser type, and referral source. Google Analytics uses this information to generate
+              reports that help us understand which tools are useful and improve the site. Google
+              processes this data under{" "}
               <a
                 href="https://policies.google.com/technologies/partner-sites"
                 rel="noopener noreferrer"
@@ -79,8 +69,26 @@ export default function PrivacyPage() {
               >
                 Google&apos;s privacy policy
               </a>
-              . We do not send calculator inputs, results, health data, financial values, or
-              generated passwords to Google Analytics.
+              .
+            </p>
+            <p className="mt-2">
+              <strong className="text-brand-ink">GA4 does not load until you grant consent.</strong>{" "}
+              When you first visit Calnivo, you will see a consent banner asking whether you accept
+              analytics tracking. If you reject, no GA4 scripts load, no GA4 cookies are set, and
+              no usage data is sent to Google. If you accept, GA4 may use cookies or similar
+              technologies to track your session. You can withdraw consent at any time via
+              &ldquo;Privacy settings&rdquo; in the footer — GA4 will immediately stop collecting.
+            </p>
+            <p className="mt-2">
+              <strong className="text-brand-ink">Your consent preference is stored in your
+              browser&apos;s local storage</strong> (under the key <code>calnivo:consent</code>)
+              so Calnivo remembers your choice on future visits. This is separate from GA4 cookies
+              and is not sent to Google. If you reject analytics, no GA4 cookies are ever set.
+            </p>
+            <p className="mt-2">
+              We do NOT send calculator inputs, calculation results, health data, financial
+              values, generated passwords, or any personal information you type into a calculator
+              to Google Analytics. Only page-view-level events are tracked.
             </p>
             <p className="mt-2">
               You can change your analytics preference at any time by clicking{" "}

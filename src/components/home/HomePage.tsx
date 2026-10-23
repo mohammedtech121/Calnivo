@@ -318,7 +318,7 @@ function SeoContentHub() {
           BMI calculator</strong> to check your body mass index, a <strong className="text-brand-ink">
           scientific calculator</strong> for trigonometry and logarithms, or a <strong className="text-brand-ink">
           compound interest calculator</strong> to project your savings growth — every tool runs
-          instantly in your browser. No sign-up, no ads in the way, no data collected.
+          instantly in your browser. No sign-up, no ads in the way. Calculator inputs stay in your browser.
         </p>
         <p className="mt-3 text-sm leading-relaxed text-brand-muted">
           Use our <strong className="text-brand-ink">loan calculator</strong> for personal-loan

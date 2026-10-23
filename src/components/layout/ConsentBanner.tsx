@@ -109,9 +109,10 @@ export function ConsentBanner() {
         <div className="flex items-start gap-3">
           <Cookie className="mt-0.5 h-5 w-5 shrink-0 text-brand-accent-deep" aria-hidden="true" />
           <p className="text-xs leading-relaxed text-brand-muted">
-            Calnivo uses Google Analytics to understand which calculators are
-            useful. Calculator inputs and results stay in your browser and are
-            never sent anywhere. Your choice is saved in this browser.{" "}
+            Calnivo uses Google Analytics and may show Google AdSense ads to
+            keep the site free. Calculator inputs and results stay in your
+            browser and are never sent anywhere. Your choice is saved in this
+            browser.{" "}
             <Link href="/privacy" className="font-medium text-brand-accent-deep hover:underline">
               Privacy Policy
             </Link>

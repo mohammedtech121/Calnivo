@@ -105,6 +105,47 @@ export default function PrivacyPage() {
             </p>
           </section>
 
+          {/* Advertising */}
+          <section>
+            <h2 className="text-xl font-semibold text-brand-ink">Advertising (Google AdSense)</h2>
+            <p className="mt-2">
+              Calnivo may display advertisements served by{" "}
+              <strong className="text-brand-ink">Google AdSense</strong> (Publisher ID:{" "}
+              ca-pub-4136175675290701). Like Google Analytics,{" "}
+              <strong className="text-brand-ink">AdSense only loads after you grant consent.</strong>{" "}
+              If you reject or withdraw consent, no AdSense scripts load and no advertising cookies
+              are set.
+            </p>
+            <p className="mt-2">
+              Google AdSense may use cookies to serve ads based on your prior visits to this and
+              other websites. Google&apos;s use of advertising cookies enables it and its partners to
+              serve ads based on your visit to our site and/or other sites on the internet. You may
+              opt out of personalised advertising by visiting{" "}
+              <a
+                href="https://www.google.com/settings/ads"
+                rel="noopener noreferrer"
+                target="_blank"
+                className="font-medium text-brand-accent-deep hover:underline"
+              >
+                Google Ads Settings
+              </a>
+              . See{" "}
+              <a
+                href="https://policies.google.com/technologies/ads"
+                rel="noopener noreferrer"
+                target="_blank"
+                className="font-medium text-brand-accent-deep hover:underline"
+              >
+                Google&apos;s advertising privacy policy
+              </a>{" "}
+              for more information.
+            </p>
+            <p className="mt-2">
+              Advertisements are clearly distinguishable from calculator controls and never appear
+              between calculator inputs and results.
+            </p>
+          </section>
+
           {/* Hosting */}
           <section>
             <h2 className="text-xl font-semibold text-brand-ink">Hosting</h2>

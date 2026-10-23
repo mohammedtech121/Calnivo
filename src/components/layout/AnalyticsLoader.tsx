@@ -9,6 +9,7 @@ import {
 } from "./ConsentBanner";
 
 const GA_ID = "G-L38QJ6QYWQ";
+const ADSENSE_ID = "ca-pub-4136175675290701";
 
 /**
  * Client-only GA4 loader with reactive consent.
@@ -63,6 +64,7 @@ export function AnalyticsLoader() {
 
   return (
     <>
+      {/* Google Analytics 4 */}
       <Script
         src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
         strategy="afterInteractive"
@@ -75,6 +77,14 @@ export function AnalyticsLoader() {
           gtag('config', '${GA_ID}');
         `}
       </Script>
+
+      {/* Google AdSense — consent-gated */}
+      <Script
+        async
+        src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_ID}`}
+        crossOrigin="anonymous"
+        strategy="afterInteractive"
+      />
     </>
   );
 }

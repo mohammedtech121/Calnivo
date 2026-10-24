@@ -96,6 +96,9 @@ export const metadata: Metadata = {
       "40+ free online calculators for finance, fitness, health, math and everyday utilities.",
     images: ["/og-image.png"],
   },
+  other: {
+    "google-adsense-account": "ca-pub-4136175675290701",
+  },
   category: "technology",
 };
 

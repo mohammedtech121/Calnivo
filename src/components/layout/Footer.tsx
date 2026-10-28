@@ -6,6 +6,7 @@ import { Logo } from "./Logo";
 
 const FOOTER_LINKS = [
   { label: "About", href: "/about" },
+  { label: "Blog", href: "/blog" },
   { label: "Calculators", href: "/calculators" },
   { label: "Disclaimer", href: "/disclaimer" },
   { label: "Terms", href: "/terms" },

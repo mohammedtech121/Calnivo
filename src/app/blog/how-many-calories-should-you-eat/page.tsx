@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Layout } from "@/components/layout/Layout";
+import { ArticleTrustFooter } from "@/components/blog/ArticleTrustFooter";
 
 export const metadata = {
   title: "How Many Calories Should You Eat? A Guide to TDEE",
@@ -8,10 +9,34 @@ export const metadata = {
   alternates: { canonical: "/blog/how-many-calories-should-you-eat" },
 };
 
+  // Article structured data for blog
+  const articleSchema = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "How Many Calories Should You Eat? A Guide to TDEE",
+    "url": "https://calnivocalc.com/blog/how-many-calories-should-you-eat",
+    "datePublished": "2026-10-15",
+    "dateModified": "2026-10-29",
+    "author": {
+      "@type": "Person",
+      "name": "Mohammed Khan",
+      "url": "https://calnivocalc.com/about"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Calnivo",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://calnivocalc.com/calnivo-logo.png"
+      }
+    },
+  };
+
 export default function Article() {
   return (
     <Layout>
       <article className="mx-auto max-w-3xl px-4 py-10 sm:px-6 sm:py-12">
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
         <Link href="/blog" className="text-sm text-brand-accent-deep hover:underline">← Back to blog</Link>
         <h1 className="mt-4 text-3xl font-bold tracking-tight text-brand-ink sm:text-4xl">
           How Many Calories Should You Eat? A Guide to TDEE
@@ -167,6 +192,22 @@ export default function Article() {
             </Link>
           </div>
         </div>
+      
+        <ArticleTrustFooter
+          author="Mohammed Khan"
+          reviewer="Hammad Khan"
+          updatedDate="October 2026"
+          sources={[
+    {
+        "name": "NIH — Body Weight Planner",
+        "url": "https://www.niddk.nih.gov/bwp"
+    },
+    {
+        "name": "Mifflin-St Jeor Equation (1990)",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/2305711/"
+    }
+]}
+        />
       </article>
     </Layout>
   );

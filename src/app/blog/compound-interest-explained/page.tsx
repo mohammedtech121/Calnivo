@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Layout } from "@/components/layout/Layout";
+import { ArticleTrustFooter } from "@/components/blog/ArticleTrustFooter";
 
 export const metadata = {
   title: "Compound Interest Explained: How Your Money Grows Over Time",
@@ -8,10 +9,34 @@ export const metadata = {
   alternates: { canonical: "/blog/compound-interest-explained" },
 };
 
+  // Article structured data for blog
+  const articleSchema = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Compound Interest Explained: How Your Money Grows Over Time",
+    "url": "https://calnivocalc.com/blog/compound-interest-explained",
+    "datePublished": "2026-10-15",
+    "dateModified": "2026-10-29",
+    "author": {
+      "@type": "Person",
+      "name": "Mohammed Khan",
+      "url": "https://calnivocalc.com/about"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Calnivo",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://calnivocalc.com/calnivo-logo.png"
+      }
+    },
+  };
+
 export default function Article() {
   return (
     <Layout>
       <article className="mx-auto max-w-3xl px-4 py-10 sm:px-6 sm:py-12">
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
         <Link href="/blog" className="text-sm text-brand-accent-deep hover:underline">← Back to blog</Link>
         <h1 className="mt-4 text-3xl font-bold tracking-tight text-brand-ink sm:text-4xl">
           Compound Interest Explained: How Your Money Grows Over Time
@@ -152,6 +177,22 @@ export default function Article() {
             </Link>
           </div>
         </div>
+      
+        <ArticleTrustFooter
+          author="Mohammed Khan"
+          reviewer="Hammad Khan"
+          updatedDate="October 2026"
+          sources={[
+    {
+        "name": "Investopedia — Compound Interest",
+        "url": "https://www.investopedia.com/terms/c/compoundinterest.asp"
+    },
+    {
+        "name": "CFPB — Saving and Interest",
+        "url": "https://www.consumerfinance.gov/about-us/blog/"
+    }
+]}
+        />
       </article>
     </Layout>
   );

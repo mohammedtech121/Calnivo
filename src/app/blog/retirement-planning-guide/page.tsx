@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Layout } from "@/components/layout/Layout";
+import { ArticleTrustFooter } from "@/components/blog/ArticleTrustFooter";
 
 export const metadata = {
   title: "Retirement Planning: How Much Do You Really Need?",
@@ -8,10 +9,34 @@ export const metadata = {
   alternates: { canonical: "/blog/retirement-planning-guide" },
 };
 
+  // Article structured data for blog
+  const articleSchema = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Retirement Planning: How Much Do You Really Need?",
+    "url": "https://calnivocalc.com/blog/retirement-planning-guide",
+    "datePublished": "2026-10-15",
+    "dateModified": "2026-10-29",
+    "author": {
+      "@type": "Person",
+      "name": "Mohammed Khan",
+      "url": "https://calnivocalc.com/about"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Calnivo",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://calnivocalc.com/calnivo-logo.png"
+      }
+    },
+  };
+
 export default function Article() {
   return (
     <Layout>
       <article className="mx-auto max-w-3xl px-4 py-10 sm:px-6 sm:py-12">
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
         <Link href="/blog" className="text-sm text-brand-accent-deep hover:underline">← Back to blog</Link>
         <h1 className="mt-4 text-3xl font-bold tracking-tight text-brand-ink sm:text-4xl">
           Retirement Planning: How Much Do You Really Need?
@@ -171,6 +196,22 @@ export default function Article() {
             </Link>
           </div>
         </div>
+      
+        <ArticleTrustFooter
+          author="Mohammed Khan"
+          reviewer="Hammad Khan"
+          updatedDate="October 2026"
+          sources={[
+    {
+        "name": "CFPB — Retirement Planning",
+        "url": "https://www.consumerfinance.gov/retirement/"
+    },
+    {
+        "name": "IRS Publication 590 — Individual Retirement Arrangements",
+        "url": "https://www.irs.gov/forms-pubs/about-publication-590"
+    }
+]}
+        />
       </article>
     </Layout>
   );

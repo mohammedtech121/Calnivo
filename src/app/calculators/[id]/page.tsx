@@ -32,7 +32,7 @@ export async function generateMetadata({
   if (!meta) return { title: "Calculator not found" };
 
   const catMeta = CATEGORY_META[meta.category];
-  const title = `${meta.name} — Free Online Calculator`;
+  const title = `${meta.name} — Free Online Calculator with Formula & Guide`;
   const description = meta.description;
   const url = `https://calnivocalc.com/calculators/${meta.id}`;
 
@@ -52,9 +52,9 @@ export async function generateMetadata({
       title,
       description,
     },
-    keywords: [meta.short, meta.name, ...meta.keywords],
     other: {
       "article:section": catMeta.label,
+      "article:author": "Mohammed Khan",
     },
   };
 }

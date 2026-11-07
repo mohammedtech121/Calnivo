@@ -327,8 +327,12 @@ export default function MortgageCalculator() {
         <CalcCard title="Loan balance over time">
           <p className="mb-3 text-sm text-brand-muted">
             How your loan principal declines year-by-year. Over the {loanYears}-year term you&apos;ll
-            pay approximately <strong className="text-brand-ink">{fmtMoney(grandTotal - r.principal)}</strong> in
-            total payments, of which <strong className="text-brand-ink">{fmtMoney(totalPi - r.principal)}</strong> is interest.
+            pay <strong className="text-brand-ink">{fmtMoney(totalPi)}</strong> in principal and interest,
+            of which <strong className="text-brand-ink">{fmtMoney(totalPi - r.principal)}</strong> is interest.
+            {includeCosts && (
+              <> Your total out-of-pocket including taxes, insurance, and HOA is{" "}
+                <strong className="text-brand-ink">{fmtMoney(grandTotal)}</strong>.</>
+            )}
           </p>
           <LabeledLineChart
             points={balanceOverTime}

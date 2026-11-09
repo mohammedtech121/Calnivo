@@ -1,0 +1,2002 @@
+     1→import {
+     2→  Home,
+     3→  Car,
+     4→  Banknote,
+     5→  Percent,
+     6→  CalendarClock,
+     7→  Landmark,
+     8→  TrendingUp,
+     9→  PiggyBank,
+    10→  LineChart,
+    11→  Receipt,
+    12→  Coins,
+    13→  Wallet,
+    14→  BadgeDollarSign,
+    15→  Scale,
+    16→  HeartPulse,
+    17→  Flame,
+    18→  Activity,
+    19→  PersonStanding,
+    20→  Target,
+    21→  Timer,
+    22→  Baby,
+    23→  Stethoscope,
+    24→  Calculator as CalcIcon,
+    25→  Divide,
+    26→  Hash,
+    27→  Shuffle,
+    28→  Triangle,
+    29→  Sigma,
+    30→  Cake,
+    31→  CalendarDays,
+    32→  Clock,
+    33→  Hourglass,
+    34→  GraduationCap,
+    35→  ClipboardCheck,
+    36→  HardHat,
+    37→  Network,
+    38→  KeyRound,
+    39→  ArrowLeftRight,
+    40→  LayoutGrid,
+    41→  type LucideIcon,
+    42→} from "lucide-react";
+    43→
+    44→export type CalculatorCategory =
+    45→  | "financial"
+    46→  | "health"
+    47→  | "math"
+    48→  | "other";
+    49→
+    50→export interface CalculatorFaq {
+    51→  q: string;
+    52→  a: string;
+    53→}
+    54→
+    55→export interface CalculatorSeo {
+    56→  /** 1-2 sentence definition shown as an H2 "What is X?" section — keyword-rich. */
+    57→  definition: string;
+    58→  /** Plain-language formula explanation (the math itself, not code). */
+    59→  formula: string;
+    60→  /** Step-by-step how-to-use instructions (3-5 steps). */
+    61→  howToUse: string[];
+    62→  /** A concrete worked example with real numbers. */
+    63→  example: string;
+    64→  /** FAQ entries — each becomes a Q/A in FAQ structured data. 3-6 items. */
+    65→  faqs: CalculatorFaq[];
+    66→  /** Related/LSI search terms people also search for. */
+    67→  relatedSearches: string[];
+    68→}
+    69→
+    70→export interface CalculatorMeta {
+    71→  id: string;
+    72→  name: string;
+    73→  category: CalculatorCategory;
+    74→  short: string;
+    75→  description: string;
+    76→  icon: LucideIcon;
+    77→  keywords: string[];
+    78→  /** SEO content block — rendered on the calculator page for crawlers + users. */
+    79→  seo?: CalculatorSeo;
+    80→}
+    81→
+    82→
+    83→export const CATEGORY_META: Record<
+    84→  CalculatorCategory,
+    85→  { label: string; blurb: string; icon: LucideIcon }
+    86→> = {
+    87→  financial: {
+    88→    label: "Financial Calculators",
+    89→    blurb: "Plan loans, mortgages, investments and taxes with confidence.",
+    90→    icon: Banknote,
+    91→  },
+    92→  health: {
+    93→    label: "Fitness & Health Calculators",
+    94→    blurb: "Track BMI, calories, body fat and key wellness metrics.",
+    95→    icon: HeartPulse,
+    96→  },
+    97→  math: {
+    98→    label: "Math Calculators",
+    99→    blurb: "Scientific tools for fractions, percentages and geometry.",
+   100→    icon: CalcIcon,
+   101→  },
+   102→  other: {
+   103→    label: "Other Calculators",
+   104→    blurb: "Everyday utilities for dates, time, grades and conversions.",
+   105→    icon: LayoutGrid,
+   106→  },
+   107→};
+   108→
+   109→export const CALCULATORS: CalculatorMeta[] = [
+   110→  // ---------------- Financial ----------------
+   111→  {
+   112→    id: "mortgage",
+   113→    name: "Mortgage Calculator",
+   114→    category: "financial",
+   115→    short: "Mortgage",
+   116→    description:
+   117→      "Estimate your monthly mortgage payment, including principal, interest, taxes and insurance.",
+   118→    icon: Home,
+   119→    keywords: ["mortgage", "home loan", "house payment"],
+   120→    seo: {
+   121→      definition:
+   122→        "A mortgage calculator is a free online tool that estimates your monthly mortgage payment, including principal, interest, property taxes, and insurance. Use it to compare loan scenarios and see how down payment, interest rate, and loan term affect your total cost over the life of the loan.",
+   123→      formula:
+   124→        "The monthly payment formula is M = P × [r(1+r)^n] / [(1+r)^n − 1], where P is the loan principal, r is the monthly interest rate (annual rate ÷ 12), and n is the number of monthly payments (loan term in years × 12). Property taxes, homeowners insurance, and PMI (when the down payment is under 20%) are added on top of the principal-and-interest payment to get your full PITI payment.",
+   125→      howToUse: [
+   126→        "Enter the home price and your down payment amount or percentage.",
+   127→        "Enter the annual interest rate (use a current 30-year fixed rate from a lender).",
+   128→        "Choose the loan term — 15, 20, or 30 years.",
+   129→        "Add annual property taxes, homeowners insurance, and HOA dues for a true monthly cost.",
+   130→        "Enter property tax, home insurance, and HOA if included.",
+   131→      ],
+   132→      example:
+   133→        "For a $400,000 home with 20% down ($80,000) on a 30-year fixed mortgage at 6.5% interest, the loan principal is $320,000. The monthly principal-and-interest payment is $2,022.62, total interest over the life of the loan is about $408,142.36, and the total amount paid is $728,142.36.",
+   134→      faqs: [
+   135→        {
+   136→          q: "How is a mortgage payment calculated?",
+   137→          a: "Mortgage payments are calculated using the amortization formula M = P × [r(1+r)^n] / [(1+r)^n − 1], where P is the loan amount, r is the monthly interest rate, and n is the total number of monthly payments. Property taxes, insurance, and PMI are then added to the principal-and-interest payment.",
+   138→        },
+   139→        {
+   140→          q: "What is the difference between APR and interest rate on a mortgage?",
+   141→          a: "The interest rate is the cost of borrowing the principal, while the APR includes the interest rate plus lender fees, discount points, and other closing costs expressed as an annual rate. APR is the better number to use when comparing loan offers.",
+   142→        },
+   143→        {
+   144→          q: "How much house can I afford with a $5,000 monthly payment?",
+   145→          a: "If taxes, insurance, and PMI add roughly $400–$700 per month, a $5,000 total payment supports about $650,000–$720,000 of loan principal at 6.5% on a 30-year mortgage. Lenders typically cap your total housing payment at 28% of gross monthly income.",
+   146→        },
+   147→        {
+   148→          q: "Is it better to put 20% down on a house?",
+   149→          a: "Putting 20% down eliminates private mortgage insurance (PMI), lowers your monthly payment, and reduces total interest paid. However, it ties up more cash and may not be optimal if you could invest that money at a higher return than your mortgage rate.",
+   150→        },
+   151→      ],
+   152→      relatedSearches: [
+   153→        "mortgage calculator with taxes and insurance",
+   154→        "mortgage calculator with PMI",
+   155→        "monthly mortgage payment estimator",
+   156→        "30 year mortgage calculator",
+   157→        "15 year mortgage calculator",
+   158→        "mortgage payoff calculator",
+   159→        "how much house can I afford calculator",
+   160→      ],
+   161→    },
+   162→  },
+   163→  {
+   164→    id: "loan",
+   165→    name: "Loan Calculator",
+   166→    category: "financial",
+   167→    short: "Loan",
+   168→    description:
+   169→      "Calculate monthly payments, total interest and payoff for any fixed-rate loan.",
+   170→    icon: Banknote,
+   171→    keywords: ["loan", "personal loan", "payment"],
+   172→    seo: {
+   173→      definition:
+   174→        "A loan calculator is a free online tool that estimates the monthly payment, total interest, and total cost of any fixed-rate loan — including personal loans, student loans, and debt consolidation loans. Use it to compare offers, and see exactly what a loan will cost you over its full term.",
+   175→      formula:
+   176→        "The monthly payment uses the standard amortization formula M = P × [r(1+r)^n] / [(1+r)^n − 1], where P is the loan amount, r is the monthly interest rate (annual rate ÷ 12), and n is the total number of monthly payments. Total interest = (M × n) − P.",
+   177→      howToUse: [
+   178→        "Enter the total loan amount you want to borrow.",
+   179→        "Enter the annual interest rate (APR) quoted by the lender.",
+   180→        "Enter the loan term in months or years.",
+   181→        "Review the monthly payment, total interest, and total cost.",
+   182→        "Review the monthly payment, total interest, and total cost.",
+   183→      ],
+   184→      example:
+   185→        "For a $25,000 personal loan at 9.5% APR over 5 years (60 months), the monthly payment is $525.05, total interest paid is $6,502.79, and the total cost is $31,502.79.",
+   186→      faqs: [
+   187→        {
+   188→          q: "What is a good APR for a personal loan?",
+   189→          a: "For borrowers with good credit (700+ FICO), personal loan APRs typically range from 7% to 12%. Borrowers with excellent credit may qualify for rates below 7%, while fair-credit borrowers often see 18% or higher.",
+   190→        },
+   191→        {
+   192→          q: "How is interest on a personal loan calculated?",
+   193→          a: "Personal loans use amortizing interest: each monthly payment covers interest on the remaining balance first, with the remainder reducing principal. Early payments are mostly interest; later payments are mostly principal.",
+   194→        },
+   195→        {
+   196→          q: "How much would a $10,000 loan cost per month?",
+   197→          a: "A $10,000 loan at 10% APR for 3 years costs $322.67 per month, with total interest of about $1,616. The same loan over 5 years drops the payment to $212.47 but raises total interest to $2,748.",
+   198→        },
+   199→        {
+   200→          q: "Does paying extra on a loan reduce the monthly payment?",
+   201→          a: "No — extra payments shorten the loan term rather than lowering the monthly payment, unless you recast or refinance the loan. Each extra dollar goes directly against principal, saving future interest.",
+   202→        },
+   203→      ],
+   204→      relatedSearches: [
+   205→        "personal loan calculator",
+   206→        "loan calculator with extra payments",
+   207→        "monthly payment calculator",
+   208→        "loan payoff calculator",
+   209→        "simple interest loan calculator",
+   210→        "debt consolidation calculator",
+   211→        "loan interest calculator",
+   212→      ],
+   213→    },
+   214→  },
+   215→  {
+   216→    id: "auto-loan",
+   217→    name: "Auto Loan Calculator",
+   218→    category: "financial",
+   219→    short: "Auto Loan",
+   220→    description:
+   221→      "Figure out your monthly car payment and total interest over the loan term.",
+   222→    icon: Car,
+   223→    keywords: ["auto", "car loan", "vehicle"],
+   224→    seo: {
+   225→      definition:
+   226→        "An auto loan calculator is a free online tool that estimates your monthly car payment and total interest based on vehicle price, down payment, trade-in value, APR, and loan term. Use it to compare financing offers from dealers, banks, and credit unions before you walk onto the lot.",
+   227→      formula:
+   228→        "Monthly payment = P × [r(1+r)^n] / [(1+r)^n − 1], where P is the amount financed (vehicle price − down payment − trade-in value, plus any taxes and fees rolled into the loan), r is the monthly interest rate (APR ÷ 12), and n is the loan term in months.",
+   229→      howToUse: [
+   230→        "Enter the vehicle purchase price.",
+   231→        "Add your down payment and the trade-in value of your current car.",
+   232→        "Enter the APR (use a pre-approved rate from your bank or credit union).",
+   233→        "Choose a loan term — typically 36, 48, 60, 72, or 84 months.",
+   234→        "Review the monthly payment, total interest, and total cost of the loan.",
+   235→      ],
+   236→      example:
+   237→        "For a $35,000 car with $5,000 down and a $3,000 trade-in at 6.0% APR for 60 months, the amount financed is $27,000. The monthly payment is $521.99, and total interest over 5 years is $4,319.40.",
+   238→      faqs: [
+   239→        {
+   240→          q: "What is a good APR for a car loan?",
+   241→          a: "For borrowers with good credit (700+), new-car APRs typically range from 5% to 7% and used-car APRs from 6% to 9%. Borrowers with excellent credit can sometimes get 0%–4% promotional financing from manufacturers.",
+   242→        },
+   243→        {
+   244→          q: "Is a 72-month or 84-month car loan a good idea?",
+   245→          a: "Longer terms lower your monthly payment but sharply increase total interest and increase the risk of being 'upside down' on the loan — owing more than the car is worth. Most financial advisors recommend keeping auto loans at 60 months or shorter.",
+   246→        },
+   247→        {
+   248→          q: "Should I use dealer financing or a bank loan?",
+   249→          a: "Get pre-approved by a bank or credit union first so you know your rate, then ask the dealer to beat it. Dealers sometimes mark up the rate for profit, but manufacturers also offer subsidized 0% or low-APR deals that banks can't match.",
+   250→        },
+   251→        {
+   252→          q: "How does a trade-in affect my car loan?",
+   253→          a: "Your trade-in reduces the amount you need to finance, lowering your monthly payment and total interest. In most U.S. states, the trade-in value also reduces the sales-tax basis on the new vehicle.",
+   254→        },
+   255→      ],
+   256→      relatedSearches: [
+   257→        "auto loan calculator with trade in",
+   258→        "car payment calculator",
+   259→        "used car loan calculator",
+   260→        "auto loan APR calculator",
+   261→        "car loan payoff calculator",
+   262→        "84 month auto loan calculator",
+   263→        "auto loan estimator with taxes and fees",
+   264→      ],
+   265→    },
+   266→  },
+   267→  {
+   268→    id: "interest",
+   269→    name: "Interest Calculator",
+   270→    category: "financial",
+   271→    short: "Interest",
+   272→    description:
+   273→      "Compute simple and compound interest earned on a principal amount.",
+   274→    icon: Percent,
+   275→    keywords: ["interest", "simple", "earnings"],
+   276→    seo: {
+   277→      definition:
+   278→        "An interest calculator is a free online tool that computes simple and compound interest earned on a principal amount over time. Use it to estimate the growth of a savings deposit, certificate of deposit (CD), bond, or any interest-bearing account.",
+   279→      formula:
+   280→        "Simple interest is I = P × r × t, where P is principal, r is the annual interest rate, and t is the time in years. Compound interest uses A = P × (1 + r/n)^(n × t), where n is the number of compounding periods per year, and total interest = A − P.",
+   281→      howToUse: [
+   282→        "Enter the principal amount you're depositing or investing.",
+   283→        "Enter the annual interest rate as a percentage.",
+   284→        "Enter the time period in years.",
+   285→        "Choose the compounding frequency (annually, quarterly, monthly, or daily).",
+   286→        "Compare the simple-interest and compound-interest results side by side.",
+   287→      ],
+   288→      example:
+   289→        "$10,000 invested at 5% annual interest compounded monthly for 10 years grows to $16,470.09 — earning $6,470.09 in compound interest. The same deposit with simple interest would earn only $5,000.",
+   290→      faqs: [
+   291→        {
+   292→          q: "What is the difference between simple and compound interest?",
+   293→          a: "Simple interest is calculated only on the original principal, while compound interest is calculated on the principal plus any interest already earned. Over time, compounding produces significantly more growth, especially with frequent compounding periods.",
+   294→        },
+   295→        {
+   296→          q: "How much will $10,000 be worth in 20 years at 5%?",
+   297→          a: "$10,000 invested at 5% compounded monthly for 20 years grows to $27,126.40 — earning $17,126.40 in interest. Compounded annually, the same deposit grows to $26,532.98.",
+   298→        },
+   299→        {
+   300→          q: "How is savings account interest calculated?",
+   301→          a: "Most savings accounts use daily compounding: A = P × (1 + r/365)^(365 × t). The annual percentage yield (APY) accounts for this compounding, so a 4.50% APY already includes the effect of daily compounding on the stated rate.",
+   302→        },
+   303→        {
+   304→          q: "Is interest on a savings account taxable?",
+   305→          a: "Yes — interest earned in a savings account, CD, or money market fund is taxed as ordinary income at the federal level, and usually at the state level too. The bank issues a Form 1099-INT for interest over $10 in a calendar year.",
+   306→        },
+   307→      ],
+   308→      relatedSearches: [
+   309→        "simple interest calculator",
+   310→        "compound interest calculator",
+   311→        "savings account interest calculator",
+   312→        "CD interest calculator",
+   313→        "monthly interest calculator",
+   314→        "interest rate calculator",
+   315→        "annual interest calculator",
+   316→      ],
+   317→    },
+   318→  },
+   319→  {
+   320→    id: "payment",
+   321→    name: "Payment Calculator",
+   322→    category: "financial",
+   323→    short: "Payment",
+   324→    description:
+   325→      "General payment calculator for loans with flexible compounding options.",
+   326→    icon: Wallet,
+   327→    keywords: ["payment", "installment"],
+   328→    seo: {
+   329→      definition:
+   330→        "A payment calculator is a free online tool that calculates the periodic payment for any loan based on principal, interest rate, number of periods, and compounding frequency. It handles flexible payment schedules — weekly, biweekly, monthly, quarterly, or annual — and any compounding convention.",
+   331→      formula:
+   332→        "For periodic compounding, M = P × [r(1+r)^n] / [(1+r)^n − 1], where P is the principal, r is the periodic interest rate (annual rate ÷ periods per year), and n is the total number of payments. Total paid = M × n, and total interest = (M × n) − P.",
+   333→      howToUse: [
+   334→        "Enter the loan principal amount.",
+   335→        "Enter the annual interest rate.",
+   336→        "Enter the total number of payments or the loan term.",
+   337→        "Choose the payment and compounding frequency (weekly, monthly, quarterly, or annually).",
+   338→        "Review the periodic payment, total interest, and total cost.",
+   339→      ],
+   340→      example:
+   341→        "For a $15,000 loan at 8% APR repaid in 36 monthly payments, the monthly payment is $470.05, with total interest of $1,921.64 over the 3-year term and a total cost of $16,921.64.",
+   342→      faqs: [
+   343→        {
+   344→          q: "How do you calculate monthly payment on a loan?",
+   345→          a: "Use the amortization formula M = P × [r(1+r)^n] / [(1+r)^n − 1], with r as the monthly rate (annual ÷ 12) and n as the number of monthly payments. Most spreadsheet apps also have a PMT(rate, nper, pv) function that does the same thing.",
+   346→        },
+   347→        {
+   348→          q: "What is the formula for monthly payment with simple interest?",
+   349→          a: "For a simple-interest installment loan, monthly payment = (P + P × r × t) / n, where P is principal, r is the annual rate, t is years, and n is the number of monthly payments. This is the standard formula used for many auto loans in the U.S.",
+   350→        },
+   351→        {
+   352→          q: "How does payment frequency affect total interest?",
+   353→          a: "More frequent payments (e.g., biweekly instead of monthly) reduce total interest because principal is paid down sooner. Switching from monthly to biweekly on a 30-year mortgage typically cuts 5–7 years off the term.",
+   354→        },
+   355→        {
+   356→          q: "What is the difference between APR and interest rate?",
+   357→          a: "The interest rate is the cost of borrowing the principal. The APR includes the interest rate plus lender fees and points, expressed as an annualized rate. APR is the better number for comparing loan offers side by side.",
+   358→        },
+   359→      ],
+   360→      relatedSearches: [
+   361→        "monthly payment calculator",
+   362→        "loan payment calculator",
+   363→        "biweekly payment calculator",
+   364→        "weekly payment calculator",
+   365→        "simple interest payment calculator",
+   366→        "PMT calculator",
+   367→        "installment loan calculator",
+   368→      ],
+   369→    },
+   370→  },
+   371→  {
+   372→    id: "retirement",
+   373→    name: "Retirement Calculator",
+   374→    category: "financial",
+   375→    short: "Retirement",
+   376→    description:
+   377→      "Project how much you will have saved by retirement based on contributions and growth.",
+   378→    icon: PiggyBank,
+   379→    keywords: ["retirement", "401k", "pension", "savings"],
+   380→    seo: {
+   381→      definition:
+   382→        "A retirement calculator is a free online tool that projects how much you'll have saved by retirement age based on your current savings, monthly contributions, expected rate of return, and years to retirement. Use it to see if you're on track and to model Social Security, 401(k) match, and IRA scenarios side by side.",
+   383→      formula:
+   384→        "Future value combines a present-value amount and a series of contributions: FV = P × (1+r)^t + PMT × [((1+r)^t − 1) / r], where P is current savings, PMT is the monthly contribution, r is the monthly return (annual return ÷ 12), and t is the number of months until retirement.",
+   385→      howToUse: [
+   386→        "Enter your current retirement savings balance.",
+   387→        "Enter your monthly contribution (include any employer 401(k) match).",
+   388→        "Enter the expected annual return (6–7% is a common pre-retirement assumption).",
+   389→        "Enter the number of years until you retire.",
+   390→        "Review the projected balance, total contributions, and total growth.",
+   391→      ],
+   392→      example:
+   393→        "A 35-year-old with $50,000 saved, contributing $500 per month at a 7% annual return until age 65 (30 years), would retire with about $1,015,776 — $230,000 from contributions ($50K starting balance + $180K monthly) and $785,776 from investment growth.",
+   394→      faqs: [
+   395→        {
+   396→          q: "How much money do I need to retire?",
+   397→          a: "A common rule of thumb is 25× your annual expenses — the so-called '4% rule.' If you plan to spend $60,000 per year in retirement, aim for $1.5 million saved. Many retirees also factor in Social Security, pensions, and home equity.",
+   398→        },
+   399→        {
+   400→          q: "How much should I contribute to my 401(k) per month?",
+   401→          a: "At minimum, contribute enough to get your full employer match — that's free money. After that, aim for 15% of gross income (including the match) split between a 401(k) and Roth IRA for tax diversification.",
+   402→        },
+   403→        {
+   404→          q: "What is a good rate of return for retirement planning?",
+   405→          a: "Most planners use 6–7% real return (after inflation) for a stock-heavy portfolio. Use a more conservative 4–5% if your mix is bond-heavy or if you're within a few years of retirement.",
+   406→        },
+   407→        {
+   408→          q: "How does Social Security factor into retirement income?",
+   409→          a: "Social Security replaces about 40% of pre-retirement income for an average earner, with benefits starting as early as age 62 (reduced) or as late as age 70 (increased). Many retirees delay claiming to age 67 or 70 to lock in a higher monthly payment.",
+   410→        },
+   411→      ],
+   412→      relatedSearches: [
+   413→        "retirement calculator with social security",
+   414→        "401k calculator",
+   415→        "retirement savings calculator",
+   416→        "FIRE calculator",
+   417→        "Roth IRA calculator",
+   418→        "retirement income calculator",
+   419→        "how much do I need to retire calculator",
+   420→      ],
+   421→    },
+   422→  },
+   423→  {
+   424→    id: "amortization",
+   425→    name: "Amortization Calculator",
+   426→    category: "financial",
+   427→    short: "Amortization",
+   428→    description:
+   429→      "Generate a full amortization schedule showing principal and interest per period.",
+   430→    icon: CalendarClock,
+   431→    keywords: ["amortization", "schedule", "breakdown"],
+   432→    seo: {
+   433→      definition:
+   434→        "An amortization calculator is a free online tool that builds a full payment schedule showing how each payment splits between principal and interest, plus the remaining loan balance after each period. Use it to see exactly how much interest you'll pay each month, year, or over the life of any loan — and how extra payments change the schedule.",
+   435→      formula:
+   436→        "Each period: interest = remaining balance × periodic rate; principal = payment − interest; new balance = old balance − principal. The fixed payment is M = P × [r(1+r)^n] / [(1+r)^n − 1]. Extra payments apply directly to principal, shortening the term and reducing total interest.",
+   437→      howToUse: [
+   438→        "Enter the loan amount.",
+   439→        "Enter the annual interest rate.",
+   440→        "Enter the loan term in years or months.",
+   441→        "Optionally add an extra monthly or one-time principal payment.",
+   442→        "Review the amortization schedule by month or by year.",
+   443→      ],
+   444→      example:
+   445→        "A $200,000 loan at 6% interest over 30 years has a monthly payment of $1,199.10. The first payment splits into $1,000 of interest and $199.10 of principal. Adding $200 per month in extra principal pays off the loan in 252 months (about 21 years instead of 30) and saves roughly $79,100 in interest.",
+   446→      faqs: [
+   447→        {
+   448→          q: "How is an amortization schedule calculated?",
+   449→          a: "For each period, interest = current balance × periodic rate. The principal portion of the payment = total payment − interest. Subtract the principal from the balance and repeat for the next period. The fixed payment is calculated so the balance hits zero on the last period.",
+   450→        },
+   451→        {
+   452→          q: "Why does interest decrease over the life of a loan?",
+   453→          a: "Interest is charged on the remaining balance. As each payment reduces principal, the next period's interest is computed on a smaller balance, so a larger share of each payment goes to principal. This is why early payments are mostly interest and late payments are mostly principal.",
+   454→        },
+   455→        {
+   456→          q: "How do extra payments affect an amortization schedule?",
+   457→          a: "Extra payments apply directly to principal, which reduces every future interest charge. This shortens the loan term and lowers total interest, but it doesn't lower the required monthly payment unless you refinance or recast the loan.",
+   458→        },
+   459→        {
+   460→          q: "What is the difference between amortization and simple interest?",
+   461→          a: "Amortizing loans recalculate interest each period on the remaining balance (so principal grows over time). Simple-interest installment loans compute total interest up front and divide it evenly across payments. Both are common in auto lending — read the contract carefully.",
+   462→        },
+   463→      ],
+   464→      relatedSearches: [
+   465→        "amortization calculator with extra payments",
+   466→        "amortization schedule calculator",
+   467→        "loan amortization table",
+   468→        "monthly amortization schedule",
+   469→        "mortgage amortization calculator",
+   470→        "amortization schedule with balloon payment",
+   471→        "free printable amortization schedule",
+   472→      ],
+   473→    },
+   474→  },
+   475→  {
+   476→    id: "investment",
+   477→    name: "Investment Calculator",
+   478→    category: "financial",
+   479→    short: "Investment",
+   480→    description:
+   481→      "Estimate the future value of an investment with regular contributions.",
+   482→    icon: TrendingUp,
+   483→    keywords: ["investment", "future value", "growth"],
+   484→    seo: {
+   485→      definition:
+   486→        "An investment calculator is a free online tool that estimates the future value of an investment based on an initial deposit, regular contributions, expected rate of return, and time horizon. Use it to model stocks, ETFs, mutual funds, and other growth investments and to see the long-term power of compound growth.",
+   487→      formula:
+   488→        "Future value = P × (1+r)^t + PMT × [((1+r)^t − 1) / r], where P is the initial investment, PMT is the periodic contribution, r is the periodic return, and t is the number of periods. For monthly contributions, divide the annual return by 12 and multiply the years by 12.",
+   489→      howToUse: [
+   490→        "Enter your initial investment amount.",
+   491→        "Enter your regular contribution amount and frequency (monthly or annually).",
+   492→        "Enter the expected annual rate of return.",
+   493→        "Enter the time horizon in years.",
+   494→        "Review the future value, total contributions, and total investment growth.",
+   495→      ],
+   496→      example:
+   497→        "$10,000 invested today plus $300 per month at an 8% annual return for 25 years grows to about $358,645 — $100,000 from contributions ($10K starting + $90K monthly) and $258,645 from investment growth.",
+   498→      faqs: [
+   499→        {
+   500→          q: "What is a good return on investment?",
+   501→          a: "Historically, the U.S. stock market (S&P 500) has returned about 10% per year before inflation, or about 7% after inflation. Bonds return around 4–5%, while high-yield savings and CDs typically return 3–5% in a normal rate environment.",
+   502→        },
+   503→        {
+   504→          q: "How much will $10,000 be worth in 20 years at 7%?",
+   505→          a: "$10,000 invested at 7% compounded monthly for 20 years grows to $40,389.40 — about a 4× return. Adding $300 per month over the same period brings the final balance to roughly $191,000.",
+   506→        },
+   507→        {
+   508→          q: "How do I calculate investment growth with monthly contributions?",
+   509→          a: "Use FV = P × (1+r)^t + PMT × [((1+r)^t − 1) / r], with r as the monthly return (annual ÷ 12) and t as the number of months. Spreadsheet apps also have a FV(rate, nper, pmt, pv) function for this.",
+   510→        },
+   511→        {
+   512→          q: "Does investment income get taxed?",
+   513→          a: "In taxable brokerage accounts, yes — long-term capital gains (held over one year) are taxed at 0%, 15%, or 20% depending on income, while short-term gains are taxed as ordinary income. Tax-advantaged accounts like IRAs and 401(k)s defer or eliminate this tax.",
+   514→        },
+   515→      ],
+   516→      relatedSearches: [
+   517→        "investment growth calculator",
+   518→        "ROI calculator",
+   519→        "future value calculator",
+   520→        "investment calculator with monthly contributions",
+   521→        "compound investment calculator",
+   522→        "stock investment calculator",
+   523→        "lump sum investment calculator",
+   524→      ],
+   525→    },
+   526→  },
+   527→  {
+   528→    id: "inflation",
+   529→    name: "Inflation Calculator",
+   530→    category: "financial",
+   531→    short: "Inflation",
+   532→    description:
+   533→      "See how the purchasing power of money changes over time due to inflation.",
+   534→    icon: LineChart,
+   535→    keywords: ["inflation", "purchasing power"],
+   536→    seo: {
+   537→      definition:
+   538→        "An inflation calculator is a free online tool that shows how the purchasing power of money changes over time due to inflation. Use it to see what a past dollar amount is worth today, to project what today's money will be worth in the future, or to compare historical prices across decades.",
+   539→      formula:
+   540→        "Future value adjusted for inflation = P × (1 + i)^t, where P is the original amount, i is the annual inflation rate, and t is the number of years. To find today's purchasing power of a future amount, divide by (1 + i)^t.",
+   541→      howToUse: [
+   542→        "Enter the original dollar amount.",
+   543→        "Enter the annual inflation rate (the long-term U.S. average is about 3%).",
+   544→        "Enter the number of years.",
+   545→        "Choose whether to compute future cost or present value.",
+   546→        "Review the adjusted amount and the loss of purchasing power.",
+   547→      ],
+   548→      example:
+   549→        "$100 in 2000 has the same buying power as about $181 in 2024, reflecting an average annual inflation rate of roughly 2.5%. Conversely, $100 today at 3% inflation will have the buying power of only about $74 in 10 years.",
+   550→      faqs: [
+   551→        {
+   552→          q: "How is inflation calculated?",
+   553→          a: "The U.S. Bureau of Labor Statistics tracks the Consumer Price Index (CPI), a basket of goods and services. Year-over-year inflation = (CPI this year − CPI last year) ÷ CPI last year × 100%.",
+   554→        },
+   555→        {
+   556→          q: "What is the average U.S. inflation rate?",
+   557→          a: "Over the last 30 years, U.S. inflation has averaged about 2.5% per year. From 2021–2023 it spiked to 6–8%, the highest since the early 1980s, before easing back toward the Federal Reserve's 2% target.",
+   558→        },
+   559→        {
+   560→          q: "How much will $100,000 be worth in 20 years at 3% inflation?",
+   561→          a: "At 3% annual inflation, $100,000 today has the buying power of about $55,368 in 20 years — nearly half its current purchasing power. This is why long-term investments need to outpace inflation.",
+   562→        },
+   563→        {
+   564→          q: "What's the difference between CPI and PCE inflation?",
+   565→          a: "CPI measures what urban consumers pay for a fixed basket of goods. PCE (Personal Consumption Expenditures) covers a broader range of spending and is the Federal Reserve's preferred inflation gauge. PCE typically runs about 0.3 percentage points lower than CPI.",
+   566→        },
+   567→      ],
+   568→      relatedSearches: [
+   569→        "inflation calculator",
+   570→        "historical inflation calculator",
+   571→        "purchasing power calculator",
+   572→        "CPI inflation calculator",
+   573→        "future inflation calculator",
+   574→        "cost of living calculator",
+   575→        "dollar value over time calculator",
+   576→      ],
+   577→    },
+   578→  },
+   579→  {
+   580→    id: "finance",
+   581→    name: "Finance Calculator",
+   582→    category: "financial",
+   583→    short: "Finance",
+   584→    description:
+   585→      "Solve for any variable in the TVM equation: PV, FV, PMT, rate or periods.",
+   586→    icon: Landmark,
+   587→    keywords: ["finance", "tvm", "time value"],
+   588→    seo: {
+   589→      definition:
+   590→        "A finance calculator is a free online tool that solves the time value of money (TVM) equation for any one of five variables: present value (PV), future value (FV), periodic payment (PMT), interest rate, or number of periods. It's the same model used in finance courses and on HP and Texas Instruments financial calculators.",
+   591→      formula:
+   592→        "The TVM equation is PV × (1+r)^n + PMT × [((1+r)^n − 1) / r] + FV = 0, where r is the periodic rate and n is the number of periods. Solving for any one variable (when the other four are known) lets you compute loan payments, savings goals, mortgage payoffs, and break-even returns.",
+   593→      howToUse: [
+   594→        "Choose which variable to solve for: PV, FV, PMT, rate, or number of periods.",
+   595→        "Enter the known values for the other four variables.",
+   596→        "Set the periodic interest rate and number of periods.",
+   597→        "Optionally toggle beginning-of-period vs end-of-period payments.",
+   598→        "Review the solved variable and the full TVM breakdown.",
+   599→      ],
+   600→      example:
+   601→        "To save $50,000 over 10 years with a 7% annual return compounded monthly, you need to deposit about $289 per month. The $50,000 breaks down as roughly $34,685 in total contributions and $15,315 in investment growth.",
+   602→      faqs: [
+   603→        {
+   604→          q: "What is the time value of money?",
+   605→          a: "The time value of money (TVM) is the principle that a dollar today is worth more than a dollar tomorrow because today's dollar can be invested to earn interest. TVM formulas let you compare cash flows that happen at different points in time.",
+   606→        },
+   607→        {
+   608→          q: "What is the difference between present value and future value?",
+   609→          a: "Present value (PV) is what a future cash flow is worth today, discounted at a given rate. Future value (FV) is what a present amount will grow to over time at a given rate. The two are linked by FV = PV × (1+r)^n.",
+   610→        },
+   611→        {
+   612→          q: "How do you calculate PMT on a financial calculator?",
+   613→          a: "Enter N (number of periods), I/Y (periodic interest rate as a percent, not decimal), and PV (present value as a negative number for an outflow), then compute PMT. On a TI BA II Plus, set P/Y = 1 for clarity.",
+   614→        },
+   615→        {
+   616→          q: "What is the TVM formula used for in real life?",
+   617→          a: "TVM is used for mortgage and auto loan payments, retirement projections, bond pricing, lease-vs-buy decisions, business project valuation (NPV/IRR), and any scenario where money moves across time periods at a known rate.",
+   618→        },
+   619→      ],
+   620→      relatedSearches: [
+   621→        "time value of money calculator",
+   622→        "TVM calculator",
+   623→        "present value calculator",
+   624→        "future value calculator",
+   625→        "PMT calculator",
+   626→        "NPV calculator",
+   627→        "financial calculator online",
+   628→      ],
+   629→    },
+   630→  },
+   631→  {
+   632→    id: "income-tax",
+   633→    name: "Income Tax Calculator",
+   634→    category: "financial",
+   635→    short: "Income Tax",
+   636→    description:
+   637→      "Estimate federal income tax owed based on taxable income and brackets.",
+   638→    icon: Receipt,
+   639→    keywords: ["tax", "income tax", "irs"],
+   640→    seo: {
+   641→      definition:
+   642→        "An income tax calculator is a free online tool that estimates your federal income tax owed based on taxable income, filing status, and the current IRS tax brackets. Use it to estimate your tax liability, marginal tax rate, and effective tax rate for the 2024 tax year.",
+   643→      formula:
+   644→        "The U.S. uses progressive tax brackets: each portion of taxable income is taxed at the rate for the bracket it falls into. Tax = Σ (income portion in bracket × bracket rate). Your marginal rate is the rate on your last dollar earned; your effective rate = total tax ÷ taxable income.",
+   645→      howToUse: [
+   646→        "Enter your taxable income (after deductions and pre-tax contributions).",
+   647→        "Choose your filing status: single, married filing jointly, or head of household.",
+   648→        "Review the federal tax owed, marginal rate, and effective rate. State tax, credits, and other deductions are not included.",
+   649→        "Optionally add a state income tax rate for a full liability estimate.",
+   650→        "Review federal tax owed, marginal rate, and effective rate.",
+   651→      ],
+   652→      example:
+   653→        "A single filer with $85,000 of taxable income in 2024 owes about $13,753 in federal income tax — an effective rate of 16.2% and a marginal rate of 22%.",
+   654→      faqs: [
+   655→        {
+   656→          q: "How are federal income tax brackets calculated?",
+   657→          a: "The U.S. uses a progressive system: each chunk of your taxable income is taxed at the rate for its bracket. A single filer at $85,000 in 2024 pays 10% on the first $11,600, 12% on income from $11,601 to $47,150, and 22% on income from $47,151 to $85,000.",
+   658→        },
+   659→        {
+   660→          q: "What is the difference between marginal and effective tax rate?",
+   661→          a: "Marginal rate is the rate on your next dollar of income (the bracket your top dollar falls in). Effective rate is your total tax divided by total taxable income — it's always lower than your marginal rate because lower brackets are taxed less.",
+   662→        },
+   663→        {
+   664→          q: "What is the standard deduction for 2024?",
+   665→          a: "For 2024 the standard deduction is $14,600 for single filers and married filing separately, $29,200 for married filing jointly, and $21,900 for head of household. Most taxpayers take the standard deduction rather than itemizing.",
+   666→        },
+   667→        {
+   668→          q: "How much tax do I owe on $100,000 of income?",
+   669→          a: "A single filer with $100,000 of taxable income in 2024 owes about $17,053 in federal income tax — an effective rate of 17.1%. If $100,000 is your gross income and you take the $14,600 standard deduction, your taxable income drops to $85,400 and your federal tax falls to about $13,841.",
+   670→        },
+   671→      ],
+   672→      relatedSearches: [
+   673→        "income tax calculator 2024",
+   674→        "federal income tax calculator",
+   675→        "tax bracket calculator",
+   676→        "marginal tax rate calculator",
+   677→        "take home pay calculator",
+   678→        "state income tax calculator",
+   679→        "self employment tax calculator",
+   680→      ],
+   681→    },
+   682→  },
+   683→  {
+   684→    id: "compound-interest",
+   685→    name: "Compound Interest Calculator",
+   686→    category: "financial",
+   687→    short: "Compound Interest",
+   688→    description:
+   689→      "See how compound interest grows your savings over time with regular deposits.",
+   690→    icon: Coins,
+   691→    keywords: ["compound", "interest", "growth"],
+   692→    seo: {
+   693→      definition:
+   694→        "A compound interest calculator is a free online tool that shows how your savings or investment grows when interest is added to the principal and itself earns interest. Use it to see the long-term effect of compounding frequency, regular deposits, and a higher contribution rate.",
+   695→      formula:
+   696→        "Compound interest uses A = P × (1 + r/n)^(n × t), where P is principal, r is the annual rate, n is compounding periods per year, and t is years. With monthly deposits PMT, add PMT × [((1 + r/n)^(n × t) − 1) / (r/n)]. Total interest earned = A − P − (PMT × n × t).",
+   697→      howToUse: [
+   698→        "Enter the initial deposit (principal).",
+   699→        "Enter the annual interest rate.",
+   700→        "Choose the compounding frequency (daily, monthly, quarterly, or annually).",
+   701→        "Enter any regular monthly contributions you plan to add.",
+   702→        "Enter the time horizon in years, then review the final balance, total contributions, and interest earned.",
+   703→      ],
+   704→      example:
+   705→        "$5,000 invested at 7% compounded monthly, with $250 added each month for 20 years, grows to about $150,428. That breaks down to $65,000 in total contributions ($5,000 initial + $60,000 monthly) and $85,428 in compound interest.",
+   706→      faqs: [
+   707→        {
+   708→          q: "How is compound interest calculated?",
+   709→          a: "Use A = P × (1 + r/n)^(n × t), where P is principal, r is the annual rate, n is compounding periods per year, and t is years. For monthly compounding, set n = 12. The total interest earned is A minus the principal.",
+   710→        },
+   711→        {
+   712→          q: "How much will $10,000 be worth in 20 years at 5% compound interest?",
+   713→          a: "$10,000 invested at 5% compounded monthly for 20 years grows to $27,126.40 — earning $17,126.40 in interest. Compounded annually, it grows to $26,532.98, showing how compounding frequency matters.",
+   714→        },
+   715→        {
+   716→          q: "What is the difference between simple and compound interest?",
+   717→          a: "Simple interest is earned only on the original principal. Compound interest is earned on the principal plus any previously earned interest. Over long periods, compounding produces dramatically more growth than simple interest.",
+   718→        },
+   719→        {
+   720→          q: "What is the Rule of 72?",
+   721→          a: "The Rule of 72 estimates how long it takes money to double: divide 72 by the annual interest rate. At 8% annual return, money doubles in about 9 years (72 ÷ 8). At 6%, it takes 12 years.",
+   722→        },
+   723→      ],
+   724→      relatedSearches: [
+   725→        "compound interest calculator with monthly contributions",
+   726→        "compound interest calculator daily",
+   727→        "savings compound interest calculator",
+   728→        "compound interest calculator with withdrawals",
+   729→        "Rule of 72 calculator",
+   730→        "compound growth calculator",
+   731→        "investment compound interest calculator",
+   732→      ],
+   733→    },
+   734→  },
+   735→  {
+   736→    id: "salary",
+   737→    name: "Salary Calculator",
+   738→    category: "financial",
+   739→    short: "Salary",
+   740→    description:
+   741→      "Convert between hourly, daily, weekly, monthly and annual salary.",
+   742→    icon: BadgeDollarSign,
+   743→    keywords: ["salary", "wage", "annual", "hourly"],
+   744→    seo: {
+   745→      definition:
+   746→        "A salary calculator is a free online tool that converts your pay between hourly, daily, weekly, monthly, and annual amounts. Use it to compare job offers, calculate overtime pay, and see exactly what an hourly wage adds up to over a year.",
+   747→      formula:
+   748→        "Annual salary = hourly rate × hours per week × weeks per year (typically 52). Monthly salary = annual ÷ 12. Weekly = hourly × hours per week. Daily = hourly × hours per day. For overtime, pay 1.5× the hourly rate for hours above 40 in a week under U.S. federal law.",
+   749→      howToUse: [
+   750→        "Enter your hourly rate or annual salary.",
+   751→        "Enter the number of hours you work per week.",
+   752→        "Enter weeks worked per year (default is 52).",
+   753→        "Optionally add overtime hours and the overtime rate.",
+   754→        "Review equivalent pay across all time periods.",
+   755→      ],
+   756→      example:
+   757→        "A $25/hour wage working 40 hours per week for 52 weeks equals an annual salary of $52,000 — about $4,333.33 per month, $1,000 per week, and $200 per day. Adding 5 hours of overtime each week at time-and-a-half raises annual pay to $61,750.",
+   758→      faqs: [
+   759→        {
+   760→          q: "How do I calculate my annual salary from an hourly rate?",
+   761→          a: "Multiply your hourly rate by the hours you work per week, then by the number of weeks per year. At 40 hours/week for 52 weeks, $25/hour = $25 × 40 × 52 = $52,000 per year.",
+   762→        },
+   763→        {
+   764→          q: "How much is $20 an hour annually?",
+   765→          a: "At 40 hours per week for 52 weeks, $20/hour equals $41,600 per year — about $3,466.67 per month. If you take 2 weeks unpaid vacation, annual pay drops to $40,000.",
+   766→        },
+   767→        {
+   768→          q: "How is overtime pay calculated?",
+   769→          a: "Under U.S. federal law, non-exempt employees earn 1.5× their regular hourly rate for any hours worked above 40 in a workweek. So a $20/hour worker earns $30/hour for each overtime hour.",
+   770→        },
+   771→        {
+   772→          q: "What is the difference between gross and net salary?",
+   773→          a: "Gross salary is your pay before taxes and deductions. Net (take-home) salary is what hits your bank account after federal and state taxes, Social Security, Medicare, health insurance, and retirement contributions are withheld. Net is typically 70–80% of gross.",
+   774→        },
+   775→      ],
+   776→      relatedSearches: [
+   777→        "hourly to salary calculator",
+   778→        "annual salary calculator",
+   779→        "salary to hourly calculator",
+   780→        "paycheck calculator",
+   781→        "take home pay calculator",
+   782→        "overtime calculator",
+   783→        "monthly income calculator",
+   784→      ],
+   785→    },
+   786→  },
+   787→  {
+   788→    id: "interest-rate",
+   789→    name: "Interest Rate Calculator",
+   790→    category: "financial",
+   791→    short: "Interest Rate",
+   792→    description:
+   793→      "Determine the effective interest rate of a loan from payment and term.",
+   794→    icon: Percent,
+   795→    keywords: ["rate", "apr", "interest rate"],
+   796→    seo: {
+   797→      definition:
+   798→        "An interest rate calculator is a free online tool that determines the effective annual interest rate (APR) of a loan from the loan amount, monthly payment, and term. Use it to compare financing offers, evaluate the true cost of credit, and check that a quoted rate matches the actual payments.",
+   799→      formula:
+   800→        "Solve for r in M = P × [r(1+r)^n] / [(1+r)^n − 1], where M is the monthly payment, P is the principal, and n is the number of months. The result r is the monthly rate; multiply by 12 (or compound) to get the APR. There is no closed-form solution — the rate is solved numerically (typically Newton's method).",
+   801→      howToUse: [
+   802→        "Enter the loan amount (principal).",
+   803→        "Enter the monthly payment you're making.",
+   804→        "Enter the loan term in months or years.",
+   805→        "Click calculate to solve for the APR.",
+   806→        "Optionally add fees to compute the true APR including closing costs.",
+   807→      ],
+   808→      example:
+   809→        "A $20,000 loan repaid with $482.66 monthly payments over 48 months has an effective APR of about 7.42%. Borrowers can use this to compare dealer financing against credit-union loans when the stated rate is unclear or hidden in fees.",
+   810→      faqs: [
+   811→        {
+   812→          q: "How do you calculate the interest rate on a loan?",
+   813→          a: "If you know the loan amount, monthly payment, and term, solve for r in the amortization formula M = P × [r(1+r)^n] / [(1+r)^n − 1]. There's no algebraic solution — financial calculators use iterative methods like Newton's method or bisection.",
+   814→        },
+   815→        {
+   816→          q: "What is the difference between APR and APY?",
+   817→          a: "APR (annual percentage rate) is the simple annual rate charged on a loan, ignoring compounding within the year. APY (annual percentage yield) is the effective annual rate that includes compounding. For a 12% nominal rate compounded monthly, APY = (1 + 0.12/12)^12 − 1 = 12.68%.",
+   818→        },
+   819→        {
+   820→          q: "What is a good APR for a personal loan?",
+   821→          a: "Borrowers with good credit typically see personal loan APRs of 7–12%. Borrowers with excellent credit (760+) can sometimes qualify for rates below 7%, while fair-credit borrowers (640–699) often receive 18% or higher.",
+   822→        },
+   823→        {
+   824→          q: "Is a lower APR always better?",
+   825→          a: "Usually yes, but check the term. A 36-month loan at 9% APR often costs less total interest than a 72-month loan at 6% APR, because the longer term means more months of interest charges. Always compare total cost, not just the rate.",
+   826→        },
+   827→      ],
+   828→      relatedSearches: [
+   829→        "APR calculator",
+   830→        "effective interest rate calculator",
+   831→        "annual interest rate calculator",
+   832→        "APY calculator",
+   833→        "loan rate calculator",
+   834→        "interest rate converter",
+   835→        "nominal vs effective interest rate calculator",
+   836→      ],
+   837→    },
+   838→  },
+   839→  {
+   840→    id: "sales-tax",
+   841→    name: "Sales Tax Calculator",
+   842→    category: "financial",
+   843→    short: "Sales Tax",
+   844→    description: "Quickly add sales tax to any purchase amount.",
+   845→    icon: Receipt,
+   846→    keywords: ["sales tax", "vat", "purchase"],
+   847→    seo: {
+   848→      definition:
+   849→        "A sales tax calculator is a free online tool that adds sales tax (or VAT) to any purchase amount, or reverses a tax-included price to find the pre-tax amount. Use it to compute the final price at checkout across U.S. states, Canadian provinces, and VAT-charging countries.",
+   850→      formula:
+   851→        "Total = amount × (1 + rate), where rate is the sales tax rate as a decimal (e.g., 7.25% = 0.0725). To reverse a tax-included total back to its pre-tax amount, divide the total by (1 + rate). The tax portion = total − pre-tax amount.",
+   852→      howToUse: [
+   853→        "Enter the purchase amount.",
+   854→        "Enter the sales tax rate as a percentage (e.g., 7.25 for California).",
+   855→        "Choose whether the amount entered is pre-tax or tax-included.",
+   856→        "Optionally add a second tax (e.g., state + local, or VAT + excise).",
+   857→        "Review the tax amount and the final total cost.",
+   858→      ],
+   859→      example:
+   860→        "A $50 purchase in a state with 7.25% sales tax adds $3.63 in tax, for a total of $53.63. Reversing it: a $100 tax-included receipt at 8% sales tax breaks down to $92.59 of goods plus $7.41 of tax.",
+   861→      faqs: [
+   862→        {
+   863→          q: "How do I calculate sales tax on a purchase?",
+   864→          a: "Multiply the pre-tax amount by the sales tax rate (as a decimal), then add the result to the original amount. For a $50 purchase at 7.25% tax: $50 × 0.0725 = $3.63 tax, for a total of $53.63.",
+   865→        },
+   866→        {
+   867→          q: "How do I back out sales tax from a total?",
+   868→          a: "Divide the tax-included total by (1 + rate). For an $80 receipt at 8% tax: $80 ÷ 1.08 = $74.07 pre-tax, and $80 − $74.07 = $5.93 tax. This is useful for expense reports and bookkeeping.",
+   869→        },
+   870→        {
+   871→          q: "Which U.S. state has the highest sales tax?",
+   872→          a: "As of 2024, California has the highest state-level sales tax rate at 7.25%. When combined with local city and county taxes, some California cities reach over 10.5% — the highest combined rates in the country.",
+   873→        },
+   874→        {
+   875→          q: "What's the difference between sales tax and VAT?",
+   876→          a: "Sales tax is charged only at the final retail sale to a consumer. VAT (value-added tax) is charged at each stage of production but credited back to businesses, so the final consumer effectively pays it. VAT rates in Europe range from 17% (Luxembourg) to 27% (Hungary).",
+   877→        },
+   878→      ],
+   879→      relatedSearches: [
+   880→        "sales tax calculator by state",
+   881→        "reverse sales tax calculator",
+   882→        "VAT calculator",
+   883→        "tax inclusive vs tax exclusive calculator",
+   884→        "California sales tax calculator",
+   885→        "Texas sales tax calculator",
+   886→        "combined state and local sales tax calculator",
+   887→      ],
+   888→    },
+   889→  },
+   890→
+   891→  // ---------------- Fitness & Health ----------------
+   892→  {
+   893→    id: "bmi",
+   894→    name: "BMI Calculator",
+   895→    category: "health",
+   896→    short: "BMI",
+   897→    description:
+   898→      "Calculate your Body Mass Index and see which weight category you fall into.",
+   899→    icon: Scale,
+   900→    keywords: ["bmi", "body mass", "weight"],
+   901→    seo: {
+   902→      definition:
+   903→        "A BMI calculator is a free online tool that calculates your Body Mass Index (BMI) from your height and weight. BMI is a widely used screening metric that classifies adults as underweight, normal weight, overweight, or obese.",
+   904→      formula:
+   905→        "BMI = weight (kg) ÷ height (m)². In imperial units: BMI = 703 × weight (lb) ÷ height (in)². Standard adult categories: underweight < 18.5, normal weight 18.5–24.9, overweight 25–29.9, obese 30+.",
+   906→      howToUse: [
+   907→        "Choose your preferred units — metric (kg, cm) or imperial (lb, in).",
+   908→        "Enter your height in the height field.",
+   909→        "Enter your current body weight.",
+   910→        "Results update as you type to show your BMI value and the category it falls into.",
+   911→        "Use the BMI chart to compare your result to the healthy range for your height.",
+   912→      ],
+   913→      example:
+   914→        "For an adult who is 70 kg and 175 cm tall: BMI = 70 ÷ (1.75 × 1.75) = 70 ÷ 3.0625 = 22.9, which falls in the Normal weight range (18.5–24.9).",
+   915→      faqs: [
+   916→        {
+   917→          q: "What is a healthy BMI?",
+   918→          a: "A healthy BMI for most adults is between 18.5 and 24.9. Below 18.5 is considered underweight, 25–29.9 is overweight, and 30 or higher falls in the obese range.",
+   919→        },
+   920→        {
+   921→          q: "How accurate is the BMI calculator?",
+   922→          a: "BMI is a quick screening tool that works for most adults, but it does not directly measure body fat. Very muscular athletes may register as overweight despite low fat, and older adults can have a normal BMI but high body fat. BMI is a screening metric, not a diagnostic of body fatness or health — consult a doctor for personal advice.",
+   923→        },
+   924→        {
+   925→          q: "Does BMI work for children and teens?",
+   926→          a: "For children and teens aged 2–19, BMI is plotted on age- and sex-specific CDC growth charts and reported as a percentile rather than a fixed category.",
+   927→        },
+   928→        {
+   929→          q: "What BMI should a 5'9\" man aim for?",
+   930→          a: "For an adult who is 5'9\" (175 cm), a weight between roughly 125–168 lb (56.7–76.2 kg) places BMI in the 18.5–24.9 normal range.",
+   931→        },
+   932→      ],
+   933→      relatedSearches: [
+   934→        "BMI chart",
+   935→        "healthy BMI range",
+   936→        "BMI calculator for men",
+   937→        "BMI calculator for women",
+   938→        "BMI calculator kg",
+   939→        "ideal weight by height",
+   940→        "body fat percentage",
+   941→      ],
+   942→    },
+   943→  },
+   944→  {
+   945→    id: "calorie",
+   946→    name: "Calorie Calculator",
+   947→    category: "health",
+   948→    short: "Calorie",
+   949→    description:
+   950→      "Estimate daily calorie needs based on activity level and goals (TDEE).",
+   951→    icon: Flame,
+   952→    keywords: ["calorie", "tdee", "diet", "energy"],
+   953→    seo: {
+   954→      definition:
+   955→        "A calorie calculator estimates how many calories you need each day based on your age, sex, height, weight, and activity level. It uses the Mifflin-St Jeor equation to compute your Total Daily Energy Expenditure (TDEE) for weight maintenance, loss, or gain.",
+   956→      formula:
+   957→        "BMR (Mifflin-St Jeor): Men = 10 × weight(kg) + 6.25 × height(cm) − 5 × age + 5. Women = 10 × weight(kg) + 6.25 × height(cm) − 5 × age − 161. TDEE = BMR × activity factor (1.2 sedentary, 1.375 light, 1.55 moderate, 1.725 very active, 1.9 extra active). Subtract ~500 kcal/day to lose about 1 lb per week.",
+   958→      howToUse: [
+   959→        "Select your sex and enter your age, height, and current weight.",
+   960→        "Choose your daily activity level, from sedentary to extra active.",
+   961→        "Pick a goal — maintain, lose, or gain weight.",
+   962→        "Results update as you type to show your daily calorie target and macronutrient breakdown.",
+   963→        "Track your intake against the target using a food diary or app.",
+   964→      ],
+   965→      example:
+   966→        "A 30-year-old male, 80 kg, 178 cm, with moderate activity: BMR = 10×80 + 6.25×178 − 5×30 + 5 = 800 + 1112.5 − 150 + 5 = 1767.5 kcal. TDEE = 1767.5 × 1.55 = 2739 kcal/day. To lose 1 lb/week, target ~2239 kcal/day.",
+   967→      faqs: [
+   968→        {
+   969→          q: "How many calories should I eat a day?",
+   970→          a: "Adult women typically need 1,600–2,400 kcal/day and adult men 2,000–3,000 kcal/day, depending on age, size, and activity level. Use the calculator to get a number tailored to your stats and goal.",
+   971→        },
+   972→        {
+   973→          q: "What is TDEE?",
+   974→          a: "TDEE (Total Daily Energy Expenditure) is the total calories you burn in a day, including BMR plus activity, digestion, and exercise. Eating below TDEE creates a deficit for weight loss; eating above it creates a surplus for weight gain.",
+   975→        },
+   976→        {
+   977→          q: "How accurate is a calorie calculator?",
+   978→          a: "The Mifflin-St Jeor equation used here is within about 10% of measured values for most adults. Calorie calculators are estimates, not exact prescriptions — adjust by 100–200 kcal based on real-world results and talk to a registered dietitian for personalized guidance.",
+   979→        },
+   980→        {
+   981→          q: "How big a deficit do I need to lose 1 lb per week?",
+   982→          a: "A deficit of about 500 kcal/day (3,500 kcal/week) is the classic estimate for losing ~1 lb of body fat per week, though real losses vary with water, muscle, and metabolic adaptation.",
+   983→        },
+   984→      ],
+   985→      relatedSearches: [
+   986→        "calorie calculator for weight loss",
+   987→        "TDEE calculator",
+   988→        "Mifflin St Jeor calculator",
+   989→        "how many calories to lose weight",
+   990→        "macro calculator",
+   991→        "maintenance calories",
+   992→        "BMR vs TDEE",
+   993→      ],
+   994→    },
+   995→  },
+   996→  {
+   997→    id: "body-fat",
+   998→    name: "Body Fat Calculator",
+   999→    category: "health",
+  1000→    short: "Body Fat",
+  1001→    description:
+  1002→      "Estimate body fat percentage using the U.S. Navy circumference method.",
+  1003→    icon: Activity,
+  1004→    keywords: ["body fat", "navy", "composition"],
+  1005→    seo: {
+  1006→      definition:
+  1007→        "A body fat calculator estimates your body fat percentage using the U.S. Navy circumference method. By entering your neck, waist, and (for women) hip measurements along with height and sex, you get a fast, tape-measure-based alternative to DEXA scans and skinfold calipers.",
+  1008→      formula:
+  1009→        "Navy method for men: %BF = 495 ÷ (1.0324 − 0.19077 × log10(waist − neck) + 0.15456 × log10(height)) − 450. For women: %BF = 495 ÷ (1.29579 − 0.35004 × log10(waist + hip − neck) + 0.22100 × log10(height)) − 450. All measurements in cm. Healthy body fat is typically 10–20% for men and 18–28% for women.",
+  1010→      howToUse: [
+  1011→        "Select your biological sex — the formula differs for men and women.",
+  1012→        "Enter your height in cm or inches.",
+  1013→        "Measure and enter your neck circumference at the narrowest point.",
+  1014→        "Measure your waist at the navel (and hip at the widest point, for women).",
+  1015→        "Results update as you type to show your body fat percentage and category.",
+  1016→      ],
+  1017→      example:
+  1018→        "For a man with waist 84 cm, neck 38 cm, height 178 cm: log10(46) = 1.6628 and log10(178) = 2.2504. %BF = 495 ÷ (1.0324 − 0.19077×1.6628 + 0.15456×2.2504) − 450 = 495 ÷ (1.0324 − 0.3171 + 0.3479) − 450 = 495 ÷ 1.0632 − 450 ≈ 15.6% body fat (fitness range).",
+  1019→      faqs: [
+  1020→        {
+  1021→          q: "What is a good body fat percentage?",
+  1022→          a: "For men, 10–20% is generally considered healthy; for women, 18–28%. Athletes often sit lower (men 6–13%, women 14–20%), while above 25% for men or 32% for women is typically classed as obese.",
+  1023→        },
+  1024→        {
+  1025→          q: "How accurate is the Navy body fat calculator?",
+  1026→          a: "The U.S. Navy circumference method is usually within 3–4% of DEXA results when measurements are taken correctly. For best accuracy, measure at the same time of day, exhale fully before reading the waist, and have a friend help. Body fat calculators are estimates — consult a healthcare professional for clinical assessment.",
+  1027→        },
+  1028→        {
+  1029→          q: "How do I measure waist and neck for the Navy method?",
+  1030→          a: "Measure the neck just below the larynx and the waist at the navel (men) or natural waistline (women), keeping the tape horizontal and snug but not compressing the skin. For women, also measure the hips at the widest point.",
+  1031→        },
+  1032→        {
+  1033→          q: "Is body fat percentage better than BMI?",
+  1034→          a: "Body fat percentage directly measures composition, while BMI only uses height and weight. Body fat is more informative for athletes, older adults, and anyone muscular whose BMI may look high despite low fat.",
+  1035→        },
+  1036→      ],
+  1037→      relatedSearches: [
+  1038→        "body fat calculator navy method",
+  1039→        "body fat percentage chart",
+  1040→        "body fat calculator men",
+  1041→        "body fat calculator women",
+  1042→        "how to measure body fat",
+  1043→        "healthy body fat percentage",
+  1044→        "army body fat calculator",
+  1045→      ],
+  1046→    },
+  1047→  },
+  1048→  {
+  1049→    id: "bmr",
+  1050→    name: "BMR Calculator",
+  1051→    category: "health",
+  1052→    short: "BMR",
+  1053→    description:
+  1054→      "Calculate your Basal Metabolic Rate — calories burned at complete rest.",
+  1055→    icon: HeartPulse,
+  1056→    keywords: ["bmr", "metabolism", "resting"],
+  1057→    seo: {
+  1058→      definition:
+  1059→        "A BMR calculator estimates your Basal Metabolic Rate — the number of calories your body burns at complete rest just to keep vital functions like breathing, circulation, and cell production running. BMR is the largest single component of your daily calorie burn and the starting point for any TDEE or calorie deficit plan.",
+  1060→      formula:
+  1061→        "Mifflin-St Jeor (the most accurate formula for most people): Men = 10 × weight(kg) + 6.25 × height(cm) − 5 × age(yrs) + 5. Women = 10 × weight(kg) + 6.25 × height(cm) − 5 × age(yrs) − 161. The result is calories per day at rest. Multiply by an activity factor to estimate TDEE.",
+  1062→      howToUse: [
+  1063→        "Select your sex (the formula constant differs).",
+  1064→        "Enter your age in years.",
+  1065→        "Enter your height in cm or feet/inches.",
+  1066→        "Enter your weight in kg or pounds.",
+  1067→        "Results update as you type to show your daily BMR in calories.",
+  1068→      ],
+  1069→      example:
+  1070→        "For a 28-year-old female, 65 kg, 165 cm: BMR = 10×65 + 6.25×165 − 5×28 − 161 = 650 + 1031.25 − 140 − 161 = 1380 kcal/day at complete rest.",
+  1071→      faqs: [
+  1072→        {
+  1073→          q: "What is a good BMR?",
+  1074→          a: "There is no single 'good' BMR — it depends on age, sex, height, and weight. Adult women typically fall around 1,200–1,600 kcal/day and adult men 1,500–2,000 kcal/day. A higher BMR means your body burns more calories at rest, often due to greater muscle mass.",
+  1075→        },
+  1076→        {
+  1077→          q: "What is the difference between BMR and TDEE?",
+  1078→          a: "BMR is calories burned at complete rest; TDEE multiplies BMR by your activity level to estimate total daily burn. TDEE is what you compare your food intake against for weight management.",
+  1079→        },
+  1080→        {
+  1081→          q: "Which BMR formula is most accurate?",
+  1082→          a: "The Mifflin-St Jeor equation, used by this calculator, is considered the most accurate for the general population. The older Harris-Benedict and Katch-McArdle (lean-mass) formulas are alternatives for specific cases.",
+  1083→        },
+  1084→        {
+  1085→          q: "Can I eat below my BMR to lose weight?",
+  1086→          a: "Eating well below BMR is generally not recommended without medical supervision because it can slow metabolism, reduce muscle mass, and cause nutrient shortfalls. A moderate deficit of 300–500 kcal/day from TDEE is safer for sustainable fat loss — consult a doctor or dietitian for personalized advice.",
+  1087→        },
+  1088→      ],
+  1089→      relatedSearches: [
+  1090→        "BMR calculator Mifflin St Jeor",
+  1091→        "basal metabolic rate calculator",
+  1092→        "BMR vs TDEE",
+  1093→        "how to increase BMR",
+  1094→        "BMR calculator for women",
+  1095→        "BMR calculator for men",
+  1096→        "resting calorie burn",
+  1097→      ],
+  1098→    },
+  1099→  },
+  1100→  {
+  1101→    id: "ideal-weight",
+  1102→    name: "Ideal Weight Calculator",
+  1103→    category: "health",
+  1104→    short: "Ideal Weight",
+  1105→    description:
+  1106→      "Find your ideal body weight using several well-known formulas.",
+  1107→    icon: PersonStanding,
+  1108→    keywords: ["ideal weight", "healthy weight"],
+  1109→    seo: {
+  1110→      definition:
+  1111→        "An ideal weight calculator estimates your healthy target body weight using several established formulas based on height and sex. It returns multiple reference values — Devine, Robinson, Miller, and Hamwi — so you can compare ranges rather than rely on a single number.",
+  1112→      formula:
+  1113→        "Devine (most cited): Men = 50 kg + 2.3 kg per inch over 5 ft; Women = 45.5 kg + 2.3 kg per inch over 5 ft. Robinson: Men = 52 kg + 1.9 kg/in; Women = 49 kg + 1.7 kg/in. Miller: Men = 56.2 kg + 1.41 kg/in; Women = 53.1 kg + 1.36 kg/in. Hamwi: Men = 48 kg + 2.7 kg/in; Women = 45.5 kg + 2.2 kg/in.",
+  1114→      howToUse: [
+  1115→        "Select your biological sex.",
+  1116→        "Enter your height in feet and inches or in centimeters.",
+  1117→        "Results update as you type to show ideal weights from four formulas.",
+  1118→        "Compare the values and use the range as a healthy target zone.",
+  1119→        "Adjust expectations for muscle mass, bone structure, and age.",
+  1120→      ],
+  1121→      example:
+  1122→        "For a 5'9\" (69-inch) male using the Devine formula: ideal weight = 50 + 2.3 × (69 − 60) = 50 + 20.7 = 70.7 kg (about 156 lb). The Robinson formula gives 50 + 1.9×9 = 69.1 kg, and Hamwi gives 48 + 2.7×9 = 72.3 kg.",
+  1123→      faqs: [
+  1124→        {
+  1125→          q: "How do I calculate my ideal body weight?",
+  1126→          a: "The Devine formula is the most widely used: men = 50 kg + 2.3 kg for each inch over 5 ft; women = 45.5 kg + 2.3 kg per inch over 5 ft. This calculator shows four formulas side-by-side for comparison.",
+  1127→        },
+  1128→        {
+  1129→          q: "What is a healthy weight for my height?",
+  1130→          a: "A healthy weight usually corresponds to a BMI between 18.5 and 24.9. For example, a 5'7\" adult has a healthy range of roughly 118–159 lb (53.5–72.3 kg). The ideal weight calculator narrows this to a single target value per formula.",
+  1131→        },
+  1132→        {
+  1133→          q: "Which ideal weight formula is best?",
+  1134→          a: "The Devine formula is the most cited in clinical settings, but Robinson, Miller, and Hamwi each give slightly different targets. Use the calculator's range as a guide rather than a strict goal.",
+  1135→        },
+  1136→        {
+  1137→          q: "Does frame size matter for ideal weight?",
+  1138→          a: "Yes — people with a small frame should aim near the lower end of the range, and those with a large frame near the upper end. The formulas above assume a medium frame; consult a healthcare provider for individualized guidance.",
+  1139→        },
+  1140→      ],
+  1141→      relatedSearches: [
+  1142→        "ideal weight calculator by height",
+  1143→        "healthy weight for 5'7 female",
+  1144→        "Devine formula ideal weight",
+  1145→        "ideal body weight calculator",
+  1146→        "how much should I weigh",
+  1147→        "height weight chart",
+  1148→        "Robinson formula weight",
+  1149→      ],
+  1150→    },
+  1151→  },
+  1152→  {
+  1153→    id: "pace",
+  1154→    name: "Pace Calculator",
+  1155→    category: "health",
+  1156→    short: "Pace",
+  1157→    description: "Compute your running pace, time or distance.",
+  1158→    icon: Timer,
+  1159→    keywords: ["pace", "running", "speed"],
+  1160→    seo: {
+  1161→      definition:
+  1162→        "A pace calculator computes your running pace, total time, or distance covered based on the two values you enter. Whether you are training for a 5K, marathon, or simply tracking a jog, it converts between min/mi, min/km, mph, and km/h so you can hit your target splits.",
+  1163→      formula:
+  1164→        "Pace = Time ÷ Distance. Time = Pace × Distance. Distance = Time ÷ Pace. To convert min/km to min/mi, multiply by 1.609; to convert min/mi to min/km, divide by 1.609. Speed in mph = 60 ÷ pace (min/mi).",
+  1165→      howToUse: [
+  1166→        "Enter any two of distance, time, and pace.",
+  1167→        "Choose your preferred units (miles or kilometers).",
+  1168→        "Results update as you type to solve for the third value.",
+  1169→        "Use the results to plan race splits or training runs.",
+  1170→      ],
+  1171→      example:
+  1172→        "A runner completes a 10K (6.21 miles) in 50 minutes. Pace = 50 ÷ 6.21 = 8.05 min/mi = 8:03 per mile, or 5:00 per kilometer. Equivalent speed = 60 ÷ 8.05 = 7.45 mph (12 km/h).",
+  1173→      faqs: [
+  1174→        {
+  1175→          q: "What is a good running pace?",
+  1176→          a: "For recreational runners, a pace between 9:00 and 12:00 per mile (5:35–7:27 per km) is typical. Competitive amateur men average 7:00–8:30 min/mi and women 8:00–9:30 min/mi; elite marathoners run under 5:30 per mile.",
+  1177→        },
+  1178→        {
+  1179→          q: "How do I calculate my pace per mile?",
+  1180→          a: "Divide total time by total distance. For example, 40 minutes over 4 miles = 40 ÷ 4 = 10:00 per mile. This calculator handles the math and unit conversion automatically.",
+  1181→        },
+  1182→        {
+  1183→          q: "How do I convert min/km to min/mi?",
+  1184→          a: "Multiply min/km by 1.609 to get min/mi. A 5:00/km pace is roughly 8:03/mi. Conversely, divide min/mi by 1.609 to get min/km.",
+  1185→        },
+  1186→        {
+  1187→          q: "What pace do I need to finish a marathon in 4 hours?",
+  1188→          a: "A 4-hour marathon needs an average pace of 9:09 per mile (5:41 per km) across the 26.2-mile (42.2 km) distance.",
+  1189→        },
+  1190→      ],
+  1191→      relatedSearches: [
+  1192→        "pace calculator running",
+  1193→        "running pace calculator km",
+  1194→        "marathon pace calculator",
+  1195→        "5k pace calculator",
+  1196→        "min per mile calculator",
+  1197→        "race time predictor",
+  1198→        "running speed calculator",
+  1199→      ],
+  1200→    },
+  1201→  },
+  1202→  {
+  1203→    id: "pregnancy",
+  1204→    name: "Pregnancy Calculator",
+  1205→    category: "health",
+  1206→    short: "Pregnancy",
+  1207→    description:
+  1208→      "Estimate your pregnancy timeline and key milestones from your last period.",
+  1209→    icon: Baby,
+  1210→    keywords: ["pregnancy", "due date", "weeks"],
+  1211→    seo: {
+  1212→      definition:
+  1213→        "A pregnancy calculator estimates how far along you are by counting weeks from the first day of your last menstrual period (LMP). It shows your current gestational age, trimester, and key milestones such as the end of the first trimester, viability, and full term.",
+  1214→      formula:
+  1215→        "Gestational age = (today's date − LMP date) in days ÷ 7, expressed as weeks + days. A full-term pregnancy lasts 40 weeks (280 days). Trimesters: 1st = weeks 1–13, 2nd = weeks 14–27, 3rd = weeks 28–40. Full term is 39–40 weeks; 37–38 weeks is early term.",
+  1216→      howToUse: [
+  1217→        "Enter the first day of your last menstrual period.",
+  1218→        "Optionally enter your average cycle length for a more accurate estimate.",
+  1219→        "Results update as you type to show your current gestational age in weeks and days.",
+  1220→        "Review your trimester and upcoming milestone dates.",
+  1221→      ],
+  1222→      example:
+  1223→        "If your LMP was January 1 and today is March 15 (73 days later), you are 73 ÷ 7 = 10 weeks and 3 days pregnant, placing you in week 11 of the first trimester.",
+  1224→      faqs: [
+  1225→        {
+  1226→          q: "How is pregnancy calculated in weeks?",
+  1227→          a: "Pregnancy is counted from the first day of your last menstrual period, not from conception. So at conception you are technically about 2 weeks pregnant, and a full-term pregnancy lasts about 40 weeks (280 days) from LMP.",
+  1228→        },
+  1229→        {
+  1230→          q: "Which trimester is the hardest?",
+  1231→          a: "Many find the first trimester (weeks 1–13) the toughest due to nausea, fatigue, and hormone changes. The second trimester (weeks 14–27) is often called the honeymoon phase, and the third (weeks 28–40) brings physical discomfort as the baby grows.",
+  1232→        },
+  1233→        {
+  1234→          q: "How many weeks is full term?",
+  1235→          a: "Full term is 39 weeks 0 days through 40 weeks 6 days. Births at 37–38 weeks are 'early term,' 41 weeks is 'late term,' and 42+ weeks is 'post term.'",
+  1236→        },
+  1237→        {
+  1238→          q: "Is the pregnancy calculator accurate?",
+  1239→          a: "Counting from LMP is accurate for women with regular 28-day cycles but can be off by a week or more if cycles are irregular. An early ultrasound (before 12 weeks) gives the most precise dating — discuss results with your OB-GYN.",
+  1240→        },
+  1241→      ],
+  1242→      relatedSearches: [
+  1243→        "pregnancy week calculator",
+  1244→        "how many weeks pregnant am I",
+  1245→        "pregnancy due date calculator",
+  1246→        "pregnancy trimesters",
+  1247→        "pregnancy calendar",
+  1248→        "LMP calculator",
+  1249→        "pregnancy calculator by weeks",
+  1250→      ],
+  1251→    },
+  1252→  },
+  1253→  {
+  1254→    id: "pregnancy-conception",
+  1255→    name: "Pregnancy Conception Calculator",
+  1256→    category: "health",
+  1257→    short: "Conception",
+  1258→    description:
+  1259→      "Estimate the likely date of conception based on the due date or birth date.",
+  1260→    icon: Baby,
+  1261→    keywords: ["conception", "pregnancy"],
+  1262→    seo: {
+  1263→      definition:
+  1264→        "A pregnancy conception calculator estimates the date your baby was likely conceived based on your due date, last menstrual period, or birth date. Because ovulation usually happens about 14 days before the next period, conception is estimated around that window.",
+  1265→      formula:
+  1266→        "Conception date ≈ LMP + 14 days (for a 28-day cycle). If you only know the due date: Conception ≈ Due Date − 38 weeks (because the due date is LMP + 40 weeks, and conception is ~LMP + 2 weeks). For cycles shorter or longer than 28 days, adjust by (cycle length − 28) days.",
+  1267→      howToUse: [
+  1268→        "Enter either your due date, the first day of your last period, or your baby's birth date.",
+  1269→        "Optionally enter your average menstrual cycle length.",
+  1270→        "Results update as you type to show the estimated conception date and fertile window.",
+  1271→      ],
+  1272→      example:
+  1273→        "If your due date is October 10, the estimated conception date is October 10 − 38 weeks = approximately January 25. The fertile window would have been around January 20–27, with ovulation most likely on or near January 25.",
+  1274→      faqs: [
+  1275→        {
+  1276→          q: "How do I calculate my conception date?",
+  1277→          a: "If you know your due date, subtract 38 weeks. If you know your last menstrual period, add about 14 days (for a 28-day cycle). For longer or shorter cycles, adjust by (cycle length − 28) days. Ultrasound dating gives the most precise estimate.",
+  1278→        },
+  1279→        {
+  1280→          q: "Can the conception date be wrong?",
+  1281→          a: "Yes — sperm can survive up to 5 days in the reproductive tract and ovulation timing varies, so conception can occur within a several-day window. The calculator provides an estimate, not an exact date.",
+  1282→        },
+  1283→        {
+  1284→          q: "What is the fertile window?",
+  1285→          a: "The fertile window is the 5 days before ovulation plus the day of ovulation itself — about 6 days each cycle. Conception is most likely when intercourse happens in this window.",
+  1286→        },
+  1287→        {
+  1288→          q: "How accurate is conception dating from LMP?",
+  1289→          a: "For women with regular 28-day cycles, LMP-based conception dating is reasonably close. For irregular cycles, an early first-trimester ultrasound is far more accurate. Consult your healthcare provider for personalized dating.",
+  1290→        },
+  1291→      ],
+  1292→      relatedSearches: [
+  1293→        "conception calculator",
+  1294→        "conception date calculator by due date",
+  1295→        "when did I conceive",
+  1296→        "reverse due date calculator",
+  1297→        "ovulation and conception calculator",
+  1298→        "fertility window calculator",
+  1299→        "conception calculator by LMP",
+  1300→      ],
+  1301→    },
+  1302→  },
+  1303→  {
+  1304→    id: "due-date",
+  1305→    name: "Due Date Calculator",
+  1306→    category: "health",
+  1307→    short: "Due Date",
+  1308→    description:
+  1309→      "Calculate your baby's estimated due date from your last menstrual period.",
+  1310→    icon: Stethoscope,
+  1311→    keywords: ["due date", "delivery", "pregnancy"],
+  1312→    seo: {
+  1313→      definition:
+  1314→        "A due date calculator estimates when your baby will be born using Naegele's rule, based on the first day of your last menstrual period. The result includes your estimated delivery date, current gestational age, and the number of weeks remaining until birth.",
+  1315→      formula:
+  1316→        "Naegele's rule: Due Date = LMP + 280 days (equivalently, LMP + 9 months + 7 days). For cycles shorter or longer than 28 days, adjust by (cycle length − 28) days. For IVF pregnancies: Due Date = transfer date + 266 days for a day-5 embryo, or + 263 days for a day-3 embryo.",
+  1317→      howToUse: [
+  1318→        "Enter the first day of your last menstrual period.",
+  1319→        "Optionally enter your average cycle length (defaults to 28 days).",
+  1320→        "Results update as you type to show your estimated due date.",
+  1321→        "Review your current gestational age and remaining weeks.",
+  1322→      ],
+  1323→      example:
+  1324→        "If your LMP was January 1 and your cycle is 28 days, your estimated due date is January 1 + 280 days = October 8. With a 30-day cycle, add 2 days for an October 10 due date.",
+  1325→      faqs: [
+  1326→        {
+  1327→          q: "How is my due date calculated?",
+  1328→          a: "Most due dates use Naegele's rule: add 280 days (9 months + 7 days) to the first day of your last menstrual period. An early first-trimester ultrasound is even more accurate, especially for irregular cycles.",
+  1329→        },
+  1330→        {
+  1331→          q: "How accurate is a due date calculator?",
+  1332→          a: "Naegele's rule is right within about a week for women with regular 28-day cycles, but only about 5% of babies arrive on their exact due date. Most are born within two weeks of it — your provider may revise the date after an ultrasound.",
+  1333→        },
+  1334→        {
+  1335→          q: "Can my due date change after an ultrasound?",
+  1336→          a: "Yes. If an early ultrasound (especially before 12 weeks) shows a size different from your LMP-based date by more than 5–7 days, your OB-GYN may adjust the due date to match the ultrasound measurements.",
+  1337→        },
+  1338→        {
+  1339→          q: "What if I conceived through IVF?",
+  1340→          a: "For IVF, the due date is calculated from the embryo transfer date: add 266 days for a day-5 blastocyst transfer or 263 days for a day-3 embryo transfer. Tell your provider the exact transfer date and embryo age.",
+  1341→        },
+  1342→      ],
+  1343→      relatedSearches: [
+  1344→        "pregnancy due date calculator",
+  1345→        "due date calculator by LMP",
+  1346→        "Naegele's rule calculator",
+  1347→        "IVF due date calculator",
+  1348→        "due date calculator by conception date",
+  1349→        "pregnancy week calculator",
+  1350→        "when am I due",
+  1351→      ],
+  1352→    },
+  1353→  },
+  1354→
+  1355→  // ---------------- Math ----------------
+  1356→  {
+  1357→    id: "scientific",
+  1358→    name: "Scientific Calculator",
+  1359→    category: "math",
+  1360→    short: "Scientific",
+  1361→    description:
+  1362→      "A full scientific calculator with trig, logarithms, powers and memory.",
+  1363→    icon: CalcIcon,
+  1364→    keywords: ["scientific", "trig", "log", "power"],
+  1365→    seo: {
+  1366→      definition:
+  1367→        "A scientific calculator is a free online tool that evaluates mathematical expressions including trigonometric functions (sin, cos, tan), logarithms (ln, log), powers, roots, factorials, and constants like π and e. Use it for algebra, calculus prep, physics, and engineering calculations — no download or sign-in required.",
+  1368→      formula:
+  1369→        "Expressions are evaluated using the standard order of operations (PEMDAS): Parentheses → Exponents → Multiplication/Division (left-to-right) → Addition/Subtraction (left-to-right). Trigonometric functions accept degrees by default (switch to radians for calculus); log is base-10, ln is the natural logarithm (base e); n! = 1·2·3·…·n with 0! = 1; powers use a^b = exp(b·ln(a)); roots via sqrt(x) or x^(1/n).",
+  1370→      howToUse: [
+  1371→        "Tap buttons or type to build an expression — the live preview shows the evaluated result as you go.",
+  1372→        "Use the DEG/RAD toggle to switch trig input between degrees (default) and radians.",
+  1373→        "Insert constants with the π and e buttons; use ^ for exponents and ! for factorials.",
+  1374→        "Press = to commit the result, AC to clear, or the back arrow to delete the last token.",
+  1375→        "If the expression is undefined (e.g., 1/0, log(-1), asin(2)), the display shows 'Error' in red — fix the expression and re-evaluate.",
+  1376→      ],
+  1377→      example:
+  1378→        "Evaluate sin(30) + cos(60) − 2^3 in DEG mode. sin(30) = 0.5, cos(60) = 0.5, 2^3 = 8. Result = 0.5 + 0.5 − 8 = −7. The live preview confirms −7 instantly, including the proper order-of-operations handling of the exponent before the subtraction.",
+  1379→      faqs: [
+  1380→        {
+  1381→          q: "How does the scientific calculator handle degrees vs radians?",
+  1382→          a: "By default, trig functions (sin, cos, tan) interpret their argument as degrees, which matches most homework problems. Toggle the DEG/RAD switch to radians for calculus work (derivatives and integrals of trig functions are defined in radians). Inverse trig functions (asin, acos, atan) return degrees in DEG mode and radians in RAD mode.",
+  1383→        },
+  1384→        {
+  1385→          q: "What is the order of operations used?",
+  1386→          a: "The engine follows standard PEMDAS: parentheses first, then exponents (^) and factorials (!), then multiplication and division left-to-right, then addition and subtraction left-to-right. So 10 − 4 × 2 = 2, not 12, because the multiplication is performed before the subtraction.",
+  1387→        },
+  1388→        {
+  1389→          q: "How is −2² evaluated?",
+  1390→          a: "As −(2²) = −4. The exponent operator binds tighter than unary minus, matching Google Calculator, Wolfram Alpha, and most math libraries. To square a negative number, write (−2)^2 = 4 explicitly.",
+  1391→        },
+  1392→        {
+  1393→          q: "What's the difference between log and ln?",
+  1394→          a: "log is the common logarithm base 10 (so log(100) = 2), and ln is the natural logarithm base e ≈ 2.71828 (so ln(e) = 1). Use ln for calculus and continuous-growth problems; use log for pH, decibels, and Richter-scale calculations.",
+  1395→        },
+  1396→        {
+  1397→          q: "Does the calculator support keyboard input?",
+  1398→          a: "Yes — type numbers, operators (+, −, *, /), parentheses, ^ for exponents, and the constants pi and e directly. The live preview re-evaluates on every keystroke so you can confirm the result before pressing =.",
+  1399→        },
+  1400→      ],
+  1401→      relatedSearches: [
+  1402→        "online scientific calculator with sin cos tan",
+  1403→        "free scientific calculator no download",
+  1404→        "scientific calculator with fractions",
+  1405→        "degree to radian converter",
+  1406→        "natural logarithm calculator",
+  1407→        "factorial calculator",
+  1408→        "exponent calculator with e",
+  1409→      ],
+  1410→    },
+  1411→  },
+  1412→  {
+  1413→    id: "fraction",
+  1414→    name: "Fraction Calculator",
+  1415→    category: "math",
+  1416→    short: "Fraction",
+  1417→    description:
+  1418→      "Add, subtract, multiply and divide fractions with step-by-step results.",
+  1419→    icon: Divide,
+  1420→    keywords: ["fraction", "ratio"],
+  1421→    seo: {
+  1422→      definition:
+  1423→        "A fraction calculator is a free online tool that adds, subtracts, multiplies and divides fractions — including mixed numbers and improper fractions — and shows step-by-step results so you can follow the work. It's ideal for homework, recipes, carpentry, and any problem involving ratios.",
+  1424→      formula:
+  1425→        "Operations on a/b and c/d: addition/subtraction use the lowest common denominator LCD = lcm(b, d), giving (a·d ± c·b)/(b·d), then reduce by gcd. Multiplication: (a/b)·(c/d) = (a·c)/(b·d). Division: (a/b) ÷ (c/d) = (a·d)/(b·c), provided c ≠ 0. The final fraction is reduced by gcd(numerator, denominator) and the sign is normalized to the numerator.",
+  1426→      howToUse: [
+  1427→        "Enter the first fraction's numerator and denominator (use a negative numerator for negative fractions).",
+  1428→        "Pick an operation: add (+), subtract (−), multiply (×), or divide (÷).",
+  1429→        "Enter the second fraction's numerator and denominator.",
+  1430→        "Read the reduced fraction, its decimal equivalent, and the step-by-step breakdown showing the LCD and cross-multiplication.",
+  1431→        "If you divide by a fraction whose numerator is 0, the calculator shows a clear 'Cannot divide by zero' message.",
+  1432→      ],
+  1433→      example:
+  1434→        "Compute 1/2 × 2/3. Multiplication gives (1×2)/(2×3) = 2/6. Reduce by gcd(2,6) = 2 → 1/3. Decimal: 1 ÷ 3 ≈ 0.333333. The steps panel shows each multiplication and the reduction.",
+  1435→      faqs: [
+  1436→        {
+  1437→          q: "How do I add fractions with unlike denominators?",
+  1438→          a: "Find the lowest common denominator (LCD) — the least common multiple of the two denominators — then rewrite each fraction with that denominator and add the numerators. For 1/4 + 1/6 the LCD is 12, so 3/12 + 2/12 = 5/12. The calculator does this automatically and shows the LCD in the steps.",
+  1439→        },
+  1440→        {
+  1441→          q: "How are fractions reduced to lowest terms?",
+  1442→          a: "After computing the result, the calculator divides both the numerator and denominator by their greatest common divisor (gcd). For example, 6/8 → gcd(6,8) = 2 → 3/4. The sign is moved to the numerator so the denominator is always positive.",
+  1443→        },
+  1444→        {
+  1445→          q: "Can I use improper fractions and mixed numbers?",
+  1446→          a: "Yes. Enter any integer numerator and a non-zero denominator — improper fractions like 7/4 are accepted directly and reduce normally. For mixed numbers, convert first (e.g., 2 1/3 = 7/3) or compute the whole and fractional parts separately and add them.",
+  1447→        },
+  1448→        {
+  1449→          q: "What happens when I divide by zero?",
+  1450→          a: "Division by a fraction whose numerator is 0 is mathematically undefined, so the calculator displays 'Cannot divide by a zero numerator (the second fraction is 0)' instead of producing Infinity or NaN. A zero denominator in either input is rejected with 'Denominators must be non-zero'.",
+  1451→        },
+  1452→        {
+  1453→          q: "How does the fraction calculator handle negative fractions?",
+  1454→          a: "The sign is normalized to the numerator — so 1/(−2) is treated internally as −1/2 before any operation. The result is similarly normalized so the denominator is always positive and the sign sits on the numerator.",
+  1455→        },
+  1456→      ],
+  1457→      relatedSearches: [
+  1458→        "fraction calculator with steps",
+  1459→        "adding fractions calculator",
+  1460→        "subtracting fractions calculator",
+  1461→        "multiply fractions calculator",
+  1462→        "divide fractions calculator",
+  1463→        "simplify fractions calculator",
+  1464→        "mixed number calculator",
+  1465→        "improper fraction calculator",
+  1466→      ],
+  1467→    },
+  1468→  },
+  1469→  {
+  1470→    id: "percentage",
+  1471→    name: "Percentage Calculator",
+  1472→    category: "math",
+  1473→    short: "Percentage",
+  1474→    description:
+  1475→      "Solve common percentage problems: what is X% of Y, percent change, and more.",
+  1476→    icon: Percent,
+  1477→    keywords: ["percentage", "percent", "ratio"],
+  1478→    seo: {
+  1479→      definition:
+  1480→        "A percentage calculator is a free online tool that solves the four most common percentage problems: what is X% of Y, X is what percent of Y, the percent change between two values, and increase or decrease a value by X%. Use it for discounts, tips, taxes, grades, and growth rates.",
+  1481→      formula:
+  1482→        "To find X% of Y: result = (X ÷ 100) × Y. To find what percent X is of Y: % = (X ÷ Y) × 100. Percent change from X to Y = ((Y − X) ÷ X) × 100 — positive means increase, negative means decrease. To increase or decrease Y by X%: result = Y × (1 ± X/100).",
+  1483→      howToUse: [
+  1484→        "Choose the mode that matches your problem: '% of value', '% of total', '% change', or '± %'.",
+  1485→        "Enter the two values the mode asks for (e.g., the percentage X and the base value Y).",
+  1486→        "For 'Increase / decrease', also pick the direction (+ to grow, − to shrink).",
+  1487→        "Read the result, the worked formula, and the plain-language summary.",
+  1488→        "If you compute percent change from 0, the calculator shows '—' with a 'Starting value (X) must be non-zero' hint (dividing by zero is undefined).",
+  1489→      ],
+  1490→      example:
+  1491→        "What is 15% of 200? result = (15 ÷ 100) × 200 = 0.15 × 200 = 30. So 15% of 200 is 30. The steps panel also displays the decimal form (0.15) and the formula '(X ÷ 100) × Y = result'.",
+  1492→      faqs: [
+  1493→        {
+  1494→          q: "How do I calculate percentage increase?",
+  1495→          a: "Use the formula ((new − old) ÷ old) × 100. For example, a price going from $80 to $100 is ((100 − 80) ÷ 80) × 100 = 25% increase. Switch to the '% change' mode, enter X = 80 and Y = 100, and the calculator returns '▲ 25% increase'.",
+  1496→        },
+  1497→        {
+  1498→          q: "What is the percent change formula?",
+  1499→          a: "Percent change = ((new value − old value) ÷ old value) × 100. A positive result is an increase; a negative result is a decrease. The old value must be non-zero — percent change from 0 is mathematically undefined (infinite).",
+  1500→        },
+  1501→        {
+  1502→          q: "How is percentage difference different from percentage change?",
+  1503→          a: "Percentage change compares one value to a fixed baseline (old → new) and is directional. Percentage difference compares two values with no clear baseline and uses their average as the denominator: |a − b| ÷ ((a + b)/2) × 100. This calculator computes percentage change; for a difference, average the two values yourself and use the '% of total' mode.",
+  1504→        },
+  1505→        {
+  1506→          q: "Can I calculate a discount or tip percentage?",
+  1507→          a: "Yes. For a 20% discount on a $50 item, use '± %' mode with Y = 50, X = 20, and direction − → result $40 (the discount is $10). For an 18% tip on a $32 check, use '% of value' with X = 18 and Y = 32 → $5.76.",
+  1508→        },
+  1509→        {
+  1510→          q: "Why does the calculator show '—' for percent change from zero?",
+  1511→          a: "Percent change divides by the starting value, so starting from 0 means dividing by 0, which is undefined (approaches infinity). Rather than displaying 'Infinity', the calculator shows '—' with the hint 'Starting value (X) must be non-zero'.",
+  1512→        },
+  1513→      ],
+  1514→      relatedSearches: [
+  1515→        "percentage increase calculator",
+  1516→        "percentage change calculator",
+  1517→        "percentage decrease calculator",
+  1518→        "percent change formula",
+  1519→        "percentage of a number",
+  1520→        "percentage difference calculator",
+  1521→        "tip calculator percentage",
+  1522→        "discount percentage calculator",
+  1523→      ],
+  1524→    },
+  1525→  },
+  1526→  {
+  1527→    id: "random-number",
+  1528→    name: "Random Number Generator",
+  1529→    category: "math",
+  1530→    short: "Random Number",
+  1531→    description:
+  1532→      "Generate random numbers within a custom range, with optional uniqueness.",
+  1533→    icon: Shuffle,
+  1534→    keywords: ["random", "number", "generator"],
+  1535→    seo: {
+  1536→      definition:
+  1537→        "A random number generator is a free online tool that produces one or more random integers inside a custom range. Use it for raffles, classrooms, dice-style games, sampling, and 'pick a number' decisions — with an optional 'no repeats' mode that guarantees every result is unique.",
+  1538→      formula:
+  1539→        "Each number is drawn with uniform probability using the browser's cryptographic random source (crypto.getRandomValues) and rejection sampling: a random 32-bit integer is rolled, and any value that would bias the modulo result is discarded and re-rolled. For 'no repeats' mode, a Fisher–Yates shuffle of the full range (small spans) or a Set-based draw (large spans) guarantees distinct results with no repeats.",
+  1540→      howToUse: [
+  1541→        "Enter the minimum and maximum values that bound the range (both inclusive).",
+  1542→        "Set how many numbers you want to generate.",
+  1543→        "Toggle 'No repeats' if every number must be unique — the count cannot exceed the range size.",
+  1544→        "Optionally choose to sort the results ascending or descending.",
+  1545→        "Click Generate to draw a fresh batch; each click produces a new independent set.",
+  1546→      ],
+  1547→      example:
+  1548→        "Generate 5 unique random numbers between 1 and 100. Set Min = 1, Max = 100, Count = 5, toggle 'No repeats' on, and click Generate. A typical result is [17, 42, 63, 84, 91] — five distinct integers, each uniformly distributed in [1, 100] with no repeats.",
+  1549→      faqs: [
+  1550→        {
+  1551→          q: "Can the random number generator avoid repeats?",
+  1552→          a: "Yes — turn on 'No repeats' before generating. The calculator then draws without replacement so every number in the batch is unique. If you ask for more unique numbers than the range can hold (e.g., 10 unique numbers from 1–5), it shows a clear error explaining the range is too small.",
+  1553→        },
+  1554→        {
+  1555→          q: "How do I generate a random number between 1 and 100?",
+  1556→          a: "Set Min = 1, Max = 100, and Count = 1, then click Generate. Each click returns a fresh integer in [1, 100] inclusive. For a 'random number generator 1-100' with multiple draws, set Count to however many you need.",
+  1557→        },
+  1558→        {
+  1559→          q: "Is the generator truly random?",
+  1560→          a: "It uses the browser's cryptographic random source (window.crypto.getRandomValues with a Uint32Array) combined with rejection sampling. That makes the output uniformly distributed and unpredictable — suitable for raffles, sampling, and decisions. (For cryptographic secrets like passwords, use a dedicated password generator.)",
+  1561→        },
+  1562→        {
+  1563→          q: "What's the largest range I can use?",
+  1564→          a: "The range (max − min + 1) can be as large as 2^32 (about 4.3 billion). For non-unique draws there is no practical cap; for unique draws, large ranges use a Set-based algorithm so memory stays proportional to the count you request, not the range size.",
+  1565→        },
+  1566→        {
+  1567→          q: "Why can't I generate 10 unique numbers from a range of 1 to 5?",
+  1568→          a: "A range of 1–5 only contains 5 distinct integers, so it's impossible to draw 10 unique values. The calculator detects this and shows 'Cannot generate 10 unique numbers from a range of only 5 values (1–5)' instead of returning duplicates.",
+  1569→        },
+  1570→      ],
+  1571→      relatedSearches: [
+  1572→        "random number generator no repeats",
+  1573→        "random number generator 1-100",
+  1574→        "random number picker",
+  1575→        "random number 1-10",
+  1576→        "random number 1-1000",
+  1577→        "lottery number generator",
+  1578→        "raffle number generator",
+  1579→        "random sample generator",
+  1580→      ],
+  1581→    },
+  1582→  },
+  1583→  {
+  1584→    id: "triangle",
+  1585→    name: "Triangle Calculator",
+  1586→    category: "math",
+  1587→    short: "Triangle",
+  1588→    description:
+  1589→      "Solve triangles: find missing sides, angles, area and perimeter.",
+  1590→    icon: Triangle,
+  1591→    keywords: ["triangle", "geometry", "angle"],
+  1592→    seo: {
+  1593→      definition:
+  1594→        "A triangle calculator is a free online tool that solves any triangle from three known parts — sides, angles, or a mix — and finds the missing sides, angles, area, perimeter, and type (right, acute, obtuse, equilateral, isosceles, or scalene). It supports SSS, SAS, ASA, and AAS input.",
+  1595→      formula:
+  1596→        "SSS uses the Law of Cosines: A = arccos((b² + c² − a²) ÷ (2bc)), and similarly for B and C; angles sum to 180°. SAS uses the Law of Cosines to find the third side: a² = b² + c² − 2bc·cos(A). ASA/AAS use the Law of Sines: a/sin(A) = b/sin(B) = c/sin(C). Area is found with Heron's formula: s = (a+b+c)/2, area = √(s(s−a)(s−b)(s−c)).",
+  1597→      howToUse: [
+  1598→        "Select the solve mode that matches what you know: SSS (three sides), SAS (two sides + included angle), ASA (two angles + included side), or AAS (two angles + non-included side).",
+  1599→        "Enter the three known values in the input fields that appear.",
+  1600→        "Read the solved triangle: all three sides, all three angles, perimeter, and area.",
+  1601→        "Check the classification chip to see if the triangle is right, acute, or obtuse by angles and equilateral, isosceles, or scalene by sides.",
+  1602→        "If your inputs are impossible (e.g., sides that violate the triangle inequality), the calculator shows a clear error rather than silent garbage.",
+  1603→      ],
+  1604→      example:
+  1605→        "Solve an SSS triangle with sides 3, 4, 5. Law of Cosines: A = arccos((4² + 5² − 3²)/(2·4·5)) = arccos(32/40) = 36.87°; B = arccos((3² + 5² − 4²)/(2·3·5)) = 53.13°; C = 180 − 36.87 − 53.13 = 90°. Heron: s = 6, area = √(6·3·2·1) = √36 = 6. Result: a 3-4-5 right triangle with area 6.",
+  1606→      faqs: [
+  1607→        {
+  1608→          q: "How do I solve a right triangle?",
+  1609→          a: "If you know the two legs, use SSS after computing the hypotenuse with the Pythagorean theorem c = √(a² + b²), or use SAS with the included 90° angle. If you know one leg and the hypotenuse, use SSS or the Pythagorean theorem to get the other leg. The calculator handles right triangles just like any other — it also labels them 'Right' in the classification chip when one angle is exactly 90°.",
+  1610→        },
+  1611→        {
+  1612→          q: "What is the triangle inequality?",
+  1613→          a: "The sum of any two sides must be greater than the third (a + b > c, a + c > b, b + c > a). If your three sides violate this — for example 1, 2, 3 or 1, 2, 10 — no triangle exists, and the calculator returns 'Triangle inequality violated' instead of producing nonsensical angles.",
+  1614→        },
+  1615→        {
+  1616→          q: "How does the calculator find angles from three sides?",
+  1617→          a: "It uses the Law of Cosines: A = arccos((b² + c² − a²)/(2bc)). This is more numerically stable than the Law of Sines for SSS because it avoids the ambiguous 'SSA' case. The third angle is always 180° minus the other two, guaranteeing they sum to exactly 180°.",
+  1618→        },
+  1619→        {
+  1620→          q: "Does the calculator work in degrees or radians?",
+  1621→          a: "All angles are entered and displayed in degrees — the most natural unit for geometry and trigonometry homework. Internally, the conversion is handled by the standard π/180 factor; you do not need to switch modes.",
+  1622→        },
+  1623→        {
+  1624→          q: "What is Heron's formula for the area?",
+  1625→          a: "Given sides a, b, c, first compute the semiperimeter s = (a + b + c)/2, then the area is √(s(s − a)(s − b)(s − c)). For the 3-4-5 triangle: s = 6, so area = √(6·3·2·1) = √36 = 6. The calculator guards against tiny floating-point negative values inside the sqrt with Math.max(0, …).",
+  1626→        },
+  1627→      ],
+  1628→      relatedSearches: [
+  1629→        "triangle solver calculator",
+  1630→        "right triangle calculator",
+  1631→        "triangle angle calculator",
+  1632→        "law of cosines calculator",
+  1633→        "law of sines calculator",
+  1634→        "heron's formula calculator",
+  1635→        "pythagorean theorem calculator",
+  1636→        "sss triangle calculator",
+  1637→      ],
+  1638→    },
+  1639→  },
+  1640→  {
+  1641→    id: "standard-deviation",
+  1642→    name: "Standard Deviation Calculator",
+  1643→    category: "math",
+  1644→    short: "Standard Deviation",
+  1645→    description:
+  1646→      "Compute mean, variance and standard deviation for a set of numbers.",
+  1647→    icon: Sigma,
+  1648→    keywords: ["standard deviation", "variance", "statistics"],
+  1649→    seo: {
+  1650→      definition:
+  1651→        "A standard deviation calculator is a free online tool that computes the mean, median, variance, standard deviation, range, and other descriptive statistics for a list of numbers. It reports both population (σ) and sample (s) standard deviation so you can choose the right one for your dataset.",
+  1652→      formula:
+  1653→        "Mean μ = (Σxᵢ)/n. Population variance σ² = Σ(xᵢ − μ)² / n, population std dev σ = √σ². Sample variance s² = Σ(xᵢ − x̄)² / (n − 1), sample std dev s = √s². The sample formulas use n − 1 (Bessel's correction) to give an unbiased estimate when your data is a sample of a larger population. Coefficient of variation CV = (σ / μ) × 100%.",
+  1654→      howToUse: [
+  1655→        "Paste or type your data set, separated by spaces, commas, semicolons, or newlines.",
+  1656→        "The calculator parses every numeric token, ignores non-numeric junk, and shows the count it used.",
+  1657→        "Read the summary: n, sum, mean, median, min, max, range, population and sample variance, and population and sample standard deviation.",
+  1658→        "Choose population (σ) when your data is the entire population, or sample (s) when it's a sample of a larger population.",
+  1659→        "Datasets up to 10,000 values are supported; anything beyond is ignored with a visible notice.",
+  1660→      ],
+  1661→      example:
+  1662→        "For the data set 2, 4, 4, 4, 5, 5, 7, 9: n = 8, sum = 40, mean μ = 5. Sum of squared deviations = (9+1+1+1+0+0+4+16) = 32. Population variance σ² = 32/8 = 4, so σ = 2. Sample variance s² = 32/7 ≈ 4.571, so s ≈ 2.138. The classic textbook example returns the textbook answer.",
+  1663→      faqs: [
+  1664→        {
+  1665→          q: "What is the difference between sample and population standard deviation?",
+  1666→          a: "Population standard deviation σ uses divisor n and is correct when your data IS the entire population. Sample standard deviation s uses divisor n − 1 (Bessel's correction) and is the unbiased estimator when your data is a SAMPLE of a larger population. Use s for surveys, experiments, and any data drawn from a bigger group; use σ only when you have every member of the population.",
+  1667→        },
+  1668→        {
+  1669→          q: "When is standard deviation undefined?",
+  1670→          a: "Sample standard deviation requires at least 2 data points because the formula divides by n − 1; with n = 1 the divisor is 0. The calculator shows '—' for sample variance and sample std dev when there's only one value (population std dev is correctly 0, since a single value has no spread).",
+  1671→        },
+  1672→        {
+  1673→          q: "How do I enter my data?",
+  1674→          a: "Separate numbers with any of: spaces, commas, semicolons, pipes, tabs, or newlines. Non-numeric tokens are ignored and a count badge shows how many valid numbers were used, so you can safely paste a column from a spreadsheet even if it has headers or blanks.",
+  1675→        },
+  1676→        {
+  1677→          q: "What is the coefficient of variation (CV)?",
+  1678→          a: "CV = (σ / μ) × 100% — the standard deviation expressed as a percentage of the mean. It's a unitless measure of relative spread that lets you compare variability across datasets with different units or scales. The calculator shows '—' when the mean is 0 or the sample is too small.",
+  1679→        },
+  1680→        {
+  1681→          q: "How is the median computed?",
+  1682→          a: "The data is sorted ascending. If n is odd, the median is the middle value; if n is even, it's the average of the two middle values. For 2, 4, 4, 4, 5, 5, 7, 9 (n = 8), the two middle values are 4 and 5, so the median is 4.5.",
+  1683→        },
+  1684→      ],
+  1685→      relatedSearches: [
+  1686→        "sample standard deviation calculator",
+  1687→        "population standard deviation calculator",
+  1688→        "variance calculator",
+  1689→        "mean median mode calculator",
+  1690→        "standard deviation formula",
+  1691→        "bessel's correction calculator",
+  1692→        "descriptive statistics calculator",
+  1693→        "coefficient of variation calculator",
+  1694→      ],
+  1695→    },
+  1696→  },
+  1697→
+  1698→  // ---------------- Other ----------------
+  1699→  {
+  1700→    id: "age",
+  1701→    name: "Age Calculator",
+  1702→    category: "other",
+  1703→    short: "Age",
+  1704→    description:
+  1705→      "Calculate exact age in years, months, days and total days lived.",
+  1706→    icon: Cake,
+  1707→    keywords: ["age", "birthday", "years"],
+  1708→    seo: {
+  1709→      definition:
+  1710→        "An age calculator is a free online tool that calculates your exact age in years, months, and days from your date of birth. It also shows total days, weeks, and hours lived, plus a countdown to your next birthday.",
+  1711→      formula:
+  1712→        "Age is calculated as the difference between two dates: age = age-at date − birth date. Years are counted as full 365-day cycles (plus leap days), months as full calendar-month cycles, and days as the remainder. Total days lived = (age-at date − birth date) in milliseconds ÷ 86,400,000.",
+  1713→      howToUse: [
+  1714→        "Enter your date of birth in the 'Birth Date' field.",
+  1715→        "Optionally change the 'Age At Date' to calculate age as of a past or future date (defaults to today).",
+  1716→        "Results update as you type to show your age in years, months and days.",
+  1717→        "Review the totals below: total days, weeks, hours lived, and days until your next birthday.",
+  1718→      ],
+  1719→      example:
+  1720→        "If you were born on 1995-06-15 and today is 2024-11-20, your age is 29 years, 5 months and 5 days. You have lived 10,751 total days (approximately 1,536 weeks or 258,024 hours), and your next birthday is in 207 days.",
+  1721→      faqs: [
+  1722→        {
+  1723→          q: "How do I calculate my exact age?",
+  1724→          a: "Subtract your date of birth from today's date. Years come from full year cycles, months from full calendar-month cycles between the two dates, and days are the leftover remainder. Our calculator does this automatically.",
+  1725→        },
+  1726→        {
+  1727→          q: "How many days old am I?",
+  1728→          a: "Take the difference in milliseconds between today and your birth date and divide by 86,400,000 (the number of milliseconds in a day). The 'total days lived' field in this calculator shows that number directly.",
+  1729→        },
+  1730→        {
+  1731→          q: "Does the age calculator account for leap years?",
+  1732→          a: "Yes. We use calendar-aware date arithmetic, so every February 29 is handled correctly. The total-days figure includes all leap days that occurred between your birth date and the age-at date.",
+  1733→        },
+  1734→        {
+  1735→          q: "Can I calculate age at a future date?",
+  1736→          a: "Yes. Change the 'Age At Date' to any future date and the calculator will tell you how old you will be on that day, plus how many days remain until then.",
+  1737→        },
+  1738→        {
+  1739→          q: "How is age in months calculated?",
+  1740→          a: "Months are counted as full calendar-month cycles between the two dates. For example, from January 15 to April 14 is 2 months and 30 days, not 3 months, because the 15th of April has not yet been reached.",
+  1741→        },
+  1742→      ],
+  1743→      relatedSearches: [
+  1744→        "date of birth calculator",
+  1745→        "age in days calculator",
+  1746→        "birthday calculator",
+  1747→        "age difference calculator",
+  1748→        "how old am I",
+  1749→        "chronological age calculator",
+  1750→        "days until my birthday",
+  1751→        "age in months calculator",
+  1752→      ],
+  1753→    },
+  1754→  },
+  1755→  {
+  1756→    id: "date",
+  1757→    name: "Date Calculator",
+  1758→    category: "other",
+  1759→    short: "Date",
+  1760→    description:
+  1761→      "Add or subtract days from a date, or find the duration between two dates.",
+  1762→    icon: CalendarDays,
+  1763→    keywords: ["date", "days", "duration"],
+  1764→    seo: {
+  1765→      definition:
+  1766→        "A date calculator is a free online tool that adds or subtracts days, weeks, months and years from any starting date, and also calculates the exact duration between two dates in days, weeks, months and years.",
+  1767→      formula:
+  1768→        "For date arithmetic, full calendar cycles are added or subtracted from the start date. Date difference = end date − start date, expressed in days; weeks = days ÷ 7, and years/months are derived from calendar-aware month-by-month counting so leap years and variable month lengths are handled correctly.",
+  1769→      howToUse: [
+  1770→        "Pick a mode: 'Add/Subtract' to shift a date, or 'Duration' to measure between two dates.",
+  1771→        "Enter your start date (and end date, if in Duration mode).",
+  1772→        "Choose the units to add or subtract (days, weeks, months or years) and enter the amount.",
+  1773→        "Results update as you type to show the resulting date plus a breakdown of total days, weeks, months and years.",
+  1774→        "Use the result to plan deadlines, leases, project milestones or countdowns.",
+  1775→      ],
+  1776→      example:
+  1777→        "Adding 90 days to 2024-01-01 gives 2024-03-31 (a leap year, so February has 29 days). The duration between 2023-03-14 and 2024-11-20 is 1 year, 8 months and 6 days, equal to 617 days or approximately 88 weeks.",
+  1778→      faqs: [
+  1779→        {
+  1780→          q: "How do I add days to a date?",
+  1781→          a: "Enter the start date, choose 'Add', enter the number of days and click Calculate. Our calculator walks the calendar day-by-day so month lengths and leap years are handled correctly.",
+  1782→        },
+  1783→        {
+  1784→          q: "How many days are between two dates?",
+  1785→          a: "Switch to Duration mode, enter both dates and click Calculate. The result shows the exact difference in days, plus the equivalent in weeks, months and years.",
+  1786→        },
+  1787→        {
+  1788→          q: "Does the date calculator handle leap years?",
+  1789→          a: "Yes. We use real calendar arithmetic, so February 29 in leap years is counted correctly. For example, adding 1 year to 2024-02-29 returns 2025-02-28 because 2025 is not a leap year.",
+  1790→        },
+  1791→        {
+  1792→          q: "Can I subtract months from a date?",
+  1793→          a: "Yes. Pick 'Subtract', choose months, enter the amount and Calculate. The result rolls back the calendar month-by-month and adjusts the day if needed (e.g. March 31 − 1 month = February 28 or 29).",
+  1794→        },
+  1795→        {
+  1796→          q: "What is a business day calculator?",
+  1797→          a: "A business-day calculator counts only Monday–Friday and optionally skips public holidays. This tool counts calendar days; for business-day math, exclude weekends manually from the total.",
+  1798→        },
+  1799→      ],
+  1800→      relatedSearches: [
+  1801→        "date difference calculator",
+  1802→        "days between dates",
+  1803→        "add days to date calculator",
+  1804→        "date duration calculator",
+  1805→        "weeks between two dates",
+  1806→        "subtract days from date",
+  1807→        "calendar calculator",
+  1808→        "leap year calculator",
+  1809→      ],
+  1810→    },
+  1811→  },
+  1812→  {
+  1813→    id: "time",
+  1814→    name: "Time Calculator",
+  1815→    category: "other",
+  1816→    short: "Time",
+  1817→    description: "Add and subtract hours, minutes and seconds.",
+  1818→    icon: Clock,
+  1819→    keywords: ["time", "hours", "minutes"],
+  1820→    seo: {
+  1821→      definition:
+  1822→        "A time calculator is a free online tool that adds and subtracts hours, minutes and seconds — perfect for totaling timesheets, run splits, video durations or any time-based arithmetic.",
+  1823→      formula:
+  1824→        "Times are normalized to a single unit (seconds), summed or subtracted, then converted back to h:mm:ss form. 1 hour = 60 minutes = 3,600 seconds; the calculator carries minutes into hours and seconds into minutes automatically when a value exceeds 60.",
+  1825→      howToUse: [
+  1826→        "Pick the operation: Add or Subtract.",
+  1827→        "Enter the first time as h:mm:ss (e.g. 02:30:15).",
+  1828→        "Enter the second time the same way.",
+  1829→        "Results update as you type to show the total in h:mm:ss form plus a decimal-hours equivalent.",
+  1830→        "Chain multiple times by reusing the result as the new first input.",
+  1831→      ],
+  1832→      example:
+  1833→        "Adding 02:45:30 + 01:20:45 = 04:06:15 (4 hours, 6 minutes, 15 seconds), which equals 4.1042 decimal hours. Subtracting 01:30:00 from 03:15:00 gives 01:45:00.",
+  1834→      faqs: [
+  1835→        {
+  1836→          q: "How do I add hours and minutes?",
+  1837→          a: "Convert both values to minutes, add them, then convert back: divide total minutes by 60 for hours and use the remainder for minutes. This calculator does that automatically with h:mm:ss inputs.",
+  1838→        },
+  1839→        {
+  1840→          q: "What is decimal time?",
+  1841→          a: "Decimal time expresses the minutes portion of a duration as a fraction of an hour. 30 minutes = 0.5 hours, 15 minutes = 0.25 hours, so 2:30 becomes 2.5 decimal hours — useful for payroll and billing.",
+  1842→        },
+  1843→        {
+  1844→          q: "How many seconds are in an hour?",
+  1845→          a: "One hour = 60 minutes × 60 seconds = 3,600 seconds. To convert hours to seconds, multiply by 3,600; to convert seconds to hours, divide by 3,600.",
+  1846→        },
+  1847→        {
+  1848→          q: "Can I subtract a larger time from a smaller one?",
+  1849→          a: "Yes. The calculator will return the absolute difference in h:mm:ss form. If you need signed results (negative time), subtract smaller-from-larger manually first.",
+  1850→        },
+  1851→        {
+  1852→          q: "How do I total a timesheet with multiple entries?",
+  1853→          a: "Add the first two times, then use the result as the first input and add the next time. Repeat for each entry. For paid hours, convert the final h:mm:ss to decimal hours and multiply by your hourly rate.",
+  1854→        },
+  1855→      ],
+  1856→      relatedSearches: [
+  1857→        "time duration calculator",
+  1858→        "add hours and minutes",
+  1859→        "decimal hours calculator",
+  1860→        "time addition calculator",
+  1861→        "timesheet calculator",
+  1862→        "h:mm:ss calculator",
+  1863→        "minutes to hours converter",
+  1864→        "elapsed time calculator",
+  1865→      ],
+  1866→    },
+  1867→  },
+  1868→  {
+  1869→    id: "hours",
+  1870→    name: "Hours Calculator",
+  1871→    category: "other",
+  1872→    short: "Hours",
+  1873→    description:
+  1874→      "Calculate hours worked between two times, including break deductions.",
+  1875→    icon: Hourglass,
+  1876→    keywords: ["hours", "work", "timesheet"],
+  1877→    seo: {
+  1878→      definition:
+  1879→        "An hours calculator is a free work-hours calculator that totals the hours and minutes between a start time and end time, automatically deducting unpaid breaks so you can fill in a timesheet or payroll in seconds.",
+  1880→      formula:
+  1881→        "Worked hours = (end time − start time) − break time. If end time is earlier than start time (overnight shift), 24 hours are added before subtracting. Decimal hours = total minutes ÷ 60; pay = decimal hours × hourly rate.",
+  1882→      howToUse: [
+  1883→        "Enter your Start Time (clock-in) and End Time (clock-out) using the 12-hour or 24-hour picker.",
+  1884→        "Enter unpaid Break Time (lunch or rest) to be deducted from the total.",
+  1885→        "If you worked an overnight shift, the calculator wraps past midnight automatically.",
+  1886→        "Results update as you type to show total hours in h:mm format plus decimal hours.",
+  1887→        "Optionally multiply decimal hours by your hourly rate to get gross pay.",
+  1888→      ],
+  1889→      example:
+  1890→        "Clock in at 08:30, clock out at 17:15, with a 45-minute lunch break. Elapsed = 8 hours 45 minutes; subtracting the break gives 8 hours 0 minutes worked, equal to 8.0 decimal hours. At $22/hr that is $176.00 gross for the day.",
+  1891→      faqs: [
+  1892→        {
+  1893→          q: "How do I calculate work hours with breaks?",
+  1894→          a: "Subtract your start time from your end time to get elapsed time, then subtract any unpaid break. This calculator does both in one step — just enter the break minutes and the result is your paid hours.",
+  1895→        },
+  1896→        {
+  1897→          q: "How are overnight shifts calculated?",
+  1898→          a: "If your end time is earlier than your start time (e.g. 22:00 → 06:00), the calculator adds 24 hours to the end time before subtracting, so the elapsed time comes out correctly as 8 hours.",
+  1899→        },
+  1900→        {
+  1901→          q: "What are decimal hours?",
+  1902→          a: "Decimal hours convert the minutes portion of a duration into a fraction of an hour. 8 hours 15 minutes = 8.25 decimal hours. Payroll systems use decimal hours because they multiply cleanly by an hourly rate.",
+  1903→        },
+  1904→        {
+  1905→          q: "How do I convert hours and minutes to decimal?",
+  1906→          a: "Divide the minutes by 60 and add to the hours. For 7 hours 45 minutes: 45 ÷ 60 = 0.75, so 7.75 decimal hours. The calculator shows both formats side by side.",
+  1907→        },
+  1908→        {
+  1909→          q: "Does this calculator track overtime?",
+  1910→          a: "It calculates total daily hours; overtime depends on your local labor law (typically hours over 40 in a U.S. workweek or over 8 in a California day). Multiply any hours above that threshold by 1.5 (or 2.0) times your regular rate.",
+  1911→        },
+  1912→      ],
+  1913→      relatedSearches: [
+  1914→        "work hours calculator with breaks",
+  1915→        "timesheet calculator",
+  1916→        "time card calculator",
+  1917→        "hours worked calculator",
+  1918→        "decimal hours calculator",
+  1919→        "clock in clock out calculator",
+  1920→        "overtime calculator",
+  1921→        "payroll hours calculator",
+  1922→      ],
+  1923→    },
+  1924→  },
+  1925→  {
+  1926→    id: "gpa",
+  1927→    name: "GPA Calculator",
+  1928→    category: "other",
+  1929→    short: "GPA",
+  1930→    description:
+  1931→      "Compute your grade point average across courses with credit weighting.",
+  1932→    icon: GraduationCap,
+  1933→    keywords: ["gpa", "grade", "school"],
+  1934→    seo: {
+  1935→      definition:
+  1936→        "A GPA calculator computes your grade point average on a 4.0 scale by weighting each course's grade points by its credit hours and dividing by the total credits attempted, giving you an accurate semester or cumulative GPA.",
+  1937→      formula:
+  1938→        "GPA = Σ(grade_point × credit_hours) ÷ Σ(credit_hours). On a 4.0 scale, A = 4.0, B = 3.0, C = 2.0, D = 1.0, F = 0. Pluses add 0.3 and minuses subtract 0.3 (e.g. A− = 3.7, B+ = 3.3), except A+ which usually stays 4.0.",
+  1939→      howToUse: [
+  1940→        "For each course, enter the letter grade you received (A, A−, B+, etc.).",
+  1941→        "Enter the credit hours for that course (typically 3 or 4).",
+  1942→        "Add additional rows for every course in the term.",
+  1943→        "Results update as you type to show your term GPA, total credits and total grade points.",
+  1944→        "To find cumulative GPA, combine every course across all terms in one list.",
+  1945→      ],
+  1946→      example:
+  1947→        "Three courses: A (4 credits) = 4.0 × 4 = 16.0 points; B+ (3 credits) = 3.3 × 3 = 9.9 points; C (3 credits) = 2.0 × 3 = 6.0 points. Total points = 31.9; total credits = 10; GPA = 31.9 ÷ 10 = 3.19.",
+  1948→      faqs: [
+  1949→        {
+  1950→          q: "How is GPA calculated on a 4.0 scale?",
+  1951→          a: "Multiply each course's grade point (A=4.0, B=3.0, C=2.0, D=1.0, F=0) by its credit hours, sum these across all courses, then divide by the total credit hours attempted. The result is your GPA on a 4.0 scale.",
+  1952→        },
+  1953→        {
+  1954→          q: "How do I calculate my cumulative GPA?",
+  1955→          a: "List every course from every term, multiply each grade point by its credits, sum them all, and divide by total credits attempted. Entering all courses at once gives the same cumulative GPA as your transcript.",
+  1956→        },
+  1957→        {
+  1958→          q: "What is a good GPA?",
+  1959→          a: "A 3.5 GPA (B+ average) is generally considered strong and qualifies for many scholarships and graduate programs. A 3.7+ is competitive for top-tier graduate schools; 3.0 is a common minimum for honor rolls and some programs.",
+  1960→        },
+  1961→        {
+  1962→          q: "How do AP, IB or honors credits affect GPA?",
+  1963→          a: "Many high schools add 1.0 to the grade point for honors/AP/IB courses (so an A becomes 5.0). College policies vary — some cap the boost. Check your school's weighting policy and adjust grade points accordingly.",
+  1964→        },
+  1965→        {
+  1966→          q: "Does an F affect my GPA?",
+  1967→          a: "Yes. An F earns 0 grade points but the credits still count in the denominator, so it pulls your GPA down sharply. A 3-credit F combined with a 3-credit A gives (4.0×3 + 0×3) ÷ 6 = 2.0 GPA for those two courses.",
+  1968→        },
+  1969→      ],
+  1970→      relatedSearches: [
+  1971→        "GPA calculator 4.0 scale",
+  1972→        "college GPA calculator",
+  1973→        "cumulative GPA calculator",
+  1974→        "grade point average calculator",
+  1975→        "weighted GPA calculator",
+  1976→        "semester GPA calculator",
+  1977→        "GPA calculator with credits",
+  1978→        "how to calculate GPA",
+  1979→      ],
+  1980→    },
+  1981→  },
+  1982→  {
+  1983→    id: "grade",
+  1984→    name: "Grade Calculator",
+  1985→    category: "other",
+  1986→    short: "Grade",
+  1987→    description:
+  1988→      "Find the final grade needed on remaining work to hit a target average.",
+  1989→    icon: ClipboardCheck,
+  1990→    keywords: ["grade", "class", "final"],
+  1991→    seo: {
+  1992→      definition:
+  1993→        "A final grade calculator works backwards from your target class average to tell you the score you need on remaining assignments or the final exam — based on weighted categories like homework, quizzes, midterms and finals.",
+  1994→      formula:
+  1995→        "If current grade = Σ(category_score × category_weight) so far, then needed_score = (target − Σ(earned_weight)) ÷ remaining_weight. The calculator solves for the score required on the final exam or remaining category to reach your target.",
+  1996→      howToUse: [
+  1997→        "Enter your current overall grade (%) and how much it is worth (e.g. 80% of the class is complete so far).",
+  1998→        "Enter your target final grade (%) — the overall average you want to finish with.",
+  1999→        "Enter the weight (%) of the remaining assignment or final exam.",
+  2000→        "Results update as you type to show the minimum score you need on the final to hit your target.",
+
+[showing lines 1-2000 of 2293; use offset=2001 with limit to continue reading]

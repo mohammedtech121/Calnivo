@@ -52,6 +52,11 @@ export interface CalculatorFaq {
   a: string;
 }
 
+export interface CalculatorSource {
+  title: string;
+  url: string;
+}
+
 export interface CalculatorSeo {
   /** 1-2 sentence definition shown as an H2 "What is X?" section — keyword-rich. */
   definition: string;
@@ -65,6 +70,28 @@ export interface CalculatorSeo {
   faqs: CalculatorFaq[];
   /** Related/LSI search terms people also search for. */
   relatedSearches: string[];
+  /**
+   * AdSense Fix 1 — real, per-calculator content blocks.
+   * These optional fields render above the generic blocks and give each page
+   * value the calculator alone does not: what each output means, the exact
+   * method and assumptions, when the result misleads, primary sources, and a
+   * visible "last reviewed" date. Each field is written separately per
+   * calculator (no swap-and-reuse boilerplate).
+   */
+  /** What each output means, with 2–3 realistic scenarios and what moves the answer most. Uses real numbers, not adjectives. */
+  resultGuide?: string[];
+  /** The formula, compounding/rounding used, and what is left out (taxes, fees, insurance). Must match the code exactly. */
+  method?: {
+    formula: string;
+    assumptions: string[];
+    excludes: string[];
+  };
+  /** When the result misleads (e.g. BMI for athletes, old tax tables, LMP dating with irregular cycles). At least 3 points. */
+  limits?: string[];
+  /** 2–3 primary sources (IRS, CFPB, CDC, ACOG, NIST, WHO). Link to the exact page. */
+  sources?: CalculatorSource[];
+  /** ISO date of the last real recheck, e.g. "2026-11-20". */
+  lastReviewed?: string;
 }
 
 export interface CalculatorMeta {
@@ -158,6 +185,49 @@ export const CALCULATORS: CalculatorMeta[] = [
         "mortgage payoff calculator",
         "how much house can I afford calculator",
       ],
+      // ── AdSense Fix 1: real per-calculator content (verified numbers) ──
+      resultGuide: [
+        "The monthly payment shown is principal and interest only unless you add property tax, home insurance and HOA dues, in which case it becomes your full PITI payment. On a $320,000 loan at 6.5% over 30 years, principal and interest is $2,022.62 a month. In the first month $1,733.33 of that is interest and only $289.29 reduces the loan, which is why balances fall slowly at first.",
+        "Total interest is every dollar you pay above the amount borrowed. On that same 30-year loan it is $408,142.36, meaning a $320,000 home ultimately costs $728,142.36 in principal and interest. The rate matters more than the price: dropping the rate from 6.5% to 5.5% on the same loan cuts total interest from $408,142 to about $333,000.",
+        "The term trade-off is the single biggest lever. The same $320,000 at 6.5% over 15 years costs $2,787.54 a month — $764.92 more — but total interest falls from $408,142.36 to $181,757.84, a saving of $226,384.52. Choose the shorter term only if the higher payment still leaves a safety margin.",
+      ],
+      method: {
+        formula:
+          "Monthly payment M = P × [r(1+r)^n] / [(1+r)^n − 1], where P is the loan principal, r is the monthly interest rate (annual rate ÷ 12) and n is the number of monthly payments (term in years × 12). Property tax, home insurance and HOA are added as monthly amounts to reach PITI. Interest each month is the remaining balance × r; the rest of the payment reduces principal.",
+        assumptions: [
+          "Fixed interest rate for the whole term (adjustable-rate loans are not modelled).",
+          "Payments are made monthly, at the end of each month.",
+          "Property tax, insurance and HOA are entered as annual figures and divided by 12.",
+          "Rounding follows standard lender practice to the nearest cent per payment.",
+        ],
+        excludes: [
+          "Private mortgage insurance (PMI) when the down payment is under 20%.",
+          "Closing costs, origination fees, discount points and prepaid escrow.",
+          "Adjustable-rate resets, rate caps and negative amortization.",
+          "Property-value changes, refinance costs and early-payoff penalties.",
+        ],
+      },
+      limits: [
+        "An estimate only. Your lender's quote can differ because of rounding, fees, mortgage insurance and the exact day payments start.",
+        "Adjustable-rate mortgages change over time and are not modelled — a low teaser rate does not reflect what you pay after the first reset.",
+        "PMI is not added automatically even when your down payment is under 20%; add it yourself or budget for it.",
+        "Property tax and insurance rise most years, so the true lifetime cost is usually higher than the fixed-rate total shown here.",
+      ],
+      sources: [
+        {
+          title: "CFPB — Owning a home: mortgage basics",
+          url: "https://www.consumerfinance.gov/owning-a-home/mortgage-basics/",
+        },
+        {
+          title: "CFPB — What is the difference between interest rate and APR?",
+          url: "https://www.consumerfinance.gov/ask-cfpb/what-is-the-difference-between-an-interest-rate-and-an-apr-en-135/",
+        },
+        {
+          title: "FDIC — Mortgage payment basics",
+          url: "https://www.fdic.gov/resources/consumers/consumer-news/2019-10.html",
+        },
+      ],
+      lastReviewed: "2026-11-20",
     },
   },
   {
@@ -210,6 +280,48 @@ export const CALCULATORS: CalculatorMeta[] = [
         "debt consolidation calculator",
         "loan interest calculator",
       ],
+      // ── AdSense Fix 1: real per-calculator content (verified numbers) ──
+      resultGuide: [
+        "The monthly payment is the fixed amount that pays off the loan exactly over the term. A $25,000 personal loan at 9.5% APR over 60 months costs $525.05 a month. Lowering the rate from 9.5% to 7.5% on the same loan drops the payment to $501.51 and saves about $1,400 in interest.",
+        "Total interest is everything you pay above the amount borrowed — here $6,502.79 on a $25,000 loan, so the loan truly costs $31,502.79. A longer term lowers the monthly payment but raises total interest: the same $25,000 at 9.5% over 72 months costs $456.33 a month but $7,855.76 in interest, $1,352.97 more than the 60-month loan.",
+        "Extra payments shorten the term and cut interest far more than they cut the payment. Adding $50 a month to the $25,000 loan above pays it off in 54 months instead of 60, with interest of $5,764.64 — a saving of $738.15. Extra payments apply to principal first, so they compound by removing future interest on that principal.",
+      ],
+      method: {
+        formula:
+          "Monthly payment M = P × [r(1+r)^n] / [(1+r)^n − 1], where P is the loan amount, r is the monthly interest rate (annual APR ÷ 12) and n is the number of monthly payments. Total interest = (M × n) − P. Each payment splits into interest (remaining balance × r) and principal (the remainder); the balance therefore falls slowly at first and faster near the end.",
+        assumptions: [
+          "Fixed APR for the full term (variable-rate loans are not modelled).",
+          "Level monthly payments made on time at the end of each month.",
+          "Interest is calculated on the declining principal balance (amortizing), not on the original amount.",
+        ],
+        excludes: [
+          "Origination fees, which raise the true cost of borrowing above the stated APR.",
+          "Late fees, prepayment penalties and returned-payment fees.",
+          "Optional insurance products such as credit life or disability coverage.",
+          "The effect of skipping a payment or using a payment holiday.",
+        ],
+      },
+      limits: [
+        "An estimate. The lender's truth-in-lending disclosure (which includes fees) is the authoritative figure for your loan.",
+        "APR assumes no fees; a loan with a 5% origination fee costs meaningfully more than the APR suggests.",
+        "Variable-rate loans can rise at each reset, so a low starting payment does not predict the lifetime cost.",
+        "Paying biweekly or rounding up the payment shortens the term and is not reflected unless you model it as an extra payment.",
+      ],
+      sources: [
+        {
+          title: "CFPB — What is the difference between interest rate and APR?",
+          url: "https://www.consumerfinance.gov/ask-cfpb/what-is-the-difference-between-an-interest-rate-and-an-apr-en-135/",
+        },
+        {
+          title: "CFPB — Understanding personal loans",
+          url: "https://www.consumerfinance.gov/ask-cfpb/what-is-a-personal-loan-en-857/",
+        },
+        {
+          title: "FTC — Personal loans: what to know before you borrow",
+          url: "https://www.consumer.ftc.gov/articles/what-know-personal-loans",
+        },
+      ],
+      lastReviewed: "2026-11-20",
     },
   },
   {

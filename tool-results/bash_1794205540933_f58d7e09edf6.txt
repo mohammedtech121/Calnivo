@@ -1,0 +1,1438 @@
+CALNIVO
+
+Complete Fix Guide for the
+Google AdSense “Low value
+content” Rejection
+Every problem found on calnivocalc.com, why it matters, and exactly what to
+change, with ready-to-use replacement text, code and a resubmission checklist.
+Item
+
+Detail
+
+Website
+
+https://calnivocalc.com (Next.js on Netlify)
+
+Repository
+
+github.com/mohammedtech121/Calnivo
+
+AdSense publisher ID
+
+ca-pub-4136175675290701
+
+AdSense status
+
+“Your site isn’t ready to show ads”; ownership verified; policy violation: Low value content
+
+Prepared
+
+7 November 2026
+
+Basis
+
+Live pages read on 7 Nov 2026; every worked example recalculated with independent code;
+Google’s consent policy checked. GitHub blocks automated reading of repository sub-pages,
+so code-level items are marked Check in repo.
+
+Note: Your pasted audit brief stopped in the middle of Section 9 (technical SEO). This guide covers every
+item in the brief up to that point. If the brief had more checks after that, send them and they can be
+added.
+
+How to read this guide
+
+• Fixes are numbered 1–16 and grouped in six parts: content, accuracy, trust, privacy, technical,
+resubmission.
+
+• Each fix gives the problem, why it matters, the exact change, and a “Done when” test so you know
+it is finished.
+
+• Confirmed = seen on the live site or proven by recalculation. Check in repo = comes from your
+earlier repo audit and must be confirmed in the code before editing.
+
+• Nobody can guarantee approval. The goal is to remove every defect a reviewer could point to and
+to make the site clearly useful on its own.
+
+Calnivo · AdSense Low-Value-Content Fix Guide
+
+Page 1
+
+Summary
+
+Why the site is being rejected
+The calculators themselves are real and mostly work. The rejection is about everything around them.
+Google sees 40 pages that share one generic text block, several pages whose text promises features
+that do not exist, worked examples that are mathematically wrong, claims of testing that nothing on
+the site backs up, and a homepage paragraph that appears to be copied from another calculator site.
+Together this reads as thin, mass-produced content, which is what “Low value content” means.
+Google’s message asks for three things. This is how Calnivo stands against each:
+Google asks for
+
+Where Calnivo falls short
+
+Fixes
+
+Authentic, high-quality
+information, tools or services
+
+Templated text; wrong examples; promised features
+missing; copied homepage text; no sources
+
+1–5, 7–12
+
+Ongoing curation and structural
+maintenance
+
+Five posts all dated October 2026; 2024 tax tables in late
+2026; no review dates or corrections; repo clutter
+
+6, 10, 13, 15
+
+Genuine, sustained user interest
+
+Cannot be judged from outside; new site. Check Search
+Console for indexing and impressions
+
+15, 16
+
+Priority order
+Priority
+
+When
+
+What
+
+P0 Stop the damage
+
+Days 1–3
+
+Fix wrong numbers and the mortgage result sentence (7, 8); remove
+unsupported feature claims (9); reword “verified/tested” claims (13);
+rewrite copied homepage text (3); fix “Calculator inputs collected.” (14);
+delete “People also search for” (2)
+
+P1 Build real value
+
+Weeks 1–3
+
+Rewrite 12–15 best calculators (1, 4); noindex the rest; update income
+tax (10); fix terminology (11); add tests and CI (12); methodology page
+(13); history wording in privacy policy (14); About page and authorship
+(6); per-page metadata (15)
+
+P2 Finish and prove
+
+Weeks 2–4
+
+Certified consent platform for Europe (14); 8–10 original articles (5);
+technical checks and Search Console review (15); repo clean-up (15)
+
+Then
+
+3–4 weeks after
+the last fix is live
+
+Resubmit once (16)
+
+Calnivo · AdSense Low-Value-Content Fix Guide
+
+Page 2
+
+PART A — CONTENT
+
+Fix 1. Replace the repeated text template with real, per-calculator
+content
+PRIORITY P1 · Main cause of rejection · Confirmed on 8 live pages
+
+Problem
+Mortgage, Loan, BMI, Income Tax, Due Date, Concrete, Conception and Ideal Weight all use the same
+six blocks: “What is…”, Formula, How to use, Example, four FAQs, “People also search for”. Definitions
+are generic (for example “A loan calculator is a free online tool that estimates…”), and the steps only
+repeat the field labels. A shared layout is fine. The problem is that the words are interchangeable:
+swap the calculator name and the paragraph still reads the same.
+
+Why it matters
+Google’s helpful-content guidance rewards pages that give a visitor something the calculator alone
+does not: how to read the result, what assumptions it makes, and where it breaks down. Repeated
+boilerplate across 40 pages is the textbook shape of low-value, auto-generated content.
+
+Exact change
+Keep the page layout but replace the six generic fields with these seven. Every field must be written
+separately for each calculator. Files to change (from your earlier audit; Check in repo):
+src/lib/calculators/registry.ts, src/components/calculator/CalculatorSeoContent.tsx,
+src/app/calculators/[id]/page.tsx.
+New block
+
+What it must contain
+
+Rule
+
+1. Result guide
+
+What each output means, with 2–3 realistic scenarios and
+what moves the answer most
+
+Uses real numbers, not
+adjectives
+
+2. Method and
+assumptions
+
+The formula, compounding or rounding used, and what is
+left out (taxes, fees, insurance)
+
+Matches the code exactly
+
+3. Worked example
+
+Inputs and outputs produced by the same function the
+calculator uses
+
+Never typed by hand
+
+4. Limits and common
+mistakes
+
+When the result misleads (BMI for athletes, old tax tables,
+LMP dating with irregular cycles)
+
+At least 3 points
+
+5. Specific FAQs
+
+4 or more questions that only apply to this tool
+
+No answer reused on
+another page
+
+6. Sources
+
+2–3 primary sources: IRS, CFPB, CDC, ACOG, NIST, WHO
+
+Link to the exact page
+
+7. Review line
+
+“Last reviewed: date” and a link to report an error
+
+Update only after a real
+recheck
+
+Suggested data model (adjust to your real types):
+type CalculatorContent = {
+resultGuide: string[];
+// paragraphs about each output
+method: { formula: string; assumptions: string[]; excludes: string[] };
+exampleInputs: Record<string, number>;
+// outputs computed by the real function
+limits: string[];
+faqs: { q: string; a: string }[];
+// unique per calculator
+sources: { title: string; url: string }[];
+lastReviewed: string;
+// ISO date, e.g. "2026-11-20"
+};
+
+Model text: Mortgage calculator (every number below is recalculated and verified)
+
+Calnivo · AdSense Low-Value-Content Fix Guide
+
+Page 3
+
+Model: What your result means. The monthly figure is principal and interest only unless you turn on
+taxes, insurance and HOA. On a $320,000 loan at 6.5% over 30 years, principal and interest is
+$2,022.62 a month. In month one, $1,733.33 of that is interest and only $289.29 reduces the loan,
+which is why balances fall slowly at first.
+Term trade-off. The same loan over 15 years costs $2,787.54 a month, $764.92 more, but total
+interest falls from $408,142.36 to $181,757.84, a saving of $226,384.52.
+Extra payments. Adding $200 a month to the 30-year loan pays it off in 281 months (23 years 5
+months) and cuts interest to $302,713.69, saving $105,428.67. Use this paragraph only after the
+extra-payment input exists (Fix 9).
+Limits. This is an estimate. Your lender’s quote can differ because of rounding, fees, mortgage insurance
+and the exact day payments start. Adjustable-rate loans change over time and are not modelled.
+Sources. CFPB: owning a home and mortgage basics
+(consumerfinance.gov/owning-a-home/mortgage-basics/).
+
+Done when
+Reading any calculator page, a stranger could not swap in another calculator’s name and have the text
+still make sense, and every number on the page matches what the tool outputs.
+
+Fix 2. Delete every “People also search for” block
+PRIORITY P0 · Confirmed on every page read
+
+Problem
+Each page ends with 7–8 search phrases (for example the Income Tax page lists “state income tax
+calculator” and “self employment tax calculator”, which the site does not offer; the Loan page lists
+“debt consolidation calculator”). They are phrases, not information.
+
+Why it matters
+It reads as keyword stuffing and promises tools that do not exist, which also contradicts the page.
+
+Exact change
+Remove the related-searches field and its render from the shared SEO component and from every
+calculator entry in the registry. Do not replace it with another list of phrases. If you want internal links,
+keep one short “Related calculators” block (see Fix 15).
+
+Done when
+A search of the repo for the old field name returns nothing and no live page shows the heading.
+
+Fix 3. Rewrite the homepage paragraph that appears copied from
+Calculator.net
+PRIORITY P0 · Needs a plagiarism check to confirm
+
+Problem
+The homepage section “One-stop, go-to site for quick calculations” follows the introduction used by
+Calculator.net almost sentence for sentence: the focus statement, the “do the math” line, the goal of
+becoming the one-stop site, and the belief that the internet should be a source of free information.
+Only the site name and calculator count differ. A page in PolyU’s library repository carries the same
+goal and free-information sentences. The README’s “© 2008–2026” matches Calculator.net’s footer,
+which starts in 2008, and the README calls the project “Calculator.net-style”.
+
+Why it matters
+
+Calnivo · AdSense Low-Value-Content Fix Guide
+
+Page 4
+
+Copied or scraped text is a separate AdSense content problem from thin content, and a new site
+claiming a 2008 start date harms credibility.
+
+Exact change
+Replace the paragraph with your own wording. Draft below; edit it so every sentence is true for
+Calnivo:
+Draft: Calnivo is a set of free calculators for money, health, math and everyday tasks. Each one runs in
+your browser, shows the formula it follows, and explains what the result means so you can check it
+against your own situation. We are a small team and we add and recheck tools over time. If you find a
+mistake, tell us and we will correct it and note the change.
+
+• Change the README line “© 2008–2026” to the real start year (for example “© 2026 Calnivo”) and
+remove “Calculator.net-style”.
+
+• Run the homepage, the About page and several calculator pages through a plagiarism checker. If
+anything else matches another site, rewrite it.
+
+Done when
+The paragraph is original, the README year is correct, and a plagiarism check of the homepage
+returns no close matches.
+
+Fix 4. Reduce the thin surface: rewrite your best pages first, noindex
+the rest
+PRIORITY P1
+
+Problem
+Forty near-identical pages is more than the site can support with real content right now, and some
+tools overlap: Loan, Payment, Auto Loan, Finance (TVM) and Amortization; Interest and Compound
+Interest; Pregnancy, Due Date and Pregnancy Conception.
+
+Exact change
+Rewrite in three waves. Adjust the lists using Search Console impressions once you have them (these
+are suggestions).
+Wave
+
+Calculators
+
+Action
+
+A: rewrite first (weeks
+1–3)
+
+Mortgage, Loan, Auto Loan, Compound Interest,
+Retirement, Income Tax, BMI, Calorie, BMR, Due Date,
+Percentage, Age, Scientific
+
+Full new structure from Fix 1
+
+B: rewrite next
+
+Amortization, Investment, Salary, Inflation, Interest,
+Payment, Pregnancy, Body Fat, Ideal Weight, Fraction,
+GPA, Grade, Date, Conversion
+
+Rewrite when A is done;
+noindex until then
+
+C: noindex or merge
+
+Concrete, Subnet, Hours, Time, Random Number,
+Password Generator, Pace, Triangle, Standard Deviation,
+Finance (TVM), Interest Rate, Sales Tax, Pregnancy
+Conception
+
+Noindex until rewritten;
+consider merging
+near-duplicates
+
+To keep a page usable but out of Google’s index (Next.js App Router), add this to the calculator page
+and remove those IDs from the sitemap:
+
+Calnivo · AdSense Low-Value-Content Fix Guide
+
+Page 5
+
+// src/app/calculators/[id]/page.tsx
+const NOT_READY = new Set(["concrete", "subnet", "hours", "time", "random-number"]);
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }) {
+const { id } = await params;
+return {
+// ...your existing title, description, canonical...
+robots: NOT_READY.has(id)
+? { index: false, follow: true }
+: { index: true, follow: true },
+};
+}
+// src/app/sitemap.ts: skip the same IDs
+const urls = calculators.filter((c) => !NOT_READY.has(c.id)).map(/* ... */);
+
+Done when
+Only rewritten, accurate pages are indexable, and the sitemap lists the same set.
+
+Fix 5. Strengthen the blog with original, sourced articles
+PRIORITY P1–P2
+
+Problem
+Five articles, all dated October 2026. The mortgage article (about 700 words by estimate, labelled “8
+min read”) repeats the wrong example ($2,022.82 / $728,215 / $408,215), uses 6.5% while the
+calculator opens at 6.8%, and cites two general pages (CFPB mortgage basics and an Investopedia
+page about mortgages in general, labelled “Mortgage Payment Formula”). The article mostly leads to
+the calculator and gives no comparison or data a reader could not find elsewhere. The other four (BMI,
+compound interest, retirement, calories) were not read and need the same review.
+
+Exact change
+
+1. Correct the mortgage article numbers: $2,022.62 a month, $408,142 interest, $728,142 total,
+and say which rate the calculator opens at.
+
+2. Review the other four articles for wrong numbers, unsourced medical or financial claims, and
+outdated figures.
+
+3. Cite the specific primary page for each fact (the exact CFPB page, IRS publication, CDC or ACOG
+page).
+
+4. Fix the reading-time label or compute it from the word count.
+5. Publish 8–10 new articles before resubmitting, each with a point of view and real figures. Verified
+examples you can use are below.
+
+6. Add a visible published date, a “Last reviewed” date and one named author to every article.
+Article idea
+
+Verified figures to build on
+
+15-year vs 30-year mortgage
+
+$320,000 at 6.5%: $2,787.54 vs $2,022.62 a month; interest $181,757.84 vs
+$408,142.36
+
+What an extra $200 a month really
+does
+
+Same loan: payoff in 281 months, interest $302,713.69, saving $105,428.67
+
+Longer loan, lower rate: which costs
+less?
+
+Per $10,000: 36 months at 9% costs $1,447.90 interest; 72 months at 6% costs
+$1,932.48
+
+Nominal vs effective interest rate
+
+12% nominal compounded monthly = 12.68% effective
+
+Does compounding frequency
+matter?
+
+$10,000 at 5% for 10 years: yearly $16,288.95; monthly $16,470.09; daily
+$16,486.65
+
+How concrete bag counts are really
+worked out
+
+10 ft x 10 ft x 4 in slab = 33.3 cu ft: 55.6 bags exact, 62 with 10% waste (80 lb,
+0.6 cu ft each)
+
+Calnivo · AdSense Low-Value-Content Fix Guide
+
+Page 6
+
+Article idea
+
+Verified figures to build on
+
+How due dates are calculated
+
+Naegele’s rule (LMP + 280 days), cycle adjustment, why ultrasound can change
+the date; IVF dates from transfer
+
+Why BMI misleads some people
+
+Athletes, older adults and children; screening tool, not a diagnosis (cite CDC)
+
+How federal tax brackets work in
+2026
+
+Marginal vs effective rate with a worked example from the current IRS tables
+(Fix 10)
+
+Password length vs complexity
+
+16 characters from 94 symbols = about 104.9 bits of entropy (length x log2 of
+pool size)
+
+Done when
+Each article contains figures, tables or comparisons you can defend, links to specific sources, and
+shows its author and review date.
+
+Fix 6. Make the About page and authorship credible and consistent
+PRIORITY P1
+
+Problem
+Each founder’s bio is one generic sentence. The mortgage article says “Written by Mohammed Khan,
+Founder” and “Reviewed by Hammad Khan, Founder”, so the reviewer is not independent. Metadata
+names Hammad Khan as author on legal and blog pages but Mohammed Khan as article author on
+calculators. The About page promises “repeatable testing” and “transparent assumptions” that the
+site does not yet show.
+
+Why it matters
+Finance and health content is held to a higher standard. Reviewers look for who is behind the advice
+and whether the site is accountable for its accuracy.
+
+Exact change
+
+1. Rewrite each bio with facts: what the person has studied or built, why they made Calnivo, and what
+they are responsible for. Do not claim credentials you do not have.
+
+2. Use one named author per page, in both the visible byline and the metadata.
+3. For medical or financial advice pages, consider having a qualified outside reviewer and name them
+with their real qualification. If you cannot, do not label pages “reviewed”.
+
+4. Add an “Editorial and corrections policy” page: how content is written, how numbers are checked,
+how to report an error, and a dated corrections log.
+
+5. Keep the contact page working with a real monitored address (hello@calnivocalc.com is listed in
+the policy).
+
+Done when
+A first-time visitor can tell who runs the site, how it is kept accurate, and how to report a mistake.
+
+Calnivo · AdSense Low-Value-Content Fix Guide
+
+Page 7
+
+PART B — ACCURACY
+
+Fix 7. Correct every wrong worked example
+PRIORITY P0 · Confirmed by recalculation
+
+Problem
+In most cases the live calculator is right and the written example beside it is wrong, which still destroys
+trust. All values below were recomputed with independent code.
+Calculator
+
+Replace this
+
+With this
+
+Status
+
+Mortgage ($320,000,
+6.5%, 30 yr)
+
+$2,022.82/mo; interest
+$408,215; total $728,215
+
+$2,022.62/mo; interest $408,142.36;
+total $728,142.36
+
+Confirmed on
+mortgage page
+and blog article
+
+Loan ($25,000, 9.5%,
+60 mo)
+
+$525.13; interest $6,507.80;
+total $31,507.80
+
+$525.05; interest $6,502.79; total
+$31,502.79
+
+Confirmed on live
+page
+
+Payment ($15,000,
+8%, 36 mo)
+
+$470.01; interest $1,920.36;
+total $16,920.36
+
+$470.05; interest $1,921.64; total
+$16,921.64
+
+Math confirmed;
+page not opened
+
+Age (15 Jun 1995 to
+20 Nov 2024)
+
+10,755 days; 258,120 hours
+
+10,751 days; 258,024 hours (29 years
+5 months 5 days is correct)
+
+Math confirmed;
+page not opened
+
+Concrete (10x10 ft, 4
+in, 80 lb bags)
+
+“With a 10% margin… about
+56 bags”
+
+55.6 bags exact (56); 62 bags with
+10% waste. Volume 33.3 cu ft = 1.23
+yd³; with 10% about 1.36 yd³
+
+Confirmed on live
+page
+
+Conception (due date
+10 October)
+
+About 25 January; window
+20–27 January
+
+About 17 January (18 January in a leap
+year); fertile window about 12–17
+January (five days up to ovulation)
+
+Confirmed on live
+page
+
+Ideal weight,
+Robinson male, 5’9”
+
+“50 + 1.9×9 = 69.1 kg”
+
+52 + 1.9×9 = 69.1 kg (using 50 would
+give 67.1)
+
+Confirmed; the tool
+is correct
+
+Due date, IVF day-5
+transfer
+
+Transfer date + 266 days
+
+Transfer date + 261 days (266 minus
+5). Day-3 transfer + 263 days is correct
+
+Confirmed by
+arithmetic; check
+against ACOG or
+clinic guidance
+before publishing
+
+Interest rate example
+
+$20,000, $482.66 for 48
+months gives 7.42%
+
+$482.83 gives 7.42%. The live
+example ($20,000, $400, 60 months,
+7.42%) is correct
+
+Confirmed
+
+Exact change
+
+1. Fix each example in registry.ts and in the blog article.
+2. Search the whole repo and all live pages for the old figures so no copy survives: 2,022.82,
+728,215, 408,215, 525.13, 6,507.80, 470.01, 10,755, 258,120, 482.66, January 25, 50 + 1.9.
+
+3. Generate every example from code (Fix 12) so text and tool cannot disagree again.
+Done when
+A repo-wide search for the old values finds nothing, and each example on the page can be reproduced
+by typing its inputs into the live tool.
+
+Fix 8. Fix the mortgage result text that contradicts itself
+PRIORITY P0 · Confirmed on live page
+
+Problem
+The mortgage page shows Total of Payments $751,017.82 in the result card, but the sentence
+under it says you will pay “approximately $431,017.82 in total payments, of which $431,017.82 is
+interest”. Interest is $431,017.82 and total payments are $751,017.82 (loan $320,000 + interest). The
+
+Calnivo · AdSense Low-Value-Content Fix Guide
+
+Page 8
+
+chart caption repeats the same error.
+
+Exact change
+Use the correct figure in both the sentence and the chart caption (in mortgage.tsx; Check in repo):
+const totalPayments = monthlyPI * termMonths;
+const totalInterest = totalPayments - loanAmount;
+
+// 751,017.82 in the live example
+// 431,017.82
+
+"Over the full term you'll pay approximately {fmt(totalPayments)} in total payments,
+of which {fmt(totalInterest)} is interest."
+
+The Loan page also says interest is “23% of the original loan amount” in one place and “18.76% of
+your total payments” in another. Both are correct, but label them clearly: “23% of the amount
+borrowed” and “18.8% of everything you pay”.
+
+Done when
+Total payments and interest differ everywhere they appear, and total payments minus interest equals
+the loan amount.
+
+Fix 9. Remove or build every feature the text promises but the tool
+lacks
+PRIORITY P0 for text edits · P1 if you choose to build
+
+Problem
+Seven calculators describe inputs or results the live tool does not offer. The rule: nothing in the text
+may describe something the visitor cannot do on the page. Either delete the claim (fast) or build the
+feature (more valuable).
+Calculator
+
+Claim in the text
+
+Live tool has
+
+Option A: delete
+
+Option B: build
+
+Mortgage
+
+Step 5: toggle PMI
+when down payment
+is under 20%; FAQ
+and blog discuss PMI
+
+Price, program, down
+payment, rate, one
+taxes/insurance/HOA
+toggle. No PMI row
+
+Remove step 5 and
+PMI sentences in the
+description and FAQ
+
+Add PMI rate input (% of loan a
+year) applied when down
+payment is under 20%; add a
+PMI row to the breakdown
+
+Loan
+
+Step 4: add extra
+monthly payment;
+“model extra
+payments”
+
+Amount, rate, term,
+unit
+
+Remove step 4 and
+the phrase
+
+Add extra-payment input; show
+new payoff time and interest
+saved
+
+Income tax
+
+Steps 2–4: married
+filing separately,
+credits, extra
+deductions, state tax
+rate
+
+Single, married
+jointly, head of
+household. A page
+note says credits and
+state tax are
+excluded
+
+Rewrite the steps
+(see below)
+
+Add filing status and tax-year
+selector; leave credits and
+state tax out
+
+Interest
+rate
+
+Step 5: add fees for
+true APR
+
+Loan amount,
+monthly payment,
+term
+
+Remove step 5
+
+Add upfront-fee input and
+define how fees affect APR
+
+Pregnancy
+conception
+
+Enter due date, last
+period or birth date;
+optional cycle length
+
+Toggle: due date or
+birth date; no visible
+cycle input
+
+Match text to inputs
+
+Add an LMP mode and a
+cycle-length input
+
+Due date
+
+IVF transfer-date
+formula and FAQ
+
+LMP and cycle length
+only
+
+Remove IVF lines, or
+keep as a short
+sourced note
+
+Add a transfer-date mode with
+embryo age
+
+Concrete
+
+Steps and curbs
+mentioned in the
+description
+
+Slab, footing, square
+column, round
+column
+
+Remove “steps and
+curbs”
+
+Add step and curb shapes
+
+Replacement wording for the income tax steps:
+
+Calnivo · AdSense Low-Value-Content Fix Guide
+
+Page 9
+
+Replace with: 1. Enter your taxable income (after deductions and pre-tax contributions). 2. Choose your
+filing status: single, married filing jointly or head of household. 3. Choose the tax year. 4. Review federal
+tax owed, marginal rate and effective rate. State tax, credits and other taxes are not included.
+
+Still to check (your audit flagged them; not opened for this guide): Payment (“flexible
+compounding”), Investment (monthly and annual contributions), Sales Tax (multiple tax rates). Open
+each page and try every sentence in the description, steps and FAQ on the live tool. Also change the
+instruction “Click Calculate” (BMI, due date, conception, concrete and others) to “results update as you
+type”, because the live tools show no Calculate button.
+Verified example for the Loan extra-payment feature (if you build it): $25,000 at 9.5% over 60 months
+is $525.05 a month. Adding $50 a month pays it off in 54 months, with interest of $5,764.64, saving
+$738.15.
+
+Done when
+A person following your “How to use” steps and FAQ can do every action on the live tool.
+
+Fix 10. Update the income tax calculator from 2024 to current IRS
+tables
+PRIORITY P1 · Confirmed outdated
+
+Problem
+The page uses 2024 brackets and says it uses “the current IRS tax brackets”. The 2024 math is correct
+($13,753 on $85,000 single; $17,053 on $100,000; $13,841 on $85,400), but it is November 2026, so
+2024 is two tax years old. Tax year 2026 is the year being earned now (returns filed in 2027).
+
+Exact change
+
+1. Add 2025 and 2026 bracket tables, with a tax-year selector defaulting to 2026. Copy the tables
+directly from the IRS (Rev. Proc. 2025-32 for 2026) and confirm every figure at irs.gov before
+publishing.
+
+2. Update standard deductions in the FAQ: 2025 is $15,750 single, $31,500 married jointly, $23,625
+head of household; 2026 is $16,100, $32,200 and $24,150.
+
+3. Spot checks from published sources: 2025 single brackets run 10% to $11,925, 12% to $48,475
+and 22% to $103,350; 2026 single starts with 10% to $12,400 and the 37% bracket begins above
+$640,600.
+
+4. Put the tax year in the page title, description and example, and remove the phrase “current IRS tax
+brackets” unless the year is shown next to it.
+
+5. Regenerate the examples ($85,000 and $100,000) from the new tables using the calculator’s own
+function.
+
+6. Add a limits note: federal income tax only; no state tax, credits, self-employment tax or additional
+deductions (for example the extra deduction for people 65 and over).
+
+Done when
+The page states its tax year everywhere, the numbers match the IRS tables, and the FAQ describes
+only what the tool does.
+
+Fix 11. Correct terminology and explanations
+PRIORITY P1
+
+Calnivo · AdSense Low-Value-Content Fix Guide
+
+Page 10
+
+Calculator
+
+Problem
+
+Exact fix
+
+Interest rate
+
+The page calls the result “effective APR” but
+the formula multiplies the monthly rate by 12,
+which is a nominal rate. The listing
+description also says “effective interest rate”.
+
+Relabel as “nominal APR”, or also show APY = (1 +
+r/12)^12 − 1 (12% nominal gives 12.68%). Change
+the registry description and meta description to
+match.
+
+Conception
+
+The tool draws a window of two days either
+side of conception. The FAQ says the fertile
+window is the five days before ovulation plus
+ovulation day.
+
+Pick one definition and use it in the tool, text and
+example. The FAQ definition is the standard one.
+
+Fraction
+
+The formula describes the least common
+denominator as the least common multiple
+but also shows cross-multiplication by the
+product of denominators.
+
+Show the LCD (lowest common multiple of the
+denominators) in the step-by-step and explain that
+the product of denominators is a valid but not
+always smallest common denominator. Check in
+repo that steps match the code.
+
+Password
+generator
+
+Strength may assume a fixed pool size that
+differs from the characters actually available.
+Check in repo.
+
+Entropy = length x log2(pool size), where the pool
+is exactly the sets the user ticked (16 characters
+from 94 symbols is about 104.9 bits). Explain the
+thresholds used for “weak/strong”. Confirm
+passwords are generated with
+crypto.getRandomValues, not Math.random.
+
+Done when
+Each label names exactly what the code computes.
+
+Fix 12. Add automated tests and generate examples from code
+PRIORITY P1 · Check in repo
+
+Problem
+Your earlier audit found no calculator unit tests: package.json has only dev, build, start and lint, and
+tests/ holds shell scripts. The Terms say each calculator is tested. Missing tests in the repo do not
+prove checking never happens, but nobody can see it.
+
+Exact change
+
+1. Add a test script and one independent reference case per calculator. Take the expected values
+from an official source or a spreadsheet function such as PMT. The values below are verified.
+
+2. Run the tests in GitHub Actions on every push.
+3. Compute each worked example by calling the real function and inserting the result into the page
+text.
+
+4. Test dates across a leap year and a month end (age, due date, conception).
+// package.json -> "scripts": { "test": "bun test", ... }
+// tests/calculators.test.ts (adjust imports to your real function names)
+import { describe, expect, test } from "bun:test";
+import { monthlyPayment } from "@/lib/calculators/loan-math";
+// illustrative path
+describe("amortization reference cases", () => {
+test("mortgage 320k, 6.5%, 30y", () => {
+const m = monthlyPayment(320000, 0.065, 360);
+expect(m).toBeCloseTo(2022.62, 2);
+expect(m * 360 - 320000).toBeCloseTo(408142.36, 1);
+});
+test("loan 25k, 9.5%, 60m", () => {
+expect(monthlyPayment(25000, 0.095, 60)).toBeCloseTo(525.05, 2);
+});
+test("payment 15k, 8%, 36m", () => {
+expect(monthlyPayment(15000, 0.08, 36)).toBeCloseTo(470.05, 2);
+});
+});
+
+Calnivo · AdSense Low-Value-Content Fix Guide
+
+Page 11
+
+# .github/workflows/test.yml
+name: test
+on: [push, pull_request]
+jobs:
+test:
+runs-on: ubuntu-latest
+steps:
+- uses: actions/checkout@v4
+- uses: oven-sh/setup-bun@v2
+- run: bun install --frozen-lockfile
+- run: bun test
+- run: bun run lint
+
+Done when
+bun test passes locally and in CI, with at least one reference case for every calculator you keep
+indexed.
+
+Calnivo · AdSense Low-Value-Content Fix Guide
+
+Page 12
+
+PART C — TRUST
+
+Fix 13. Make trust claims true, or reword them
+PRIORITY P0 for wording · P1 for the methodology page
+
+Problem
+The site says its formulas are verified and tested, but a visitor cannot see evidence of either, and Fix 7
+shows at least nine wrong examples.
+Where
+
+Current claim
+
+Replace with (until you can prove it)
+
+Homepage, “Why
+Calnivo?”
+
+Trusted logic. Formulas verified against
+authoritative references.
+
+Standard formulas. Each calculator lists the
+formula and sources it follows.
+
+Terms of Use
+
+We test each calculator for accuracy and
+review the formulas regularly.
+
+We aim to make calculations accurate and
+correct errors when we find or are told about
+them.
+
+About page
+
+Use appropriate formulas, transparent
+assumptions and repeatable testing.
+
+Use standard formulas, state our assumptions
+on each page, and correct mistakes openly.
+
+Homepage
+
+“No ads in the way”
+
+Make this agree with the privacy policy, which
+says AdSense ads may appear. Remove the
+phrase or say where ads appear.
+
+Once Fix 12 is live you can restore stronger wording, for example: “Each calculator is checked against
+reference examples before release; see our methodology page.”
+
+Add a public Methodology and accuracy page containing:
+
+• A table of every calculator: formula, source, date last checked, known limits (for example “federal
+income tax only”).
+
+• How examples are produced (from code) and how tests are run.
+• A “Report an error” route and a dated corrections log.
+• A link to this page from the footer and from the Terms.
+Done when
+Every public claim about testing or verification can be backed by something a visitor can open.
+PART D — PRIVACY AND CONSENT
+
+Fix 14. Fix privacy wording, local history disclosure and the consent
+set-up
+PRIORITY P0 for the broken sentence · P1–P2 for the rest
+Issue
+
+Evidence
+
+Fix
+
+Broken sentence
+
+The All Calculators page intro ends “Calculator
+inputs collected.” (confirmed), the opposite of the
+policy
+
+Change to “Calculator inputs are not
+collected.”
+
+History stored locally
+but policy says none
+is collected
+
+Policy: “We do NOT collect or transmit… calculation
+history”. Earlier audit: LocalHistory.tsx saves
+summaries and timestamps in localStorage as
+calnivo:history. Policy only mentions
+calnivo:consent. Check in repo
+
+Add the section below and reword to
+“not sent to us”
+
+Banner labels vs
+behaviour
+
+Policy says AdSense and GA4 both wait for consent;
+earlier audit says buttons read “Accept analytics”
+and “Reject” with one shared state. Check in repo
+
+Label the choice “Accept analytics and
+advertising”, or give two separate
+toggles; update the policy sentence
+about “analytics tracking”
+
+Calnivo · AdSense Low-Value-Content Fix Guide
+
+Page 13
+
+Issue
+
+Evidence
+
+Fix
+
+No certified consent
+platform
+
+Google requires a certified CMP integrated with IAB
+TCF for personalized ads in the EEA and UK (from
+16 Jan 2024) and Switzerland (from 31 Jul 2024). A
+custom banner storing calnivo:consent is not on
+Google’s list
+
+See below
+
+Draft privacy-policy section for local history (confirm every detail against the code
+before publishing):
+Draft: Calculation history on your device. Some calculators can save a short summary of recent
+results (the calculator name, a summary of the result and the time) in your browser’s local storage under
+the key calnivo:history. This stays on your device and is not sent to Calnivo, Google or anyone else. It is
+kept until you press “Clear history” or clear your browser data. We do not save generated passwords or
+[list any other fields you exclude].
+
+Also change the sentence “We do NOT collect or transmit… calculation history” to “Calculator inputs
+and results are never sent to us.” Consider adding a visible Clear history button and an off switch, and
+never saving generated passwords or health measurements.
+
+Consent for Europe
+
+1. Easiest: in AdSense, open Privacy and messaging and create the European regulations message.
+Google’s own CMP (Google LLC, TCF ID 300) is on its certified list and is free.
+
+2. Alternatives: a certified third-party CMP such as Sourcepoint, Usercentrics, OneTrust/CookiePro,
+Osano or CookieYes (check the live certified list on Google’s help page before choosing).
+
+3. Load AdSense through the CMP and use Google consent mode for GA4 so analytics also respects
+the choice.
+
+4. Google states that only traffic from a certified CMP is eligible for personalized ads. Other traffic may
+get non-personalized or limited ads.
+
+5. Test withdrawal: the footer “Privacy settings” link must actually stop the scripts and remove the
+cookies.
+
+6. Confirm AdSense is not blocked everywhere until a click if you want ads outside Europe (Check in
+repo).
+
+Done when
+The policy describes every storage key and script that exists, the banner says what its buttons control,
+and EEA, UK and Swiss visitors see a certified consent message.
+
+Calnivo · AdSense Low-Value-Content Fix Guide
+
+Page 14
+
+PART E — TECHNICAL
+
+Fix 15. Technical SEO, metadata and repository clean-up
+PRIORITY P1–P2
+
+The basics are sound: full calculator text, FAQs and links are visible to crawlers, canonicals are present
+and correct, titles are unique, and all calculators, the blog and legal pages are linked from the
+homepage or footer. These items need fixing:
+Issue
+
+Confirmed finding
+
+Exact fix
+
+Wrong social/OG tags
+
+Privacy, Terms, All Calculators, Blog and the
+mortgage article carry the homepage’s OG title,
+description and URL
+
+Add per-page generateMetadata with its
+own title, description, URL (code below)
+
+Inconsistent author
+
+Hammad Khan on legal/blog pages; Mohammed
+Khan as article author on calculators
+
+One named author per page
+
+Title pattern
+
+Mortgage uses a shorter suffix than Loan, BMI,
+Income Tax
+
+Use one pattern
+
+Duplicate link blocks
+
+Each calculator page has “More … calculators”
+twice (7 links, then 6)
+
+Keep one block
+
+Weak default inputs
+
+Concrete opens at 0.23 cu ft and 1 bag
+
+Open every tool on a realistic example
+
+Keywords meta
+
+A keywords meta tag is present on the
+homepage, blog and some calculators
+
+Remove; Google ignores it and it reads as
+stuffing
+
+Structured data
+
+FAQ and breadcrumb JSON-LD reported (check
+in repo). FAQ rich results are now limited to a
+few site types
+
+Validate with Google’s Rich Results Test;
+keep FAQ markup only if it matches visible
+text
+
+// src/app/blog/[slug]/page.tsx (same idea for privacy, terms, calculators index)
+export async function generateMetadata({ params }) {
+const { slug } = await params;
+const post = getPost(slug);
+const url = `https://calnivocalc.com/blog/${slug}`;
+return {
+title: `${post.title} | Calnivo`,
+description: post.description,
+alternates: { canonical: url },
+authors: [{ name: "Mohammed Khan" }],
+// one consistent name
+openGraph: { type: "article", url, title: post.title, description: post.description },
+};
+}
+
+Checks you must run yourself (could not be done from outside)
+Check
+
+How
+
+sitemap.xml
+
+Open https://calnivocalc.com/sitemap.xml: all kept calculators, blog posts and legal pages
+listed; noindexed pages absent
+
+robots.txt
+
+Open /robots.txt: crawling allowed, sitemap URL listed
+
+ads.txt
+
+AdSense expects /ads.txt. Add public/ads.txt with the line below if the AdSense
+dashboard shows an ads.txt warning
+
+Search Console
+
+Page indexing report: many “Crawled, currently not indexed” pages would confirm Google
+sees them as thin. Also review Performance for impressions
+
+Speed and mobile
+
+Run PageSpeed Insights on the homepage, mortgage page and one blog post
+
+HTTPS and redirects
+
+http, www and non-www variants must redirect to https://calnivocalc.com
+
+Orphan pages
+
+Re-check internal links after any noindex or merge
+
+Calnivo · AdSense Low-Value-Content Fix Guide
+
+Page 15
+
+# public/ads.txt
+google.com, pub-4136175675290701, DIRECT, f08c47fec0942fa0
+
+Repository clean-up (Check in repo)
+
+• Remove loose screenshots and files at the repo root (*.png, worklog.md, .test-write,
+tool-results/, upload/), and unused folders (examples/websocket, mini-services, prisma, db)
+given the README says there is no backend.
+
+• Fix the README’s “© 2008–2026”, add a description and topics to the GitHub repo, and keep the
+README accurate.
+
+• None of this affects AdSense directly, but it makes the project look maintained.
+Done when
+Every page has unique correct metadata, the technical checks above pass, and Search Console shows
+the key pages indexed.
+PART F — RESUBMISSION
+
+Fix 16. When and how to resubmit
+Resubmit about 3–4 weeks after the last fix is live, and only when every box below is ticked.
+Google publishes no official waiting period, so this is a practical rule: it gives crawlers time to re-read
+the changed pages and lets you add fresh content in the meantime. Request review once. A rejected
+request costs you time.
+
+Pre-resubmission checklist
+☐ All worked examples recomputed; old numbers searched out of the repo and blog (Fix 7)
+☐ Mortgage result sentence and chart caption corrected (Fix 8)
+☐ No page describes a feature the tool lacks; “Click Calculate” removed (Fix 9)
+☐ Income tax uses current IRS tables and states the tax year (Fix 10)
+☐ Terminology fixed: nominal APR, fertile window, fraction steps, password entropy (Fix 11)
+☐ Test script runs in CI with a reference case per indexed calculator (Fix 12)
+☐ “People also search for” removed everywhere (Fix 2)
+☐ Homepage text is original and passes a plagiarism check; README year fixed (Fix 3)
+☐ 12–15 calculators rewritten with the new structure; the rest noindexed or merged (Fixes 1, 4)
+☐ 8–10 original, sourced articles with one consistent author (Fix 5)
+☐ About page has real bios; editorial and corrections policy published (Fix 6)
+☐ Trust claims reworded or backed up; methodology page live (Fix 13)
+☐ Privacy policy covers local history; broken sentence fixed; certified consent platform active in
+EEA, UK and Switzerland (Fix 14)
+☐ OG tags, authors and canonicals unique per page; sitemap, robots.txt and ads.txt checked;
+Search Console shows key pages indexed (Fix 15)
+
+How to request the review
+
+1. Open AdSense, go to Sites, and select calnivocalc.com.
+2. Expand “We found some policy violations”.
+3. Tick “I confirm I have fixed the issues”.
+4. Press “Request review”, then wait for the decision.
+If it is rejected again
+
+• Read the new message; it may name a different policy.
+• Re-run Search Console. If key pages are still “Crawled, currently not indexed”, they need more
+original depth.
+
+Calnivo · AdSense Low-Value-Content Fix Guide
+
+Page 16
+
+• Add more genuinely useful content and fix what the review points to before requesting again.
+
+Calnivo · AdSense Low-Value-Content Fix Guide
+
+Page 17
+
+Appendix
+
+What was verified and what was not
+Area
+
+Verified on live pages or by calculation
+
+Still needs checking
+
+Calculator pages
+
+Mortgage, Loan, BMI, Income Tax, Due Date,
+Concrete, Conception, Ideal Weight, Interest Rate
+
+Payment, Age, Investment, Sales Tax,
+Fraction, Password Generator and the other
+~28 pages
+
+Site pages
+
+Homepage, All Calculators, Blog index, mortgage
+article, About, Privacy, Terms
+
+Other four blog articles, Disclaimer,
+Contact
+
+Math
+
+Mortgage, loan, payment, age, concrete,
+conception, ideal weight, interest-rate example,
+FAQ figures, 2024 tax figures
+
+IVF day-5 rule against ACOG guidance;
+2026 tax tables against the IRS
+
+Repository code
+
+README and file list only (GitHub blocks automated
+reading of sub-pages)
+
+Components, registry, LocalHistory,
+ConsentBanner, tests, sitemap, robots
+
+Technical
+
+Rendering, canonicals, titles, OG tags, internal links
+
+sitemap.xml, robots.txt, ads.txt, structured
+data, speed, redirects, Search Console
+
+Sources
+
+• Google consent management requirements for serving ads in the EEA, UK and Switzerland:
+support.google.com/admanager/answer/13554116
+
+• 2025 and 2026 federal tax figures: Empower
+(empower.com/the-currency/money/income-tax-brackets) and Wisconsin Institute of CPAs
+(wicpa.org), both citing IRS Rev. Proc. 2025-32. Confirm at irs.gov before publishing.
+
+• Similar text found on a PolyU library repository record
+(oer.lib.polyu.edu.hk/concern/works/c534fp149); Calculator.net footer shows “© 2008”.
+
+• Live pages at calnivocalc.com read on 7 November 2026; all calculations recomputed with
+independent Python code.
+This guide is a technical and content review, not a legal or financial opinion. Check legal, privacy and tax wording
+with a qualified professional where the stakes are high.
+
+Calnivo · AdSense Low-Value-Content Fix Guide
+
+Page 18
+
+

@@ -143,7 +143,8 @@ export default function AboutPage() {
                 <Zap className="h-6 w-6 text-brand-accent-deep" />
                 <h3 className="mt-2 font-semibold text-brand-ink">Accuracy</h3>
                 <p className="mt-1 text-sm text-brand-muted">
-                  Use appropriate formulas, transparent assumptions and repeatable testing.
+                  Use standard formulas, state our assumptions
+                  on each page, and correct mistakes openly.
                 </p>
               </div>
               <div className="rounded-2xl border border-brand bg-white p-5 shadow-brand">

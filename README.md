@@ -1,6 +1,6 @@
 # Calnivo — Free Online Calculators
 
-A Calculator.net-style calculator platform rebuilt with a premium SaaS/fintech
+A free online calculator platform with a premium SaaS/fintech
 design system. **40+ calculators** across finance, fitness, health, math and
 everyday utilities — all running 100% client-side, no backend required.
 
@@ -99,4 +99,4 @@ src/
 
 ## License
 
-© 2008–2026 Calnivo. All rights reserved.
+© 2026 Calnivo. All rights reserved.

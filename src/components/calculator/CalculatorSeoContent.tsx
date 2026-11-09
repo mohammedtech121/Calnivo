@@ -1,10 +1,8 @@
 import Link from "next/link";
 import {
-  CALCULATOR_MAP,
-  CATEGORY_META,
   type CalculatorMeta,
 } from "@/lib/calculators/registry";
-import { Calculator, ChevronRight, Lightbulb, ListChecks, Sigma } from "lucide-react";
+import { Calculator, Lightbulb, ListChecks, Sigma } from "lucide-react";
 
 interface Props {
   meta: CalculatorMeta;
@@ -22,11 +20,6 @@ interface Props {
 export function CalculatorSeoContent({ meta }: Props) {
   const seo = meta.seo;
   if (!seo) return null;
-
-  const catMeta = CATEGORY_META[meta.category];
-  const sameCategoryRelated = Object.values(CALCULATOR_MAP)
-    .filter((c) => c.category === meta.category && c.id !== meta.id)
-    .slice(0, 6);
 
   return (
     <section className="mt-10 space-y-8" aria-label="About this calculator">
@@ -102,54 +95,6 @@ export function CalculatorSeoContent({ meta }: Props) {
               </div>
             ))}
           </dl>
-        </article>
-      )}
-
-      {sameCategoryRelated.length > 0 && (
-        <article className="rounded-2xl border border-brand bg-white p-6 shadow-brand sm:p-8">
-          <h2 className="text-xl font-bold tracking-tight text-brand-ink">
-            More {catMeta.label.toLowerCase()}
-          </h2>
-          <p className="mt-2 text-sm text-brand-muted">
-            Explore related {meta.category} calculators on Calnivo:
-          </p>
-          <ul className="mt-4 grid gap-2 sm:grid-cols-2">
-            {sameCategoryRelated.map((c) => {
-              const Icon = c.icon;
-              return (
-                <li key={c.id}>
-                  <Link
-                    href={`/calculators/${c.id}`}
-                    className="group flex w-full items-center gap-2.5 rounded-lg border border-brand bg-brand-canvas px-3 py-2.5 text-left text-sm transition-colors hover:border-brand-accent hover:bg-accent/40"
-                  >
-                    <Icon className="h-4 w-4 shrink-0 text-brand-muted group-hover:text-brand-accent-deep" />
-                    <span className="flex-1 font-medium text-brand-ink group-hover:text-brand-accent-deep">
-                      {c.name}
-                    </span>
-                    <ChevronRight className="h-4 w-4 shrink-0 text-brand-muted/40 group-hover:text-brand-accent-deep" />
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
-        </article>
-      )}
-
-      {seo.relatedSearches?.length > 0 && (
-        <article className="rounded-2xl border border-brand bg-white p-6 shadow-brand sm:p-8">
-          <h2 className="text-lg font-bold tracking-tight text-brand-ink">
-            People also search for
-          </h2>
-          <ul className="mt-3 flex flex-wrap gap-2">
-            {seo.relatedSearches.map((term, i) => (
-              <li
-                key={i}
-                className="rounded-full border border-brand bg-brand-canvas px-3 py-1 text-xs font-medium text-brand-muted"
-              >
-                {term}
-              </li>
-            ))}
-          </ul>
         </article>
       )}
     </section>

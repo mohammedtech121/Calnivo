@@ -127,10 +127,10 @@ export const CALCULATORS: CalculatorMeta[] = [
         "Enter the annual interest rate (use a current 30-year fixed rate from a lender).",
         "Choose the loan term — 15, 20, or 30 years.",
         "Add annual property taxes, homeowners insurance, and HOA dues for a true monthly cost.",
-        "Toggle PMI on if your down payment is under 20%.",
+        "Enter property tax, home insurance, and HOA if included.",
       ],
       example:
-        "For a $400,000 home with 20% down ($80,000) on a 30-year fixed mortgage at 6.5% interest, the loan principal is $320,000. The monthly principal-and-interest payment is $2,022.82, total interest over the life of the loan is about $408,215, and the total amount paid is $728,215.",
+        "For a $400,000 home with 20% down ($80,000) on a 30-year fixed mortgage at 6.5% interest, the loan principal is $320,000. The monthly principal-and-interest payment is $2,022.62, total interest over the life of the loan is about $408,142.36, and the total amount paid is $728,142.36.",
       faqs: [
         {
           q: "How is a mortgage payment calculated?",
@@ -171,18 +171,18 @@ export const CALCULATORS: CalculatorMeta[] = [
     keywords: ["loan", "personal loan", "payment"],
     seo: {
       definition:
-        "A loan calculator is a free online tool that estimates the monthly payment, total interest, and total cost of any fixed-rate loan — including personal loans, student loans, and debt consolidation loans. Use it to compare offers, model extra payments, and see exactly what a loan will cost you over its full term.",
+        "A loan calculator is a free online tool that estimates the monthly payment, total interest, and total cost of any fixed-rate loan — including personal loans, student loans, and debt consolidation loans. Use it to compare offers, and see exactly what a loan will cost you over its full term.",
       formula:
         "The monthly payment uses the standard amortization formula M = P × [r(1+r)^n] / [(1+r)^n − 1], where P is the loan amount, r is the monthly interest rate (annual rate ÷ 12), and n is the total number of monthly payments. Total interest = (M × n) − P.",
       howToUse: [
         "Enter the total loan amount you want to borrow.",
         "Enter the annual interest rate (APR) quoted by the lender.",
         "Enter the loan term in months or years.",
-        "Optionally add an extra monthly payment to see how much faster the loan is paid off.",
+        "Review the monthly payment, total interest, and total cost.",
         "Review the monthly payment, total interest, and total cost.",
       ],
       example:
-        "For a $25,000 personal loan at 9.5% APR over 5 years (60 months), the monthly payment is $525.13, total interest paid is $6,507.80, and the total cost is $31,507.80.",
+        "For a $25,000 personal loan at 9.5% APR over 5 years (60 months), the monthly payment is $525.05, total interest paid is $6,502.79, and the total cost is $31,502.79.",
       faqs: [
         {
           q: "What is a good APR for a personal loan?",
@@ -338,7 +338,7 @@ export const CALCULATORS: CalculatorMeta[] = [
         "Review the periodic payment, total interest, and total cost.",
       ],
       example:
-        "For a $15,000 loan at 8% APR repaid in 36 monthly payments, the monthly payment is $470.01, with total interest of $1,920.36 over the 3-year term and a total cost of $16,920.36.",
+        "For a $15,000 loan at 8% APR repaid in 36 monthly payments, the monthly payment is $470.05, with total interest of $1,921.64 over the 3-year term and a total cost of $16,921.64.",
       faqs: [
         {
           q: "How do you calculate monthly payment on a loan?",
@@ -644,8 +644,8 @@ export const CALCULATORS: CalculatorMeta[] = [
         "The U.S. uses progressive tax brackets: each portion of taxable income is taxed at the rate for the bracket it falls into. Tax = Σ (income portion in bracket × bracket rate). Your marginal rate is the rate on your last dollar earned; your effective rate = total tax ÷ taxable income.",
       howToUse: [
         "Enter your taxable income (after deductions and pre-tax contributions).",
-        "Choose your filing status: single, married filing jointly, head of household, or married filing separately.",
-        "Enter any tax credits or additional deductions.",
+        "Choose your filing status: single, married filing jointly, or head of household.",
+        "Review the federal tax owed, marginal rate, and effective rate. State tax, credits, and other deductions are not included.",
         "Optionally add a state income tax rate for a full liability estimate.",
         "Review federal tax owed, marginal rate, and effective rate.",
       ],
@@ -907,7 +907,7 @@ export const CALCULATORS: CalculatorMeta[] = [
         "Choose your preferred units — metric (kg, cm) or imperial (lb, in).",
         "Enter your height in the height field.",
         "Enter your current body weight.",
-        "Click Calculate to see your BMI value and the category it falls into.",
+        "Results update as you type to show your BMI value and the category it falls into.",
         "Use the BMI chart to compare your result to the healthy range for your height.",
       ],
       example:
@@ -959,7 +959,7 @@ export const CALCULATORS: CalculatorMeta[] = [
         "Select your sex and enter your age, height, and current weight.",
         "Choose your daily activity level, from sedentary to extra active.",
         "Pick a goal — maintain, lose, or gain weight.",
-        "Click Calculate to see your daily calorie target and macronutrient breakdown.",
+        "Results update as you type to show your daily calorie target and macronutrient breakdown.",
         "Track your intake against the target using a food diary or app.",
       ],
       example:
@@ -1012,7 +1012,7 @@ export const CALCULATORS: CalculatorMeta[] = [
         "Enter your height in cm or inches.",
         "Measure and enter your neck circumference at the narrowest point.",
         "Measure your waist at the navel (and hip at the widest point, for women).",
-        "Click Calculate to view your body fat percentage and category.",
+        "Results update as you type to show your body fat percentage and category.",
       ],
       example:
         "For a man with waist 84 cm, neck 38 cm, height 178 cm: log10(46) = 1.6628 and log10(178) = 2.2504. %BF = 495 ÷ (1.0324 − 0.19077×1.6628 + 0.15456×2.2504) − 450 = 495 ÷ (1.0324 − 0.3171 + 0.3479) − 450 = 495 ÷ 1.0632 − 450 ≈ 15.6% body fat (fitness range).",
@@ -1064,7 +1064,7 @@ export const CALCULATORS: CalculatorMeta[] = [
         "Enter your age in years.",
         "Enter your height in cm or feet/inches.",
         "Enter your weight in kg or pounds.",
-        "Click Calculate to see your daily BMR in calories.",
+        "Results update as you type to show your daily BMR in calories.",
       ],
       example:
         "For a 28-year-old female, 65 kg, 165 cm: BMR = 10×65 + 6.25×165 − 5×28 − 161 = 650 + 1031.25 − 140 − 161 = 1380 kcal/day at complete rest.",
@@ -1114,7 +1114,7 @@ export const CALCULATORS: CalculatorMeta[] = [
       howToUse: [
         "Select your biological sex.",
         "Enter your height in feet and inches or in centimeters.",
-        "Click Calculate to view ideal weights from four formulas.",
+        "Results update as you type to show ideal weights from four formulas.",
         "Compare the values and use the range as a healthy target zone.",
         "Adjust expectations for muscle mass, bone structure, and age.",
       ],
@@ -1165,7 +1165,7 @@ export const CALCULATORS: CalculatorMeta[] = [
       howToUse: [
         "Enter any two of distance, time, and pace.",
         "Choose your preferred units (miles or kilometers).",
-        "Click Calculate to solve for the third value.",
+        "Results update as you type to solve for the third value.",
         "Use the results to plan race splits or training runs.",
       ],
       example:
@@ -1216,7 +1216,7 @@ export const CALCULATORS: CalculatorMeta[] = [
       howToUse: [
         "Enter the first day of your last menstrual period.",
         "Optionally enter your average cycle length for a more accurate estimate.",
-        "Click Calculate to see your current gestational age in weeks and days.",
+        "Results update as you type to show your current gestational age in weeks and days.",
         "Review your trimester and upcoming milestone dates.",
       ],
       example:
@@ -1267,7 +1267,7 @@ export const CALCULATORS: CalculatorMeta[] = [
       howToUse: [
         "Enter either your due date, the first day of your last period, or your baby's birth date.",
         "Optionally enter your average menstrual cycle length.",
-        "Click Calculate to see the estimated conception date and fertile window.",
+        "Results update as you type to show the estimated conception date and fertile window.",
       ],
       example:
         "If your due date is October 10, the estimated conception date is October 10 − 38 weeks = approximately January 25. The fertile window would have been around January 20–27, with ovulation most likely on or near January 25.",
@@ -1317,7 +1317,7 @@ export const CALCULATORS: CalculatorMeta[] = [
       howToUse: [
         "Enter the first day of your last menstrual period.",
         "Optionally enter your average cycle length (defaults to 28 days).",
-        "Click Calculate to see your estimated due date.",
+        "Results update as you type to show your estimated due date.",
         "Review your current gestational age and remaining weeks.",
       ],
       example:
@@ -1713,11 +1713,11 @@ export const CALCULATORS: CalculatorMeta[] = [
       howToUse: [
         "Enter your date of birth in the 'Birth Date' field.",
         "Optionally change the 'Age At Date' to calculate age as of a past or future date (defaults to today).",
-        "Click Calculate to see your age in years, months and days.",
+        "Results update as you type to show your age in years, months and days.",
         "Review the totals below: total days, weeks, hours lived, and days until your next birthday.",
       ],
       example:
-        "If you were born on 1995-06-15 and today is 2024-11-20, your age is 29 years, 5 months and 5 days. You have lived 10,755 total days (approximately 1,536 weeks or 258,120 hours), and your next birthday is in 207 days.",
+        "If you were born on 1995-06-15 and today is 2024-11-20, your age is 29 years, 5 months and 5 days. You have lived 10,751 total days (approximately 1,536 weeks or 258,024 hours), and your next birthday is in 207 days.",
       faqs: [
         {
           q: "How do I calculate my exact age?",
@@ -1770,7 +1770,7 @@ export const CALCULATORS: CalculatorMeta[] = [
         "Pick a mode: 'Add/Subtract' to shift a date, or 'Duration' to measure between two dates.",
         "Enter your start date (and end date, if in Duration mode).",
         "Choose the units to add or subtract (days, weeks, months or years) and enter the amount.",
-        "Click Calculate to see the resulting date plus a breakdown of total days, weeks, months and years.",
+        "Results update as you type to show the resulting date plus a breakdown of total days, weeks, months and years.",
         "Use the result to plan deadlines, leases, project milestones or countdowns.",
       ],
       example:
@@ -1826,7 +1826,7 @@ export const CALCULATORS: CalculatorMeta[] = [
         "Pick the operation: Add or Subtract.",
         "Enter the first time as h:mm:ss (e.g. 02:30:15).",
         "Enter the second time the same way.",
-        "Click Calculate to see the total in h:mm:ss form plus a decimal-hours equivalent.",
+        "Results update as you type to show the total in h:mm:ss form plus a decimal-hours equivalent.",
         "Chain multiple times by reusing the result as the new first input.",
       ],
       example:
@@ -1883,7 +1883,7 @@ export const CALCULATORS: CalculatorMeta[] = [
         "Enter your Start Time (clock-in) and End Time (clock-out) using the 12-hour or 24-hour picker.",
         "Enter unpaid Break Time (lunch or rest) to be deducted from the total.",
         "If you worked an overnight shift, the calculator wraps past midnight automatically.",
-        "Click Calculate to see total hours in h:mm format plus decimal hours.",
+        "Results update as you type to show total hours in h:mm format plus decimal hours.",
         "Optionally multiply decimal hours by your hourly rate to get gross pay.",
       ],
       example:
@@ -1940,7 +1940,7 @@ export const CALCULATORS: CalculatorMeta[] = [
         "For each course, enter the letter grade you received (A, A−, B+, etc.).",
         "Enter the credit hours for that course (typically 3 or 4).",
         "Add additional rows for every course in the term.",
-        "Click Calculate to see your term GPA, total credits and total grade points.",
+        "Results update as you type to show your term GPA, total credits and total grade points.",
         "To find cumulative GPA, combine every course across all terms in one list.",
       ],
       example:
@@ -1997,7 +1997,7 @@ export const CALCULATORS: CalculatorMeta[] = [
         "Enter your current overall grade (%) and how much it is worth (e.g. 80% of the class is complete so far).",
         "Enter your target final grade (%) — the overall average you want to finish with.",
         "Enter the weight (%) of the remaining assignment or final exam.",
-        "Click Calculate to see the minimum score you need on the final to hit your target.",
+        "Results update as you type to show the minimum score you need on the final to hit your target.",
         "Compare the needed score to the max possible to see if your goal is realistic.",
       ],
       example:
@@ -2047,18 +2047,18 @@ export const CALCULATORS: CalculatorMeta[] = [
     keywords: ["concrete", "construction", "volume"],
     seo: {
       definition:
-        "A concrete calculator estimates the volume of concrete needed for slabs, footings, columns, steps and curbs in cubic yards, cubic feet and cubic meters — and tells you how many 60 lb or 80 lb bags to buy.",
+        "A concrete calculator estimates the volume of concrete needed for slabs, footings, and columns in cubic yards, cubic feet and cubic meters — and tells you how many 60 lb or 80 lb bags to buy.",
       formula:
         "Volume = length × width × depth (in feet) = cubic feet. Cubic yards = cubic feet ÷ 27 (because 1 yard³ = 27 ft³). Bags needed = cubic feet ÷ yield per bag (a 60 lb bag yields ~0.45 ft³; an 80 lb bag yields ~0.60 ft³). Always add 5–10% for spillage and uneven subgrade.",
       howToUse: [
         "Choose your shape: slab, footing, column (round), or column (square).",
         "Enter the dimensions in feet and inches (or meters if using metric).",
         "Enter the depth or thickness of the pour.",
-        "Click Calculate to see volume in cubic yards, cubic feet and cubic meters.",
+        "Results update as you type to show volume in cubic yards, cubic feet and cubic meters.",
         "Use the bag count to order 60 lb or 80 lb pre-mixed bags from the home center.",
       ],
       example:
-        "A 10 ft × 10 ft patio slab, 4 inches (0.333 ft) thick: volume = 10 × 10 × 0.333 = 33.3 ft³ = 1.23 yd³. With a 10% safety margin, order 1.4 yd³ (about 56 eighty-pound bags, since each yields 0.60 ft³).",
+        "A 10 ft × 10 ft patio slab, 4 inches (0.333 ft) thick: volume = 10 × 10 × 0.333 = 33.3 ft³ = 1.23 yd³. You need 56 eighty-pound bags (each yields 0.60 ft³). With a 10% waste margin, order about 62 bags.",
       faqs: [
         {
           q: "How many bags of concrete do I need?",
@@ -2110,7 +2110,7 @@ export const CALCULATORS: CalculatorMeta[] = [
       howToUse: [
         "Enter the IPv4 address (e.g. 192.168.1.1).",
         "Enter the CIDR prefix length (0–32) after the slash, or pick from common presets (/24, /16, /8).",
-        "Click Calculate to see the network address, broadcast, mask and host range.",
+        "Results update as you type to show the network address, broadcast, mask and host range.",
         "Use the wildcard mask for ACLs on Cisco-style equipment and the host count for capacity planning.",
         "For multiple subnets, repeat with each CIDR block.",
       ],

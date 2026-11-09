@@ -48,7 +48,8 @@ export default function TermsPage() {
           <section>
             <h2 className="text-xl font-semibold text-brand-ink">Accuracy of calculations</h2>
             <p className="mt-2">
-              We test each calculator for accuracy and review the formulas regularly. However, we
+              We aim to make calculations accurate and correct errors when we find or are told about
+              them. However, we
               make no warranty that calculations are error-free, complete, or applicable to your
               situation. Always verify important results independently before relying on them.
             </p>

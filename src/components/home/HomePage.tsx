@@ -68,7 +68,7 @@ export function HomePage() {
             <ul className="mt-4 space-y-4 text-sm">
               {[
                 ["100% Free", "Every tool, every time. No registration required."],
-                ["Trusted logic", "Formulas verified against authoritative references."],
+                ["Standard formulas", "Each calculator lists the formula and sources it follows."],
                 ["Private by design", "Calculator inputs stay in your browser."],
                 ["40+ tools", "Finance, health, math & everyday utilities."],
               ].map(([t, d]) => (
@@ -134,16 +134,17 @@ export function HomePage() {
       <section className="mt-16">
         <div className="rounded-2xl border border-brand bg-white p-8 shadow-brand">
           <h2 className="text-xl font-bold text-brand-ink sm:text-2xl">
-            One-stop, go-to site for quick calculations
+            Built by founders who use these tools daily
           </h2>
           <p className="mt-3 max-w-3xl text-sm leading-relaxed text-brand-muted">
-            Calnivo&apos;s sole focus is to provide fast, comprehensive, convenient, free online
-            calculators in a plethora of areas. Currently, we have around {CALCULATORS.length}{" "}
-            calculators to help you &ldquo;do the math&rdquo; quickly in areas such as finance,
-            fitness, health, math, and others, and we are still developing more. Our goal is to
-            become the one-stop, go-to site for people who need to make quick calculations.
-            Additionally, we believe the internet should be a source of free information — all of
-            our tools and services are completely free, with no registration required.
+            Calnivo is a set of free calculators for money, health, math and everyday tasks. Each
+            one runs in your browser, shows the formula it follows, and explains what the result
+            means so you can check it against your own situation. We are a small team and we add
+            and recheck tools over time. If you find a mistake,{" "}
+            <Link href="/contact" className="font-medium text-brand-accent-deep hover:underline">
+              tell us
+            </Link>{" "}
+            and we will correct it and note the change.
           </p>
         </div>
       </section>
@@ -318,7 +319,7 @@ function SeoContentHub() {
           BMI calculator</strong> to check your body mass index, a <strong className="text-brand-ink">
           scientific calculator</strong> for trigonometry and logarithms, or a <strong className="text-brand-ink">
           compound interest calculator</strong> to project your savings growth — every tool runs
-          instantly in your browser. No sign-up, no ads in the way. Calculator inputs stay in your browser.
+          instantly in your browser. No sign-up required. Calculator inputs stay in your browser.
         </p>
         <p className="mt-3 text-sm leading-relaxed text-brand-muted">
           Use our <strong className="text-brand-ink">loan calculator</strong> for personal-loan

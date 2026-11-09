@@ -105,12 +105,12 @@ export default function Article() {
               <strong className="text-brand-ink">Apply the formula:</strong> M = $320,000 × [0.005417(1.005417)^360] / [(1.005417)^360 − 1]
             </li>
             <li>
-              <strong className="text-brand-ink">Result:</strong> M ≈ $2,022.82 per month (principal + interest only)
+              <strong className="text-brand-ink">Result:</strong> M ≈ $2,022.62 per month (principal + interest only)
             </li>
           </ol>
           <p>
-            Over the 30-year term, you would pay a total of approximately $728,215, of which
-            $408,215 is interest. That means you pay more in interest than the original loan amount —
+            Over the 30-year term, you would pay a total of approximately $728,142.36, of which
+            $408,142.36 is interest. That means you pay more in interest than the original loan amount —
             which is why even a small reduction in your interest rate can save you tens of thousands
             of dollars over the life of the loan.
           </p>

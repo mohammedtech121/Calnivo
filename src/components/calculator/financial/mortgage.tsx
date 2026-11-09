@@ -315,8 +315,9 @@ export default function MortgageCalculator() {
           On a <strong>{fmtMoney(r.home)}</strong> home with a{" "}
           <strong>{fmtMoney(r.principal)}</strong> loan at <strong>{parseNum(rate)}%</strong> for{" "}
           <strong>{loanYears} years</strong>, your monthly principal-and-interest payment is{" "}
-          <strong>{fmtMoney(r.pi)}</strong>. Over the full term you&apos;ll pay approximately{" "}
-          <strong>{fmtMoney(totalPi - r.principal)}</strong> in interest — that&apos;s{" "}
+          <strong>{fmtMoney(r.pi)}</strong>. Over the full term, total payments are{" "}
+          <strong>{fmtMoney(totalPi)}</strong>, of which{" "}
+          <strong>{fmtMoney(totalPi - r.principal)}</strong> is interest — that&apos;s{" "}
           <strong>{((totalPi - r.principal) / r.principal * 100).toFixed(0)}%</strong> of the loan
           amount. Paying extra each month or choosing a shorter term can significantly reduce total
           interest.

@@ -69,6 +69,54 @@ const ARTICLES = [
     reviewer: "Hammad Khan",
     sources: ["NIH", "Mifflin-St Jeor (1990)"],
   },
+  {
+    slug: "15-year-vs-30-year-mortgage",
+    title: "15-Year vs 30-Year Mortgage: Which Costs Less?",
+    excerpt:
+      "Compare a 15-year vs 30-year mortgage on the same $320,000 loan at 6.5%. See the monthly payment, total interest, and total cost side-by-side, and learn which term fits your situation.",
+    date: "November 2026",
+    category: "Finance",
+    readTime: "7 min",
+    author: "Mohammed Khan",
+    reviewer: "Hammad Khan",
+    sources: ["CFPB", "Freddie Mac", "FDIC"],
+  },
+  {
+    slug: "what-extra-200-a-month-does",
+    title: "What an Extra $200 a Month Really Does to Your Mortgage",
+    excerpt:
+      "See exactly what happens when you add $200 a month to your mortgage payment. On a $320,000 loan at 6.5%, extra payments cut 6 years off the term and save over $100,000 in interest.",
+    date: "November 2026",
+    category: "Finance",
+    readTime: "6 min",
+    author: "Mohammed Khan",
+    reviewer: "Hammad Khan",
+    sources: ["CFPB", "FDIC"],
+  },
+  {
+    slug: "nominal-vs-effective-interest-rate",
+    title: "Nominal vs Effective Interest Rate: APR vs APY Explained",
+    excerpt:
+      "A 12% nominal APR is not the same as 12% APY. Learn the difference between nominal APR (what lenders quote) and APY (the true annual cost including compounding), with a worked example.",
+    date: "November 2026",
+    category: "Finance",
+    readTime: "6 min",
+    author: "Mohammed Khan",
+    reviewer: "Hammad Khan",
+    sources: ["CFPB", "Federal Reserve"],
+  },
+  {
+    slug: "how-federal-tax-brackets-work",
+    title: "How Federal Tax Brackets Work in 2026 (With a Worked Example)",
+    excerpt:
+      "The U.S. uses progressive tax brackets. Learn how marginal vs effective rates work on a $85,000 single filer in 2026, see the 2026 IRS brackets, and understand why a raise does not reduce your take-home.",
+    date: "November 2026",
+    category: "Finance",
+    readTime: "8 min",
+    author: "Mohammed Khan",
+    reviewer: "Hammad Khan",
+    sources: ["IRS Rev. Proc. 2025-32", "IRS"],
+  },
 ];
 
 export default function BlogPage() {

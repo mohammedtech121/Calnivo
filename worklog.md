@@ -1880,3 +1880,47 @@ Verification:
 
 Stage Summary
 Favorites feature shipped end-to-end (hook + button + sidebar + homepage strip) with full category color system applied to the calculator page for visual consistency. One dead-code bug fixed. All checks green, all routes 200.
+
+---
+
+Task ID: BLOG-ARTICLES-PASS
+Agent: senior content engineer
+Task: Write original, sourced blog articles to close the AdSense Fix 5 content gap.
+
+Work Log:
+- Baseline: lint clean, 34/34 tests pass, tsc clean. Studied existing blog article structure (how-to-calculate-mortgage-payment) to match format: metadata + articleSchema JSON-LD + ArticleTrustFooter + CTA card.
+- Verified all article figures with independent Python computation before writing:
+  * 15v30 mortgage: 30yr=$2,022.62/mo $408,142.36 int; 15yr=$2,787.54/mo $181,757.84 int; save $226,384.52
+  * Extra $200/mo: payoff 281 months, ~$304,556 interest, ~$103,586 saved
+  * APR vs APY: 12% nominal monthly = 12.68% APY
+  * Tax 2026 single $85k: $13,407 tax, 15.8% effective, 22% marginal
+  * Password entropy: 16×94 = 104.9 bits
+
+4 new articles written (all original, sourced, with verified numbers):
+1. /blog/15-year-vs-30-year-mortgage — side-by-side comparison table, the case for each term, the middle path of extra payments. Sources: CFPB, Freddie Mac, FDIC.
+2. /blog/what-extra-200-a-month-does — exact effect of $200/mo extra on a $320k@6.5% mortgage: 6yr 7mo faster, ~$103,586 saved. Includes the "power of starting early" (year 1 vs year 5 vs year 15) and prepayment-penalty checklist. Sources: CFPB, FDIC.
+3. /blog/nominal-vs-effective-interest-rate — APR vs APY with the 12%→12.68% worked example, compounding-frequency table (annual→daily), Truth in Lending context. Sources: CFPB, Federal Reserve.
+4. /blog/how-federal-tax-brackets-work — 2026 IRS brackets, progressive-bracket worked example ($85k single → $13,407), marginal vs effective rate myth-busting, what's excluded (FICA, state, credits). Sources: IRS Rev. Proc. 2025-32, IRS.
+
+Each article includes:
+- Article JSON-LD structured data (headline, datePublished, dateModified, author, publisher)
+- Visible author (Mohammed Khan) + reviewer (Hammad Khan) + updated date (November 2026)
+- 2-3 primary source links (real .gov URLs)
+- A CTA card linking to the relevant calculator
+- An honest disclaimer (educational only, not financial/tax advice)
+- All figures recomputed and verified to match the live calculators
+
+Index + sitemap updated:
+- /blog index page now lists all 9 articles (was 5)
+- sitemap.ts now includes all 4 new article URLs at priority 0.6, monthly changeFrequency
+
+Verification:
+- bun run lint: clean
+- npx tsc --noEmit: clean
+- bun test: 34 pass, 0 fail
+- All 5 blog routes return 200 (index + 4 new articles)
+- Tax article HTML confirms: $13,407, 22% marginal, 15.8% effective, $12,400/$50,450 brackets, Rev. Proc. 2025-32 source all render
+- No runtime errors in dev.log
+
+Stage Summary
+Blog expanded from 5 to 9 original, sourced articles — closing the AdSense Fix 5 content gap (which asked for 8-10 articles). All articles use verified figures that match the live calculators, cite primary .gov sources, and include named author + reviewer + updated date. Lint clean, tests pass, all routes 200.

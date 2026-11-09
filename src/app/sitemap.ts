@@ -57,6 +57,26 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.6,
     },
     {
+      url: `${SITE_URL}/blog/15-year-vs-30-year-mortgage`,
+      changeFrequency: "monthly",
+      priority: 0.6,
+    },
+    {
+      url: `${SITE_URL}/blog/what-extra-200-a-month-does`,
+      changeFrequency: "monthly",
+      priority: 0.6,
+    },
+    {
+      url: `${SITE_URL}/blog/nominal-vs-effective-interest-rate`,
+      changeFrequency: "monthly",
+      priority: 0.6,
+    },
+    {
+      url: `${SITE_URL}/blog/how-federal-tax-brackets-work`,
+      changeFrequency: "monthly",
+      priority: 0.6,
+    },
+    {
       url: `${SITE_URL}/about`,
       changeFrequency: "yearly",
       priority: 0.4,

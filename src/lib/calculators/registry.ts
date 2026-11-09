@@ -109,27 +109,49 @@ export interface CalculatorMeta {
 
 export const CATEGORY_META: Record<
   CalculatorCategory,
-  { label: string; blurb: string; icon: LucideIcon }
+  {
+    label: string;
+    blurb: string;
+    icon: LucideIcon;
+    /** Tailwind gradient classes for the category accent (top border, icon bg). */
+    accent: string;
+    /** Soft tint background for the icon tile. */
+    tint: string;
+    /** Foreground color for the icon. */
+    fg: string;
+  }
 > = {
   financial: {
     label: "Financial Calculators",
     blurb: "Plan loans, mortgages, investments and taxes with confidence.",
     icon: Banknote,
+    accent: "from-emerald-500 to-emerald-600",
+    tint: "bg-emerald-50",
+    fg: "text-emerald-600",
   },
   health: {
     label: "Fitness & Health Calculators",
     blurb: "Track BMI, calories, body fat and key wellness metrics.",
     icon: HeartPulse,
+    accent: "from-rose-500 to-rose-600",
+    tint: "bg-rose-50",
+    fg: "text-rose-600",
   },
   math: {
     label: "Math Calculators",
     blurb: "Scientific tools for fractions, percentages and geometry.",
     icon: CalcIcon,
+    accent: "from-amber-500 to-amber-600",
+    tint: "bg-amber-50",
+    fg: "text-amber-600",
   },
   other: {
     label: "Other Calculators",
     blurb: "Everyday utilities for dates, time, grades and conversions.",
     icon: LayoutGrid,
+    accent: "from-sky-500 to-sky-600",
+    tint: "bg-sky-50",
+    fg: "text-sky-600",
   },
 };
 

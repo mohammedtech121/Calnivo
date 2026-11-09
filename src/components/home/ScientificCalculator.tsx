@@ -223,7 +223,7 @@ export function ScientificCalculator() {
             key={idx}
             onClick={() => handleBtn(b)}
             className={cn(
-              "flex h-12 items-center justify-center rounded-lg text-sm font-medium transition-all active:scale-95 sm:h-13",
+              "flex h-12 items-center justify-center rounded-lg text-sm font-medium transition-all duration-100 active:scale-95 hover:-translate-y-px hover:shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent/40 sm:h-13",
               btnClass(b, mode, b.label === "Deg" ? mode === "deg" : b.label === "Rad" ? mode === "rad" : false),
             )}
           >

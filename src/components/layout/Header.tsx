@@ -2,10 +2,22 @@
 
 import { useState } from "react";
 import { Search, X, ChevronRight } from "lucide-react";
+import Link from "next/link";
 import { useCalcNav } from "@/store/calculator-nav";
-import { searchCalculators, type CalculatorMeta } from "@/lib/calculators/registry";
+import {
+  searchCalculators,
+  type CalculatorMeta,
+  CATEGORY_META,
+} from "@/lib/calculators/registry";
 import { Logo } from "./Logo";
 import { cn } from "@/lib/utils";
+
+const CATEGORY_LINKS = [
+  { id: "financial", href: "/calculators#category-financial", label: "Finance" },
+  { id: "health", href: "/calculators#category-health", label: "Health" },
+  { id: "math", href: "/calculators#category-math", label: "Math" },
+  { id: "other", href: "/calculators#category-other", label: "Everyday" },
+] as const;
 
 export function Header() {
   const [focused, setFocused] = useState(false);
@@ -18,8 +30,28 @@ export function Header() {
       <div className="mx-auto flex h-16 max-w-[1200px] items-center gap-3 px-4 sm:gap-6 sm:px-6">
         <Logo onClick={setHome} />
 
+        {/* Desktop category nav */}
+        <nav className="hidden items-center gap-1 lg:flex" aria-label="Calculator categories">
+          {CATEGORY_LINKS.map((c) => {
+            const cat = CATEGORY_META[c.id as keyof typeof CATEGORY_META];
+            const CatIcon = cat.icon;
+            return (
+              <Link
+                key={c.id}
+                href={c.href}
+                className={cn(
+                  "group flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium text-brand-muted transition-colors hover:bg-white hover:text-brand-ink",
+                )}
+              >
+                <CatIcon className={cn("h-4 w-4", cat.fg)} />
+                {c.label}
+              </Link>
+            );
+          })}
+        </nav>
+
         {/* Search */}
-        <div className="relative ml-auto flex-1 max-w-md">
+        <div className="relative ml-auto w-full max-w-md">
           <div
             className={cn(
               "flex items-center gap-2 rounded-xl border bg-white px-3 py-2 transition-all",

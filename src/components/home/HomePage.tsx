@@ -1,6 +1,6 @@
 "use client";
 
-import { Search, LayoutGrid } from "lucide-react";
+import { Search, LayoutGrid, ArrowRight, Clock } from "lucide-react";
 import Link from "next/link";
 import { useCalcNav } from "@/store/calculator-nav";
 import {
@@ -12,6 +12,7 @@ import {
   type CalculatorCategory,
 } from "@/lib/calculators/registry";
 import { ScientificCalculator } from "./ScientificCalculator";
+import { useRecentCalculators } from "@/hooks/use-recent-calculators";
 import { cn } from "@/lib/utils";
 
 const CATEGORY_ORDER: CalculatorCategory[] = ["financial", "health", "math", "other"];
@@ -19,12 +20,13 @@ const CATEGORY_ORDER: CalculatorCategory[] = ["financial", "health", "math", "ot
 export function HomePage() {
   const { query, setQuery, go } = useCalcNav();
   const filtered = query.trim() ? searchCalculators(query) : null;
+  const recent = useRecentCalculators();
 
   return (
     <div className="mx-auto max-w-[1200px] px-4 py-8 sm:px-6 sm:py-10">
       {/* Hero / scientific calculator */}
       <section className="grid items-start gap-8 lg:grid-cols-[minmax(0,1fr)_360px]">
-        <div>
+        <div className="min-w-0">
           <div className="inline-flex items-center gap-2 rounded-full border border-brand bg-white px-3 py-1 text-xs font-medium text-brand-muted shadow-sm">
             <span className="h-1.5 w-1.5 rounded-full bg-brand-accent" />
             {CALCULATORS.length}+ free calculators · no sign-up
@@ -50,12 +52,15 @@ export function HomePage() {
             </Link>
           </div>
 
-          {/* Scientific calculator */}
-          <div className="mt-8 max-w-xl">
+          {/* Scientific calculator — full width of the left column, no max-w dead zone */}
+          <div className="mt-8">
             <div className="mb-3 flex items-center gap-2">
               <h2 className="text-sm font-semibold uppercase tracking-wide text-brand-muted">
                 Scientific Calculator
               </h2>
+              <span className="text-xs text-brand-muted/70">
+                · type or tap, keyboard supported
+              </span>
             </div>
             <ScientificCalculator />
           </div>
@@ -81,12 +86,64 @@ export function HomePage() {
                 </li>
               ))}
             </ul>
-            <div className="mt-6 grid grid-cols-3 gap-3 border-t border-brand pt-5 text-center">
+            <div className="mt-6 grid grid-cols-3 divide-x divide-brand border-t border-brand pt-5 text-center">
               <Stat n={`${CALCULATORS.length}+`} l="Calculators" />
               <Stat n="4" l="Categories" />
               <Stat n="$0" l="Always free" />
             </div>
           </div>
+
+          {/* Recently used — only shows if the user has visited calculators */}
+          {recent.hasItems && (
+            <div className="mt-4 rounded-2xl border border-brand bg-white p-5 shadow-brand">
+              <div className="flex items-center justify-between">
+                <h3 className="flex items-center gap-2 text-sm font-semibold text-brand-ink">
+                  <Clock className="h-4 w-4 text-brand-accent-deep" />
+                  Recently used
+                </h3>
+                <button
+                  onClick={recent.clear}
+                  className="text-xs text-brand-muted transition-colors hover:text-brand-accent-deep"
+                  aria-label="Clear recently used list"
+                >
+                  Clear
+                </button>
+              </div>
+              <ul className="mt-3 space-y-1">
+                {recent.metas.map((c) => {
+                  const Icon = c.icon;
+                  const cat = CATEGORY_META[c.category];
+                  return (
+                    <li key={c.id}>
+                      <a
+                        href={`/calculators/${c.id}`}
+                        className="group flex items-center gap-3 rounded-lg px-2 py-2 text-sm transition-colors hover:bg-accent/60"
+                      >
+                        <span
+                          className={cn(
+                            "grid h-8 w-8 shrink-0 place-items-center rounded-lg",
+                            cat.tint,
+                            cat.fg,
+                          )}
+                        >
+                          <Icon className="h-4 w-4" />
+                        </span>
+                        <span className="min-w-0 flex-1">
+                          <span className="block truncate font-medium text-brand-ink group-hover:text-brand-accent-deep">
+                            {c.short}
+                          </span>
+                          <span className="block text-xs capitalize text-brand-muted">
+                            {c.category}
+                          </span>
+                        </span>
+                        <ArrowRight className="h-3.5 w-3.5 shrink-0 text-brand-muted/40 transition-all group-hover:translate-x-0.5 group-hover:text-brand-accent-deep" />
+                      </a>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          )}
         </aside>
       </section>
 
@@ -106,7 +163,7 @@ export function HomePage() {
           ) : (
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {filtered.map((c) => (
-                <CalcCard key={c.id} id={c.id} name={c.name} desc={c.description} icon={c.icon} />
+                <CalcCard key={c.id} id={c.id} name={c.name} desc={c.description} icon={c.icon} category={c.category} />
               ))}
             </div>
           )}
@@ -122,7 +179,7 @@ export function HomePage() {
             </p>
           </div>
 
-          <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+          <div className="grid items-stretch gap-6 md:grid-cols-2 xl:grid-cols-4">
             {CATEGORY_ORDER.map((cat) => (
               <CategoryColumn key={cat} cat={cat} onGo={go} />
             ))}
@@ -183,8 +240,8 @@ function SearchBar() {
 
 function Stat({ n, l }: { n: string; l: string }) {
   return (
-    <div>
-      <div className="text-xl font-bold text-brand-ink">{n}</div>
+    <div className="px-1">
+      <div className="text-xl font-bold tabular-nums text-brand-ink">{n}</div>
       <div className="text-xs text-brand-muted">{l}</div>
     </div>
   );
@@ -201,27 +258,40 @@ function CategoryColumn({
   const items = calculatorsByCategory(cat);
   const Icon = meta.icon;
   return (
-    <div className="rounded-2xl border border-brand bg-white p-5 shadow-brand transition-shadow hover:shadow-brand-lg">
+    <div className="group/card relative flex h-full flex-col overflow-hidden rounded-2xl border border-brand bg-white p-5 shadow-brand transition-all hover:-translate-y-0.5 hover:shadow-brand-lg">
+      {/* Category accent top bar */}
+      <div
+        className={cn(
+          "absolute inset-x-0 top-0 h-1 bg-gradient-to-r",
+          meta.accent,
+        )}
+      />
       <div className="flex items-center gap-3">
-        <span className="grid h-10 w-10 place-items-center rounded-xl bg-accent text-brand-accent-deep">
+        <span
+          className={cn(
+            "grid h-10 w-10 place-items-center rounded-xl",
+            meta.tint,
+            meta.fg,
+          )}
+        >
           <Icon className="h-5 w-5" />
         </span>
-        <div>
+        <div className="min-w-0">
           <h3 className="text-base font-semibold leading-tight text-brand-ink">{meta.label}</h3>
           <p className="text-xs text-brand-muted">{meta.blurb}</p>
         </div>
       </div>
-      <ul className="mt-4 space-y-0.5">
+      <ul className="mt-4 flex-1 space-y-0.5">
         {items.map((c) => (
           <li key={c.id}>
             <a
               href={`/calculators/${c.id}`}
-              className="group flex w-full items-center justify-between rounded-lg px-2.5 py-2 text-left text-sm text-brand-ink transition-colors hover:bg-accent/60"
+              className="group flex w-full items-center justify-between rounded-lg px-2.5 py-2 text-left text-sm text-brand-ink transition-colors hover:bg-accent/60 focus-visible:bg-accent/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent/40"
             >
-              <span className="font-medium group-hover:text-brand-accent-deep">{c.short}</span>
-              <span className="text-brand-muted/0 transition-colors group-hover:text-brand-accent-deep">
-                →
+              <span className="font-medium transition-colors group-hover:text-brand-accent-deep">
+                {c.short}
               </span>
+              <ArrowRight className="h-3.5 w-3.5 shrink-0 text-brand-muted/0 transition-all group-hover:translate-x-0.5 group-hover:text-brand-accent-deep" />
             </a>
           </li>
         ))}
@@ -235,20 +305,24 @@ function CalcCard({
   name,
   desc,
   icon: Icon,
+  category,
 }: {
   id: string;
   name: string;
   desc: string;
   icon: React.ComponentType<{ className?: string }>;
+  category: CalculatorCategory;
 }) {
+  const cat = CATEGORY_META[category];
   return (
     <a
       href={`/calculators/${id}`}
       className={cn(
-        "group flex flex-col gap-3 rounded-xl border border-brand bg-white p-5 text-left shadow-brand transition-all hover:-translate-y-0.5 hover:shadow-brand-lg",
+        "group relative flex flex-col gap-3 overflow-hidden rounded-xl border border-brand bg-white p-5 text-left shadow-brand transition-all hover:-translate-y-0.5 hover:shadow-brand-lg",
       )}
     >
-      <span className="grid h-10 w-10 place-items-center rounded-lg bg-accent text-brand-accent-deep">
+      <div className={cn("absolute inset-x-0 top-0 h-1 bg-gradient-to-r", cat.accent)} />
+      <span className={cn("grid h-10 w-10 place-items-center rounded-lg", cat.tint, cat.fg)}>
         <Icon className="h-5 w-5" />
       </span>
       <div>
@@ -281,19 +355,24 @@ function PopularCalculators() {
       <p className="mt-2 text-sm text-brand-muted">
         The most-used online calculators on Calnivo — free, accurate, and ready in one click.
       </p>
-      <div className="mt-5 grid grid-cols-2 gap-2 sm:grid-cols-4">
+      <div className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-4">
         {popular.map((c) => {
           const Icon = c.icon;
+          const cat = CATEGORY_META[c.category];
           return (
             <a
               key={c.id}
               href={`/calculators/${c.id}`}
-              className="group flex flex-col items-start gap-2 rounded-xl border border-brand bg-brand-canvas p-4 text-left transition-all hover:border-brand-accent hover:bg-accent/40"
+              className="group relative flex flex-col items-start gap-2 overflow-hidden rounded-xl border border-brand bg-brand-canvas p-4 text-left transition-all hover:-translate-y-0.5 hover:border-brand-accent hover:shadow-brand"
             >
-              <Icon className="h-5 w-5 text-brand-accent-deep" />
+              <div className={cn("absolute inset-x-0 top-0 h-0.5 bg-gradient-to-r", cat.accent)} />
+              <span className={cn("grid h-9 w-9 place-items-center rounded-lg", cat.tint, cat.fg)}>
+                <Icon className="h-4 w-4" />
+              </span>
               <span className="text-sm font-semibold leading-tight text-brand-ink group-hover:text-brand-accent-deep">
                 {c.short}
               </span>
+              <span className="text-[11px] capitalize text-brand-muted">{c.category}</span>
             </a>
           );
         })}

@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import { Header } from "./Header";
 import { Footer } from "./Footer";
+import { BackToTop } from "./BackToTop";
 import { HomePage } from "@/components/home/HomePage";
 import { CalculatorPage } from "@/components/calculator/CalculatorPage";
 import { useCalcNav } from "@/store/calculator-nav";
@@ -58,6 +59,7 @@ export function Layout({ calculatorId, children }: Props) {
         )}
       </main>
       <Footer />
+      <BackToTop />
     </div>
   );
 }

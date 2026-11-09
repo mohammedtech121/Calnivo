@@ -8,6 +8,7 @@ import {
 } from "@/lib/calculators/registry";
 import { Layout } from "@/components/layout/Layout";
 import { CalculatorSeoContent } from "@/components/calculator/CalculatorSeoContent";
+import { RecentCalculatorTracker } from "@/components/calculator/RecentCalculatorTracker";
 import {
   FinancialCalculators,
   HealthCalculators,
@@ -167,6 +168,9 @@ export default async function Page({
 
   return (
     <>
+      {/* Record this visit in the user's recently-used list (localStorage) */}
+      <RecentCalculatorTracker id={id} />
+
       {/* Server-rendered structured data (crawlable without JS) */}
       <script
         type="application/ld+json"

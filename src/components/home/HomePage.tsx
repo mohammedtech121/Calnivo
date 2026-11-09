@@ -1,6 +1,6 @@
 "use client";
 
-import { Search, LayoutGrid, ArrowRight, Clock } from "lucide-react";
+import { Search, LayoutGrid, ArrowRight, Clock, Star } from "lucide-react";
 import Link from "next/link";
 import { useCalcNav } from "@/store/calculator-nav";
 import {
@@ -13,6 +13,7 @@ import {
 } from "@/lib/calculators/registry";
 import { ScientificCalculator } from "./ScientificCalculator";
 import { useRecentCalculators } from "@/hooks/use-recent-calculators";
+import { useFavorites } from "@/hooks/use-favorites";
 import { cn } from "@/lib/utils";
 
 const CATEGORY_ORDER: CalculatorCategory[] = ["financial", "health", "math", "other"];
@@ -21,6 +22,7 @@ export function HomePage() {
   const { query, setQuery, go } = useCalcNav();
   const filtered = query.trim() ? searchCalculators(query) : null;
   const recent = useRecentCalculators();
+  const favorites = useFavorites();
 
   return (
     <div className="mx-auto max-w-[1200px] px-4 py-8 sm:px-6 sm:py-10">
@@ -183,6 +185,51 @@ export function HomePage() {
             {CATEGORY_ORDER.map((cat) => (
               <CategoryColumn key={cat} cat={cat} onGo={go} />
             ))}
+          </div>
+        </section>
+      )}
+
+      {/* Favorites strip — only shows if the user has favorited calculators */}
+      {favorites.hasFavorites && !filtered && (
+        <section className="mt-10">
+          <div className="rounded-2xl border border-amber-200 bg-amber-50/50 p-6 shadow-brand sm:p-8">
+            <div className="flex items-center justify-between">
+              <h2 className="flex items-center gap-2 text-xl font-bold tracking-tight text-brand-ink">
+                <Star className="h-5 w-5 fill-amber-400 text-amber-500" />
+                Your favorites
+              </h2>
+              <button
+                onClick={favorites.clear}
+                className="text-xs font-medium text-brand-muted transition-colors hover:text-brand-accent-deep"
+              >
+                Clear all
+              </button>
+            </div>
+            <p className="mt-1 text-sm text-brand-muted">
+              Quick access to the calculators you have starred.
+            </p>
+            <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+              {favorites.metas.map((c) => {
+                const Icon = c.icon;
+                const cat = CATEGORY_META[c.category];
+                return (
+                  <a
+                    key={c.id}
+                    href={`/calculators/${c.id}`}
+                    className="group relative flex flex-col items-start gap-2 overflow-hidden rounded-xl border border-amber-200 bg-white p-4 text-left transition-all hover:-translate-y-0.5 hover:shadow-brand"
+                  >
+                    <div className={cn("absolute inset-x-0 top-0 h-0.5 bg-gradient-to-r", cat.accent)} />
+                    <span className={cn("grid h-9 w-9 place-items-center rounded-lg", cat.tint, cat.fg)}>
+                      <Icon className="h-4 w-4" />
+                    </span>
+                    <span className="text-sm font-semibold leading-tight text-brand-ink group-hover:text-brand-accent-deep">
+                      {c.short}
+                    </span>
+                    <span className="text-[11px] capitalize text-brand-muted">{c.category}</span>
+                  </a>
+                );
+              })}
+            </div>
           </div>
         </section>
       )}

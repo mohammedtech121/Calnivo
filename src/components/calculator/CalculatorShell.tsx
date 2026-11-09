@@ -1,15 +1,17 @@
 "use client";
 
-import { ChevronRight, Home as HomeIcon, ArrowLeft, Search } from "lucide-react";
+import { ChevronRight, Home as HomeIcon, ArrowLeft, Search, Star } from "lucide-react";
 import { useCalcNav } from "@/store/calculator-nav";
 import {
   CALCULATOR_MAP,
+  CATEGORY_META,
   calculatorsByCategory,
   type CalculatorCategory,
 } from "@/lib/calculators/registry";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { CalculatorContent } from "./CalculatorContent";
+import { useFavorites } from "@/hooks/use-favorites";
 
 export function CalculatorShell({
   id,
@@ -20,12 +22,15 @@ export function CalculatorShell({
 }) {
   const meta = CALCULATOR_MAP[id];
   const { setHome, go } = useCalcNav();
-  const [query, setQuery] = useState("");
+  const [q, setQ] = useState("");
+  const { isFavorite, toggleFavorite, favorites } = useFavorites();
   if (!meta) return null;
   const Icon = meta.icon;
+  const cat = CATEGORY_META[meta.category];
   const related = calculatorsByCategory(meta.category as CalculatorCategory)
     .filter((c) => c.id !== id)
     .slice(0, 7);
+  const fav = isFavorite(id);
 
   return (
     <div className="mx-auto max-w-[1200px] px-4 py-6 sm:px-6 sm:py-8">
@@ -44,20 +49,40 @@ export function CalculatorShell({
         <span className="font-medium text-brand-ink">{meta.name}</span>
       </nav>
 
-      <button
-        onClick={setHome}
-        className="mb-4 inline-flex items-center gap-1.5 rounded-lg border border-brand bg-white px-3 py-1.5 text-sm font-medium text-brand-ink shadow-sm transition-colors hover:bg-accent/50"
-      >
-        <ArrowLeft className="h-4 w-4" />
-        All calculators
-      </button>
+      <div className="mb-4 flex flex-wrap items-center gap-2">
+        <button
+          onClick={setHome}
+          className="inline-flex items-center gap-1.5 rounded-lg border border-brand bg-white px-3 py-1.5 text-sm font-medium text-brand-ink shadow-sm transition-colors hover:bg-accent/50"
+        >
+          <ArrowLeft className="h-4 w-4" />
+          All calculators
+        </button>
+        <button
+          onClick={() => toggleFavorite(id)}
+          aria-pressed={fav}
+          className={cn(
+            "inline-flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-sm font-medium shadow-sm transition-all hover:-translate-y-px",
+            fav
+              ? "border-amber-300 bg-amber-50 text-amber-700"
+              : "border-brand bg-white text-brand-muted hover:bg-accent/50 hover:text-brand-ink",
+          )}
+        >
+          <Star className={cn("h-4 w-4", fav && "fill-amber-400 text-amber-500")} />
+          {fav ? "Favorited" : "Add to favorites"}
+        </button>
+      </div>
 
       {/* Title */}
       <div className="mb-6 flex items-start gap-4">
-        <span className="hidden h-12 w-12 shrink-0 place-items-center rounded-xl bg-brand-accent-gradient text-white shadow-accent sm:grid">
+        <span
+          className={cn(
+            "hidden h-12 w-12 shrink-0 place-items-center rounded-xl text-white shadow-accent sm:grid bg-gradient-to-br",
+            cat.accent,
+          )}
+        >
           <Icon className="h-6 w-6" />
         </span>
-        <div>
+        <div className="min-w-0">
           <h1 className="text-2xl font-bold tracking-tight text-brand-ink sm:text-3xl">
             {meta.name}
           </h1>
@@ -77,13 +102,52 @@ export function CalculatorShell({
             <div className="flex items-center gap-2 rounded-lg border border-brand bg-brand-canvas px-3 py-2">
               <Search className="h-4 w-4 text-brand-muted" />
               <input
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
+                value={q}
+                onChange={(e) => setQ(e.target.value)}
                 placeholder="Search…"
                 className="w-full bg-transparent text-sm outline-none"
               />
             </div>
           </div>
+
+          {/* Favorites — only shows if the user has favorited calculators */}
+          {favorites.length > 0 && (
+            <div className="rounded-xl border border-amber-200 bg-amber-50/60 p-4 shadow-brand">
+              <h3 className="mb-2 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-amber-700">
+                <Star className="h-3.5 w-3.5 fill-amber-400 text-amber-500" />
+                Your favorites
+              </h3>
+              <ul className="space-y-1">
+                {favorites.map((c) => {
+                  const CIcon = c.icon;
+                  const ccat = CATEGORY_META[c.category];
+                  return (
+                    <li key={c.id}>
+                      <button
+                        onClick={() => go(c.id)}
+                        className={cn(
+                          "group flex w-full items-center gap-2.5 rounded-lg px-2 py-2 text-left text-sm transition-colors hover:bg-white",
+                        )}
+                      >
+                        <span
+                          className={cn(
+                            "grid h-7 w-7 shrink-0 place-items-center rounded-md",
+                            ccat.tint,
+                            ccat.fg,
+                          )}
+                        >
+                          <CIcon className="h-3.5 w-3.5" />
+                        </span>
+                        <span className="font-medium text-brand-ink group-hover:text-brand-accent-deep">
+                          {c.short}
+                        </span>
+                      </button>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          )}
 
           {/* Related */}
           <div className="rounded-xl border border-brand bg-white p-4 shadow-brand">
@@ -97,10 +161,20 @@ export function CalculatorShell({
                   <li key={c.id}>
                     <button
                       onClick={() => go(c.id)}
-                      className="flex w-full items-center gap-2.5 rounded-lg px-2 py-2 text-left text-sm text-brand-ink transition-colors hover:bg-accent/60"
+                      className="group flex w-full items-center gap-2.5 rounded-lg px-2 py-2 text-left text-sm text-brand-ink transition-colors hover:bg-accent/60"
                     >
-                      <CIcon className="h-4 w-4 shrink-0 text-brand-muted" />
-                      <span className="font-medium">{c.short}</span>
+                      <span
+                        className={cn(
+                          "grid h-7 w-7 shrink-0 place-items-center rounded-md",
+                          cat.tint,
+                          cat.fg,
+                        )}
+                      >
+                        <CIcon className="h-3.5 w-3.5" />
+                      </span>
+                      <span className="font-medium group-hover:text-brand-accent-deep">
+                        {c.short}
+                      </span>
                     </button>
                   </li>
                 );

@@ -9,6 +9,8 @@ import {
 import { Layout } from "@/components/layout/Layout";
 import { CalculatorSeoContent } from "@/components/calculator/CalculatorSeoContent";
 import { RecentCalculatorTracker } from "@/components/calculator/RecentCalculatorTracker";
+import { FavoriteButton } from "@/components/calculator/FavoriteButton";
+import { FavoritesSidebar } from "@/components/calculator/FavoritesSidebar";
 import {
   FinancialCalculators,
   HealthCalculators,
@@ -204,20 +206,25 @@ export default async function Page({
             <span className="font-medium text-brand-ink">{meta.name}</span>
           </nav>
 
-          {/* Back button */}
-          <Link
-            href="/calculators"
-            className="no-print mb-4 inline-flex items-center gap-1.5 rounded-lg border border-brand bg-white px-3 py-1.5 text-sm font-medium text-brand-ink shadow-sm transition-colors hover:bg-accent/50"
-          >
-            <ArrowLeft className="h-4 w-4" />
-            All calculators
-          </Link>
+          {/* Back + Favorite buttons */}
+          <div className="no-print mb-4 flex flex-wrap items-center gap-2">
+            <Link
+              href="/calculators"
+              className="inline-flex items-center gap-1.5 rounded-lg border border-brand bg-white px-3 py-1.5 text-sm font-medium text-brand-ink shadow-sm transition-colors hover:bg-accent/50"
+            >
+              <ArrowLeft className="h-4 w-4" />
+              All calculators
+            </Link>
+            <FavoriteButton id={id} />
+          </div>
 
           {/* Printable calculator area — only this shows when printing */}
           <div className="printable-area">
             {/* Title (H1 — server-rendered, crawlable) */}
             <div className="mb-6 flex items-start gap-4">
-              <span className="hidden h-12 w-12 shrink-0 place-items-center rounded-xl bg-brand-accent-gradient text-white shadow-accent sm:grid">
+              <span
+                className={`hidden h-12 w-12 shrink-0 place-items-center rounded-xl text-white shadow-accent sm:grid bg-gradient-to-br ${catMeta.accent}`}
+              >
                 <Icon className="h-6 w-6" />
               </span>
               <div>
@@ -237,6 +244,9 @@ export default async function Page({
               </div>
 
               <aside className="no-print space-y-4">
+              {/* Favorites — client component, renders only if user has favorites */}
+              <FavoritesSidebar />
+
               {/* Related */}
               <div className="rounded-xl border border-brand bg-white p-4 shadow-brand">
                 <h3 className="mb-3 text-xs font-semibold uppercase tracking-wide text-brand-muted">
@@ -249,10 +259,14 @@ export default async function Page({
                       <li key={c.id}>
                         <Link
                           href={`/calculators/${c.id}`}
-                          className="flex w-full items-center gap-2.5 rounded-lg px-2 py-2 text-left text-sm text-brand-ink transition-colors hover:bg-accent/60"
+                          className="group flex w-full items-center gap-2.5 rounded-lg px-2 py-2 text-left text-sm text-brand-ink transition-colors hover:bg-accent/60"
                         >
-                          <CIcon className="h-4 w-4 shrink-0 text-brand-muted" />
-                          <span className="font-medium">{c.short}</span>
+                          <span
+                            className={`grid h-7 w-7 shrink-0 place-items-center rounded-md ${catMeta.tint} ${catMeta.fg}`}
+                          >
+                            <CIcon className="h-3.5 w-3.5" />
+                          </span>
+                          <span className="font-medium group-hover:text-brand-accent-deep">{c.short}</span>
                         </Link>
                       </li>
                     );

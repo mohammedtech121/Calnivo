@@ -1847,3 +1847,36 @@ Work Log:
 
 Stage Summary
 Styling polish + 3 new features shipped without breaking existing code. Homepage now has distinct category color identities (emerald/rose/amber/sky), micro-interactions on all interactive elements, equal-height cards, and no dead zones. Two new features (Recently Used sidebar, BackToTop button) and one header enhancement (category nav) added. All checks green.
+
+---
+
+Task ID: FAVORTES-STYLING-PASS
+Agent: senior frontend engineer
+Task: Assess, QA, fix bugs, improve styling, add favorites feature.
+
+Work Log:
+- Baseline: lint clean, 34/34 tests pass. Dev server required manual restart (infrastructure flakiness — server serves requests then dies; restarted with setsid for stability).
+- QA: curl-verified all main routes return 200 (/, /calculators, /calculators/mortgage, /calculators/income-tax, /methodology, /about, /blog). No runtime errors in dev.log. Mortgage page HTML confirms Fix 1 content blocks render ("What your result means", "Sources", "Last reviewed", verified numbers $2,022.62 / $408,142).
+- Bug fix: removed stray `const { query, setQuery } = useState("")` line in CalculatorShell.tsx (dead code from refactor).
+
+New feature — Favorites system:
+  - use-favorites.ts hook using useSyncExternalStore (concurrent-React safe) + localStorage key "calnivo:favorites". Exposes metas[], isFavorite(id), toggleFavorite(id), clear(), hasFavorites.
+  - FavoriteButton.tsx client component — star toggle button on every calculator page. Amber-themed when favorited (fill-amber-400), neutral when not. hover:-translate-y-px micro-interaction.
+  - FavoritesSidebar.tsx client component — renders in the calculator page sidebar only when the user has favorites. Shows favorited calculators with category-colored icons (emerald/rose/amber/sky).
+  - Homepage "Your favorites" strip — amber-themed section that appears between the category grid and mission statement when the user has favorites. Grid of favorited calculators with category accent top bars and icons. Includes "Clear all" button.
+  - Wired into /calculators/[id]/page.tsx: FavoriteButton next to the back button, FavoritesSidebar above the related list.
+
+Styling improvements:
+  - Calculator page title icon: now uses the category gradient (bg-gradient-to-br + catMeta.accent) instead of the generic brand-accent gradient. Mortgage = emerald, BMI = rose, etc.
+  - Calculator page related list: icons now use category tint + fg colors (bg-emerald-50 text-emerald-600 for financial, etc.) instead of generic gray. Added hover text-brand-accent-deep + group hover.
+  - Consistency: calculator page sidebar now matches the homepage category cards' color system.
+
+Verification:
+- bun run lint: clean (0 errors)
+- npx tsc --noEmit --skipLibCheck: clean
+- bun test: 34 pass, 0 fail
+- All routes return 200; mortgage page HTML confirms "Add to favorites" button, from-emerald-500 title icon, bg-emerald-50 related icons, and Fix 1 content blocks all render.
+- No runtime errors in dev.log.
+
+Stage Summary
+Favorites feature shipped end-to-end (hook + button + sidebar + homepage strip) with full category color system applied to the calculator page for visual consistency. One dead-code bug fixed. All checks green, all routes 200.

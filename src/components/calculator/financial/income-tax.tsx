@@ -15,41 +15,78 @@ import { ExpandableSection } from "@/components/calculator/ExpandableSection";
 import { LocalHistory } from "@/components/calculator/LocalHistory";
 
 type FilingStatus = "single" | "married" | "head";
+type TaxYear = "2025" | "2026";
 
 interface Bracket {
   rate: number;
   upto: number; // upper bound of this bracket (Infinity for top)
 }
 
-const BRACKETS: Record<FilingStatus, Bracket[]> = {
+// IRS 2025 federal tax brackets (Rev. Proc. 2024-40, taxes filed in 2026)
+const BRACKETS_2025: Record<FilingStatus, Bracket[]> = {
   single: [
-    { rate: 10, upto: 11600 },
-    { rate: 12, upto: 47150 },
-    { rate: 22, upto: 100525 },
-    { rate: 24, upto: 191950 },
-    { rate: 32, upto: 243725 },
-    { rate: 35, upto: 609350 },
+    { rate: 10, upto: 11925 },
+    { rate: 12, upto: 48475 },
+    { rate: 22, upto: 103350 },
+    { rate: 24, upto: 197300 },
+    { rate: 32, upto: 250525 },
+    { rate: 35, upto: 626350 },
     { rate: 37, upto: Infinity },
   ],
   married: [
-    { rate: 10, upto: 23200 },
-    { rate: 12, upto: 94300 },
-    { rate: 22, upto: 201050 },
-    { rate: 24, upto: 383900 },
-    { rate: 32, upto: 487450 },
-    { rate: 35, upto: 731200 },
+    { rate: 10, upto: 23850 },
+    { rate: 12, upto: 96950 },
+    { rate: 22, upto: 206700 },
+    { rate: 24, upto: 394600 },
+    { rate: 32, upto: 501050 },
+    { rate: 35, upto: 751300 },
     { rate: 37, upto: Infinity },
   ],
   head: [
-    { rate: 10, upto: 16550 },
-    { rate: 12, upto: 63100 },
-    { rate: 22, upto: 100500 },
-    { rate: 24, upto: 191950 },
-    { rate: 32, upto: 243700 },
-    { rate: 35, upto: 609350 },
+    { rate: 10, upto: 17000 },
+    { rate: 12, upto: 64850 },
+    { rate: 22, upto: 103350 },
+    { rate: 24, upto: 197300 },
+    { rate: 32, upto: 250500 },
+    { rate: 35, upto: 626350 },
     { rate: 37, upto: Infinity },
   ],
 };
+
+// IRS 2026 federal tax brackets (Rev. Proc. 2025-32, taxes filed in 2027)
+const BRACKETS_2026: Record<FilingStatus, Bracket[]> = {
+  single: [
+    { rate: 10, upto: 12400 },
+    { rate: 12, upto: 50450 },
+    { rate: 22, upto: 107650 },
+    { rate: 24, upto: 205500 },
+    { rate: 32, upto: 261000 },
+    { rate: 35, upto: 652750 },
+    { rate: 37, upto: Infinity },
+  ],
+  married: [
+    { rate: 10, upto: 24800 },
+    { rate: 12, upto: 100900 },
+    { rate: 22, upto: 215300 },
+    { rate: 24, upto: 411000 },
+    { rate: 32, upto: 522000 },
+    { rate: 35, upto: 783100 },
+    { rate: 37, upto: Infinity },
+  ],
+  head: [
+    { rate: 10, upto: 17650 },
+    { rate: 12, upto: 67450 },
+    { rate: 22, upto: 107650 },
+    { rate: 24, upto: 205500 },
+    { rate: 32, upto: 261400 },
+    { rate: 35, upto: 652750 },
+    { rate: 37, upto: Infinity },
+  ],
+};
+
+function getBrackets(year: TaxYear): Record<FilingStatus, Bracket[]> {
+  return year === "2026" ? BRACKETS_2026 : BRACKETS_2025;
+}
 
 const LABELS: Record<FilingStatus, string> = {
   single: "Single",
@@ -60,10 +97,11 @@ const LABELS: Record<FilingStatus, string> = {
 export default function IncomeTaxCalculator() {
   const [income, setIncome] = useState("85000");
   const [status, setStatus] = useState<FilingStatus>("single");
+  const [taxYear, setTaxYear] = useState<TaxYear>("2026");
 
   const r = useMemo(() => {
     const taxable = Math.max(0, parseNum(income));
-    const brackets = BRACKETS[status];
+    const brackets = getBrackets(taxYear)[status];
     let remaining = taxable;
     let prev = 0;
     let tax = 0;
@@ -123,7 +161,7 @@ export default function IncomeTaxCalculator() {
       takeHome,
       breakdown,
     };
-  }, [income, status]);
+  }, [income, status, taxYear]);
 
   return (
     <div className="space-y-4">
@@ -148,10 +186,19 @@ export default function IncomeTaxCalculator() {
                 <option value="head">Head of Household</option>
               </SelectInput>
             </Field>
+            <Field label="Tax Year">
+              <SelectInput
+                value={taxYear}
+                onChange={(e) => setTaxYear(e.target.value as TaxYear)}
+              >
+                <option value="2026">2026 (filed in 2027)</option>
+                <option value="2025">2025 (filed in 2026)</option>
+              </SelectInput>
+            </Field>
           </div>
           <p className="mt-3 text-xs text-brand-muted">
-            Using <strong className="text-brand-ink">IRS 2024 federal income tax brackets</strong> for {LABELS[status]}.
-            These are for the 2024 tax year (taxes filed in 2025). State taxes, most deductions and
+            Using <strong className="text-brand-ink">IRS {taxYear} federal income tax brackets</strong> for {LABELS[status]}.
+            {taxYear === "2026" ? " Taxes filed in 2027." : " Taxes filed in 2026."} State taxes, most deductions and
             credits are not included. Actual tax liability depends on your specific situation —
             consult a qualified tax professional.
           </p>

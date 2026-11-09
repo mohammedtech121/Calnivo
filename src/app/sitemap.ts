@@ -3,10 +3,17 @@ import { CALCULATORS } from "@/lib/calculators/registry";
 
 const SITE_URL = "https://calnivocalc.com";
 
-// Per the Combined Audit: omit lastModified when a reliable page-specific
-// update date is unavailable. We do NOT assign a fake build-time timestamp
-// to every URL — that would make every page appear "just modified" on
-// every deploy. Instead, only changefreq + priority are used.
+// Same set as NOT_READY in /calculators/[id]/page.tsx — these pages are
+// noindexed until rewritten with unique per-calculator content.
+const NOT_READY = new Set([
+  "concrete", "subnet", "hours", "time", "random-number", "password-generator",
+  "pace", "triangle", "standard-deviation", "finance", "interest-rate",
+  "sales-tax", "pregnancy-conception", "fraction", "conversion", "gpa",
+  "grade", "date", "ideal-weight", "body-fat", "bmr", "pregnancy",
+  "inflation", "investment", "amortization", "interest", "payment",
+  "salary", "retirement", "auto-loan",
+]);
+
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
     {
@@ -74,10 +81,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "yearly",
       priority: 0.3,
     },
-    ...CALCULATORS.map((calc) => ({
-      url: `${SITE_URL}/calculators/${calc.id}`,
-      changeFrequency: "monthly" as const,
-      priority: 0.8,
-    })),
+    // Only include calculators that are NOT noindexed
+    ...CALCULATORS
+      .filter((calc) => !NOT_READY.has(calc.id))
+      .map((calc) => ({
+        url: `${SITE_URL}/calculators/${calc.id}`,
+        changeFrequency: "monthly" as const,
+        priority: 0.8,
+      })),
   ];
 }

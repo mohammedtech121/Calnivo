@@ -22,6 +22,42 @@ export function generateStaticParams() {
   return CALCULATORS.map((c) => ({ id: c.id }));
 }
 
+// Per the AdSense audit guide Fix 4: noindex calculators that don't yet have
+// unique, rewritten content. These pages still work for direct visitors, but
+// Google won't index them until they are rewritten with real per-calculator content.
+const NOT_READY = new Set([
+  "concrete",
+  "subnet",
+  "hours",
+  "time",
+  "random-number",
+  "password-generator",
+  "pace",
+  "triangle",
+  "standard-deviation",
+  "finance",
+  "interest-rate",
+  "sales-tax",
+  "pregnancy-conception",
+  "fraction",
+  "conversion",
+  "gpa",
+  "grade",
+  "date",
+  "ideal-weight",
+  "body-fat",
+  "bmr",
+  "pregnancy",
+  "inflation",
+  "investment",
+  "amortization",
+  "interest",
+  "payment",
+  "salary",
+  "retirement",
+  "auto-loan",
+]);
+
 export async function generateMetadata({
   params,
 }: {
@@ -35,6 +71,7 @@ export async function generateMetadata({
   const title = `${meta.name} — Free Online Calculator with Formula & Guide`;
   const description = meta.description;
   const url = `https://calnivocalc.com/calculators/${meta.id}`;
+  const isNotReady = NOT_READY.has(id);
 
   return {
     title,
@@ -46,12 +83,16 @@ export async function generateMetadata({
       url,
       siteName: "Calnivo",
       type: "website",
+      images: [{ url: "/og-image.png", width: 1200, height: 1200, alt: title }],
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
     },
+    robots: isNotReady
+      ? { index: false, follow: true }
+      : { index: true, follow: true },
     other: {
       "article:section": catMeta.label,
       "article:author": "Mohammed Khan",

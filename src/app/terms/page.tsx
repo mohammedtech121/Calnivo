@@ -49,9 +49,15 @@ export default function TermsPage() {
             <h2 className="text-xl font-semibold text-brand-ink">Accuracy of calculations</h2>
             <p className="mt-2">
               We aim to make calculations accurate and correct errors when we find or are told about
-              them. However, we
-              make no warranty that calculations are error-free, complete, or applicable to your
-              situation. Always verify important results independently before relying on them.
+              them. We use standard formulas, state our assumptions on each page, and correct mistakes
+              openly — see our{" "}
+              <Link href="/methodology" className="font-medium text-brand-accent-deep hover:underline">
+                methodology and corrections page
+              </Link>{" "}
+              for the formula, source and last-review date of every calculator, and a dated log of
+              every change we have made. However, we make no warranty that calculations are
+              error-free, complete, or applicable to your situation. Always verify important results
+              independently before relying on them.
             </p>
           </section>
 

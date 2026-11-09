@@ -32,6 +32,12 @@ function gcd(a: number, b: number): number {
   return a || 1;
 }
 
+/** Least common multiple of two positive integers. */
+function lcm(a: number, b: number): number {
+  if (a === 0 || b === 0) return 0;
+  return Math.abs(Math.round(a)) * Math.abs(Math.round(b)) / gcd(a, b);
+}
+
 interface Reduced {
   num: number;
   den: number;
@@ -95,22 +101,32 @@ function compute(
 
   if (op === "add" || op === "sub") {
     const opSym = op === "add" ? "+" : "−";
-    const lcd = aDen * bDen;
-    const aScaled = aNum * bDen;
-    const bScaled = op === "add" ? bNum * aDen : -bNum * aDen;
+    // True least common denominator (LCD) = lcm(aDen, bDen). The product
+    // aDen × bDen is always a common denominator but not always the least —
+    // e.g. for 1/6 + 1/4 the LCD is 12 (lcm), not 24 (product). Using the LCD
+    // keeps the intermediate numbers smaller and matches textbook working.
+    const lcd = lcm(aDen, bDen);
+    const aFactor = lcd / aDen;
+    const bFactor = lcd / bDen;
+    const aScaled = aNum * aFactor;
+    const bScaled = op === "add" ? bNum * bFactor : -bNum * bFactor;
+    const product = aDen * bDen;
     steps.push({
-      title: `Find a common denominator`,
-      detail: `LCD of ${aDen} and ${bDen} is ${lcd}.`,
+      title: `Find the least common denominator (LCD)`,
+      detail:
+        lcd === product
+          ? `LCD of ${aDen} and ${bDen} is ${lcd} (the product of the denominators, since they share no common factor).`
+          : `LCD of ${aDen} and ${bDen} is ${lcd} (the least common multiple). The product ${aDen} × ${bDen} = ${product} would also work, but ${lcd} is the smallest common denominator.`,
     });
     steps.push({
-      title: `Rewrite fractions`,
-      detail: `${aNum}/${aDen} = (${aNum}×${bDen})/${aDen}×${bDen} = ${aScaled}/${lcd} and ${bNum}/${bDen} = (${bNum}×${aDen})/${bDen}×${aDen} = ${bNum * aDen}/${lcd}.`,
+      title: `Rewrite fractions with the LCD`,
+      detail: `${aNum}/${aDen} = (${aNum}×${aFactor})/(${aDen}×${aFactor}) = ${aScaled}/${lcd} and ${bNum}/${bDen} = (${bNum}×${bFactor})/(${bDen}×${bFactor}) = ${bNum * bFactor}/${lcd}.`,
     });
     rawNum = aScaled + bScaled;
     rawDen = lcd;
     steps.push({
       title: `${opSym} the numerators`,
-      detail: `${aScaled} ${opSym} ${bNum * aDen} = ${rawNum} over ${lcd}.`,
+      detail: `${aScaled} ${opSym} ${bNum * bFactor} = ${rawNum} over ${lcd}.`,
     });
   } else if (op === "mul") {
     steps.push({

@@ -51,6 +51,7 @@ export default function InterestRateCalculator() {
       return {
         monthlyRate: NaN,
         apr: NaN,
+        apy: NaN,
         totalInterest: NaN,
         totalPaid: PMT * n,
         invalid: true,
@@ -63,6 +64,7 @@ export default function InterestRateCalculator() {
       return {
         monthlyRate: NaN,
         apr: NaN,
+        apy: NaN,
         totalInterest: NaN,
         totalPaid: PMT * n,
         invalid: true,
@@ -106,11 +108,16 @@ export default function InterestRateCalculator() {
     }
 
     const apr = monthlyRate * 12 * 100;
+    // APY (annual percentage yield) = (1 + monthly rate)^12 − 1, the true
+    // effective annual rate. The APR above is the *nominal* rate (monthly × 12),
+    // which is what lenders quote; the APY reflects compounding within the year.
+    const apy = (Math.pow(1 + monthlyRate, 12) - 1) * 100;
     const totalPaid = PMT * n;
     const totalInterest = totalPaid - P;
     return {
       monthlyRate,
       apr,
+      apy,
       totalInterest,
       totalPaid,
       invalid: false,
@@ -152,7 +159,7 @@ export default function InterestRateCalculator() {
 
         <div className="space-y-4">
           <ResultCard
-            label="Annual Percentage Rate (APR)"
+            label="Nominal APR"
             value={isFinite(r.apr) ? fmtPct(r.apr, 3) : "—"}
             sub={
               r.invalid
@@ -161,6 +168,16 @@ export default function InterestRateCalculator() {
                   : "Payment too small to pay off loan"
                 : `Monthly rate ${isFinite(r.monthlyRate) ? fmtPct(r.monthlyRate * 100, 4) : "—"}`
             }
+          />
+          <ResultCard
+            label="APY (effective annual rate)"
+            value={isFinite(r.apy) ? fmtPct(r.apy, 3) : "—"}
+            sub={
+              r.invalid
+                ? "—"
+                : `(1 + monthly rate)¹² − 1, the true annual cost including compounding`
+            }
+            highlight={false}
           />
           <div className="grid grid-cols-2 gap-3">
             <ResultCard
@@ -180,17 +197,26 @@ export default function InterestRateCalculator() {
       <CalcCard title="How It Works">
         <p className="text-sm leading-relaxed text-brand-muted">
           This calculator reverses the standard amortization formula to solve
-          for the rate. With loan amount{" "}
+          for the monthly rate, then reports the <strong className="text-brand-ink">nominal APR</strong> (monthly
+          rate × 12, the rate lenders quote) and the{" "}
+          <strong className="text-brand-ink">APY</strong> (
+          <code className="rounded bg-brand-canvas px-1 py-0.5 text-xs">(1 + r)¹² − 1</code>,
+          the true annual cost once monthly compounding is included). With loan
+          amount{" "}
           <span className="font-medium text-brand-ink">{fmtMoney(parseNum(amount), { decimals: 0 })}</span>
           , monthly payment{" "}
           <span className="font-medium text-brand-ink">{fmtMoney(parseNum(payment), { decimals: 2 })}</span>
           , and term{" "}
           <span className="font-medium text-brand-ink">{fmtNum(parseNum(term), 0)} months</span>, the
-          effective APR is{" "}
+          nominal APR is{" "}
           <span className="font-medium text-brand-ink">
             {isFinite(r.apr) ? fmtPct(r.apr, 3) : "not solvable"}
+          </span>{" "}
+          and the APY is{" "}
+          <span className="font-medium text-brand-ink">
+            {isFinite(r.apy) ? fmtPct(r.apy, 3) : "—"}
           </span>
-          .
+          . A 12% nominal APR compounded monthly gives a 12.68% APY.
         </p>
       </CalcCard>
 

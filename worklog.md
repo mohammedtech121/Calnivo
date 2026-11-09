@@ -1773,3 +1773,52 @@ Work Log:
 
 ### Stage Summary
 Read-only audit complete. **17 of 25 non-financial calculators fully conform to spec; 8 have specific formula or feature gaps.** All 9 independent spec test cases pass against the implemented code paths (BMI, Mifflin BMR, Fraction add, Percentage change, Triangle SSS Heron, Population SD, Sample SD, Pace, Subnet /24) — confirming the core math is sound. The 8 failures are concentrated in: (a) missing secondary formulas called out explicitly in the spec (mixed-number conversion, margin formula, entropy display, quartiles/IQR, overtime+OT pay, target GPA solver), (b) missing alternative input modes (conception-based EDD in due-date, duration mode in time), and (c) one miscategorized calculator type (time.tsx is an arithmetic adder, not a duration calculator). Notably, no actual math errors were found in any of the implemented formulas — every FAIL is a missing feature/formula rather than an incorrect computation. No code was modified per the read-only constraint; recommended fixes are listed above for a follow-up implementation pass.
+
+---
+
+Task ID: ADSENSE-FIXES-1-6-11-12
+Agent: senior fullstack engineer
+Task: Implement AdSense Fix Guide fixes 1, 6, 11, and 12 (fixes 4 and 10 were already done in the prior session).
+
+Work Log:
+- Read /home/z/my-project/upload/Calnivo_AdSense_Fix_Guide.pdf (18 pages) to confirm exact spec for each fix.
+- Confirmed Fix 4 (noindex) and Fix 10 (2025/2026 tax brackets) already present in code.
+
+Fix 1 — Replace repeated text template with real per-calculator content:
+  - Extended CalculatorSeo interface in registry.ts with optional fields: resultGuide[], method{formula,assumptions[],excludes[]}, limits[], sources[{title,url}], lastReviewed (ISO date).
+  - Rewrote CalculatorSeoContent.tsx to render the 7-block structure (result guide, method+assumptions+excludes, legacy definition/formula/howto/example, limits, FAQs, sources, last-reviewed line with "report an error" link). Legacy formula block suppressed when method is present (avoids duplication).
+  - Added full Fix 1 content for 5 indexed calculators with verified numbers:
+    * mortgage: $320k@6.5%/30yr → $2,022.62/mo, $408,142.36 interest, $728,142.36 total; 15yr comparison $2,787.54/$181,757.84; sources CFPB+FDIC.
+    * loan: $25k@9.5%/60mo → $525.05, $6,502.79 interest; extra $50/mo → 54mo, $738.15 saved; sources CFPB+FTC.
+    * income-tax: 2026 single $85k → $13,407 (15.8% eff, 22% marg); sources IRS Rev.Proc. 2025-32 + 2024-40.
+    * compound-interest: $5k@7%/20y+$250/mo → $150,425; $10k@5% monthly vs annual $27,126.40 vs $26,532.98; sources SEC+Fed.
+    * bmi: 70kg/1.75m → 22.857; healthy band 56.6–76.2kg; sources CDC+WHO.
+  - All numbers recomputed with independent Python and cross-checked against the live calculator output.
+
+Fix 11 — Correct terminology:
+  - interest-rate.tsx: relabelled "Annual Percentage Rate (APR)" → "Nominal APR"; added APY card = (1+r)^12−1; updated "How It Works" text to distinguish nominal vs effective; fixed worked example $482.66 → $482.83 (the value that actually yields 7.42%); updated invalid-return paths to include apy field.
+  - registry.ts interest-rate: description "effective interest rate" → "nominal APR and APY"; definition/formula/howToUse/example all updated to nominal APR + APY.
+  - pregnancy-conception.tsx: aligned fertile window with standard medical definition (5 days before ovulation + ovulation day = 6 days); kept narrower ±2-day window as "Ovulation window (most likely)"; updated timeline table and explanatory note to match.
+  - fraction.tsx: added lcm() function; add/sub now uses true LCD (lcm of denominators) instead of product; step text explains when product == LCD vs when it doesn't.
+  - password-generator.tsx: strength() now takes alphabetSize param and computes entropy = length × log2(alphabet) using the actual selected pool (not regex-based hardcoded 26/26/10/32); added thresholds explanation (weak<28, fair 28-35, good 36-59, strong 60-127, very strong 128+); confirms crypto.getRandomValues + rejection sampling.
+
+Fix 6 — About page + editorial/corrections policy:
+  - Rewrote about/page.tsx: real founder bios (Mohammed = engineering/content, Hammad = research/editorial); consistent single-author metadata (authors: [{name:"Mohammed Khan"}]); honest "we do not currently use an outside reviewer" disclaimer; methodology link; "Report an error" section.
+  - Created methodology/page.tsx: "How we write and check a calculator" (4 steps), Calculator index table (formula family, primary source, last-reviewed date for every indexed calculator), dated Corrections log (7 entries documenting every Fix 1/10/11 change), "Report an error" CTA, "What this page does and does not promise" section.
+  - Added Methodology link to Footer; added methodology URL to sitemap.ts; added methodology link to Terms accuracy section.
+
+Fix 12 — Automated tests + CI:
+  - Created src/lib/calculators/finance-math.ts: pure, testable functions (monthlyPayment, totalInterest, solveMonthlyRate, nominalApr, apy, compoundInterest, federalIncomeTax, bmiMetric, bmiImperial) + exported 2025/2026 IRS bracket tables.
+  - Created tests/calculators.test.ts: 34 tests across 7 suites — amortization (mortgage/loan/payment reference cases), interest-rate solver (7.42% nominal APR, 12.68% APY), compound interest, 2025+2026 federal income tax, BMI, math engine (arithmetic/trig/log/constants), date edge cases (leap year Feb 29, EDD=LMP+280, conception=EDD-266).
+  - Added "test": "bun test" script to package.json.
+  - Created .github/workflows/test.yml CI workflow (bun install, bun test, bun run lint on every push/PR).
+  - All 34 tests pass; lint clean.
+
+Verification:
+- bun run lint: clean (0 errors)
+- bun test: 34 pass, 0 fail, 65 expect() calls
+- agent-browser verified income-tax ($13,407 ✓), methodology page (calculator index + corrections log render), interest-rate (Nominal APR + APY cards render, $482.83 example), fraction (LCD=4 for 2&4, "product would also work" note), password-generator (103.1 bits, thresholds note), pregnancy-conception (6-day fertile window + separate ovulation window), about (real bios, methodology link), mortgage (Fix 1 content blocks all render with verified numbers).
+- dev.log: all pages 200, no runtime errors.
+
+Stage Summary
+Four AdSense fix-guide items (1, 6, 11, 12) implemented end-to-end without breaking any existing code. The site now has: real per-calculator content on the top 5 indexed pages (result guide, method+assumptions+excludes, limits, sources, last-reviewed date), corrected terminology on 4 calculators (interest-rate nominal APR+APY, conception 6-day fertile window, fraction true LCD, password entropy from actual alphabet), a credible About page with real bios and consistent authorship, a public Methodology & Corrections page with a dated corrections log, and 34 automated tests running in CI. Lint clean, tests green, all pages render correctly in the browser.

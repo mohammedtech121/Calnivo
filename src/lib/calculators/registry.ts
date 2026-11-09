@@ -746,43 +746,42 @@ export const CALCULATORS: CalculatorMeta[] = [
     category: "financial",
     short: "Income Tax",
     description:
-      "Estimate federal income tax owed based on taxable income and brackets.",
+      "Estimate federal income tax owed for the 2025 or 2026 tax year based on taxable income and IRS brackets.",
     icon: Receipt,
-    keywords: ["tax", "income tax", "irs"],
+    keywords: ["tax", "income tax", "irs", "2026 tax brackets"],
     seo: {
       definition:
-        "An income tax calculator is a free online tool that estimates your federal income tax owed based on taxable income, filing status, and the current IRS tax brackets. Use it to estimate your tax liability, marginal tax rate, and effective tax rate for the 2024 tax year.",
+        "An income tax calculator is a free online tool that estimates your federal income tax owed based on taxable income, filing status, and the IRS tax brackets for 2025 (returns filed in 2026) or 2026 (returns filed in 2027). Use it to estimate your tax liability, marginal tax rate, and effective tax rate for the current tax year.",
       formula:
         "The U.S. uses progressive tax brackets: each portion of taxable income is taxed at the rate for the bracket it falls into. Tax = Σ (income portion in bracket × bracket rate). Your marginal rate is the rate on your last dollar earned; your effective rate = total tax ÷ taxable income.",
       howToUse: [
         "Enter your taxable income (after deductions and pre-tax contributions).",
         "Choose your filing status: single, married filing jointly, or head of household.",
+        "Choose the tax year — 2026 (filed in 2027) or 2025 (filed in 2026).",
         "Review the federal tax owed, marginal rate, and effective rate. State tax, credits, and other deductions are not included.",
-        "Optionally add a state income tax rate for a full liability estimate.",
-        "Review federal tax owed, marginal rate, and effective rate.",
       ],
       example:
-        "A single filer with $85,000 of taxable income in 2024 owes about $13,753 in federal income tax — an effective rate of 16.2% and a marginal rate of 22%.",
+        "A single filer with $85,000 of taxable income for 2026 owes about $13,407 in federal income tax — an effective rate of 15.8% and a marginal rate of 22%. For 2025 the same income owes about $13,614.",
       faqs: [
         {
           q: "How are federal income tax brackets calculated?",
-          a: "The U.S. uses a progressive system: each chunk of your taxable income is taxed at the rate for its bracket. A single filer at $85,000 in 2024 pays 10% on the first $11,600, 12% on income from $11,601 to $47,150, and 22% on income from $47,151 to $85,000.",
+          a: "The U.S. uses a progressive system: each chunk of your taxable income is taxed at the rate for its bracket. A single filer at $85,000 in 2026 pays 10% on the first $12,400, 12% on income from $12,401 to $50,450, and 22% on income from $50,451 to $85,000 — a total of about $13,407.",
         },
         {
           q: "What is the difference between marginal and effective tax rate?",
           a: "Marginal rate is the rate on your next dollar of income (the bracket your top dollar falls in). Effective rate is your total tax divided by total taxable income — it's always lower than your marginal rate because lower brackets are taxed less.",
         },
         {
-          q: "What is the standard deduction for 2024?",
-          a: "For 2024 the standard deduction is $14,600 for single filers and married filing separately, $29,200 for married filing jointly, and $21,900 for head of household. Most taxpayers take the standard deduction rather than itemizing.",
+          q: "What is the standard deduction for 2025 and 2026?",
+          a: "For 2025 the standard deduction is $15,750 for single filers and married filing separately, $31,500 for married filing jointly, and $23,625 for head of household. For 2026 it rises to $16,100 single, $32,200 married jointly, and $24,150 head of household. Most taxpayers take the standard deduction rather than itemizing.",
         },
         {
           q: "How much tax do I owe on $100,000 of income?",
-          a: "A single filer with $100,000 of taxable income in 2024 owes about $17,053 in federal income tax — an effective rate of 17.1%. If $100,000 is your gross income and you take the $14,600 standard deduction, your taxable income drops to $85,400 and your federal tax falls to about $13,841.",
+          a: "A single filer with $100,000 of taxable income for 2026 owes about $16,707 in federal income tax — an effective rate of 16.7%. For 2025 the same income owes about $16,914. If $100,000 is your gross income and you take the $16,100 (2026) standard deduction, your taxable income drops to $83,900 and your federal tax falls to about $13,277.",
         },
       ],
       relatedSearches: [
-        "income tax calculator 2024",
+        "income tax calculator 2026",
         "federal income tax calculator",
         "tax bracket calculator",
         "marginal tax rate calculator",
@@ -790,6 +789,49 @@ export const CALCULATORS: CalculatorMeta[] = [
         "state income tax calculator",
         "self employment tax calculator",
       ],
+      // ── AdSense Fix 1: real per-calculator content (verified numbers) ──
+      resultGuide: [
+        "Federal tax owed is the progressive sum across your brackets. A single filer with $85,000 of taxable income for 2026 owes $13,407: 10% on the first $12,400 ($1,240), 12% on $12,401–$50,450 ($4,566), and 22% on $50,451–$85,000 ($7,601). Switching to married filing jointly on the same income drops the tax to about $9,871 because the brackets are roughly twice as wide.",
+        "Your marginal rate is the rate on your last dollar earned, not on your whole income. For a single filer at $85,000 in 2026 the marginal rate is 22%, meaning any extra dollar of income is taxed at 22¢ until you cross into the 24% bracket at $107,650. This is why a small raise can sometimes feel worthless after tax.",
+        "Effective rate is your average rate — total tax ÷ taxable income. At $85,000 single in 2026 it is 15.8% ($13,407 ÷ $85,000), well below the 22% marginal rate. Your take-home (after federal tax) is $71,593. This excludes state tax, FICA, and any pre-tax deductions you may have.",
+      ],
+      method: {
+        formula:
+          "Federal tax = Σ (income portion in bracket × bracket rate ÷ 100), iterating the IRS published brackets for the selected year and filing status. Marginal rate = the rate of the highest bracket the income touches. Effective rate = (total tax ÷ taxable income) × 100. Take-home = taxable income − tax. The 2026 brackets are from IRS Rev. Proc. 2025-32; the 2025 brackets are from IRS Rev. Proc. 2024-40.",
+        assumptions: [
+          "The income entered is taxable income (already after the standard or itemized deduction), not gross wages.",
+          "The filer uses the single, married filing jointly, or head of household status for the whole year.",
+          "All income is ordinary (wages, interest, non-qualified dividends); long-term capital gains and qualified dividends have separate, lower brackets.",
+          "Figures use the 2026 and 2025 IRS federal brackets for the seven rates 10%, 12%, 22%, 24%, 32%, 35%, 37%.",
+        ],
+        excludes: [
+          "State and local income tax, which can add 0% to over 13% depending on where you live.",
+          "FICA (Social Security 6.2% up to the wage base, Medicare 1.45%, plus 0.9% Additional Medicare above thresholds).",
+          "Tax credits (Child Tax Credit, Earned Income Credit, education credits, foreign tax credit) and the additional standard deduction for those 65 and older or blind.",
+          "Self-employment tax, estimated payments, and alternative minimum tax.",
+        ],
+      },
+      limits: [
+        "Federal income tax only — add a state rate separately for a closer estimate.",
+        "Outdated the moment a new Rev. Proc. is published; always confirm the current brackets at irs.gov before filing.",
+        "Taxable income ≠ gross income — subtract your standard or itemized deduction first.",
+        "A large year-end bonus or irregular income can push you into a higher bracket only on the dollars above the threshold, not on your whole income.",
+      ],
+      sources: [
+        {
+          title: "IRS — Rev. Proc. 2025-32 (2026 inflation adjustments)",
+          url: "https://www.irs.gov/pub/irs-drop/rp-25-32.pdf",
+        },
+        {
+          title: "IRS — Rev. Proc. 2024-40 (2025 inflation adjustments)",
+          url: "https://www.irs.gov/pub/irs-drop/rp-24-40.pdf",
+        },
+        {
+          title: "IRS — Federal income tax rates and brackets",
+          url: "https://www.irs.gov/filing/federal-income-tax-rates-and-brackets",
+        },
+      ],
+      lastReviewed: "2026-11-20",
     },
   },
   {
@@ -842,6 +884,45 @@ export const CALCULATORS: CalculatorMeta[] = [
         "compound growth calculator",
         "investment compound interest calculator",
       ],
+      // ── AdSense Fix 1: real per-calculator content (verified numbers) ──
+      resultGuide: [
+        "Final balance is the principal plus all contributions plus every dollar of reinvested interest. $5,000 invested at 7% compounded monthly, with $250 added each month for 20 years, grows to about $150,425. That breaks down to $65,000 in contributions ($5,000 initial + $60,000 monthly) and $85,425 in compound interest — more than you contributed.",
+        "Compounding frequency matters more than people expect. $10,000 at 5% for 20 years grows to $27,126.40 compounded monthly, but only $26,532.98 compounded annually — a $593.42 difference from the same nominal rate. Daily compounding adds about another $13 on top of monthly.",
+        "Time is the biggest lever. The same $10,000 at 7% monthly with $250/month over 30 years (instead of 20) grows to $386,158, of which $286,158 is interest — you contributed $100,000 but earned nearly three times that in interest. Starting ten years earlier is usually worth more than contributing twice as much later.",
+      ],
+      method: {
+        formula:
+          "A = P × (1 + r/n)^(n × t) + PMT × [((1 + r/n)^(n × t) − 1) / (r/n)], where P is the principal, r is the annual interest rate (as a decimal), n is the compounding periods per year, t is the number of years, and PMT is the regular contribution per compounding period (made at the end of each period). Total interest earned = A − P − (PMT × n × t).",
+        assumptions: [
+          "The interest rate is the nominal annual rate, held constant for the whole period.",
+          "Contributions are made at the end of each compounding period (an ordinary annuity).",
+          "No taxes or fees are deducted from the interest as it is earned.",
+          "Compounding happens at the stated frequency (daily, monthly, quarterly, or annually).",
+        ],
+        excludes: [
+          "Inflation, which erodes the real purchasing power of the balance (use a real rate = nominal − inflation for a true-value figure).",
+          "Taxes on interest income (ordinary income tax at your marginal rate in the U.S.).",
+          "Account fees, fund expense ratios, and advisory fees that reduce the effective rate.",
+          "Variable returns (real investments do not grow at a constant rate).",
+        ],
+      },
+      limits: [
+        "A constant rate is a planning assumption, not a forecast — investment returns vary year to year and can be negative.",
+        "Inflation of 2–3% a year roughly halves the real value of a fixed dollar amount over 25 years.",
+        "Taxes on interest (especially in a non-retirement account) can take 22–37% off the stated growth.",
+        "Contributions made at the beginning of each period (annuity-due) grow slightly more than this end-of-period model.",
+      ],
+      sources: [
+        {
+          title: "SEC — Compound interest calculator",
+          url: "https://www.investor.gov/financial-tools-calculators/calculators/compound-interest-calculator",
+        },
+        {
+          title: "Federal Reserve — Saving and compound interest",
+          url: "https://www.federalreserve.gov/faqs/interest_1447.htm",
+        },
+      ],
+      lastReviewed: "2026-11-20",
     },
   },
   {
@@ -902,23 +983,22 @@ export const CALCULATORS: CalculatorMeta[] = [
     category: "financial",
     short: "Interest Rate",
     description:
-      "Determine the effective interest rate of a loan from payment and term.",
+      "Determine the nominal APR and APY of a loan from the payment and term.",
     icon: Percent,
-    keywords: ["rate", "apr", "interest rate"],
+    keywords: ["rate", "apr", "apy", "interest rate"],
     seo: {
       definition:
-        "An interest rate calculator is a free online tool that determines the effective annual interest rate (APR) of a loan from the loan amount, monthly payment, and term. Use it to compare financing offers, evaluate the true cost of credit, and check that a quoted rate matches the actual payments.",
+        "An interest rate calculator is a free online tool that determines the nominal annual percentage rate (APR) and the annual percentage yield (APY) of a loan from the loan amount, monthly payment, and term. Use it to compare financing offers, evaluate the true cost of credit, and check that a quoted rate matches the actual payments.",
       formula:
-        "Solve for r in M = P × [r(1+r)^n] / [(1+r)^n − 1], where M is the monthly payment, P is the principal, and n is the number of months. The result r is the monthly rate; multiply by 12 (or compound) to get the APR. There is no closed-form solution — the rate is solved numerically (typically Newton's method).",
+        "Solve for the monthly rate r in M = P × [r(1+r)^n] / [(1+r)^n − 1], where M is the monthly payment, P is the principal, and n is the number of months. The nominal APR = r × 12 (the rate lenders quote). The APY (effective annual rate, including monthly compounding) = (1 + r)^12 − 1. There is no closed-form solution — the rate is solved numerically (bisection plus Newton's method).",
       howToUse: [
         "Enter the loan amount (principal).",
         "Enter the monthly payment you're making.",
-        "Enter the loan term in months or years.",
-        "Click calculate to solve for the APR.",
-        "Optionally add fees to compute the true APR including closing costs.",
+        "Enter the loan term in months.",
+        "Review the nominal APR (monthly rate × 12) and the APY (the true annual cost including compounding).",
       ],
       example:
-        "A $20,000 loan repaid with $482.66 monthly payments over 48 months has an effective APR of about 7.42%. Borrowers can use this to compare dealer financing against credit-union loans when the stated rate is unclear or hidden in fees.",
+        "A $20,000 loan repaid with $482.83 monthly payments over 48 months has a nominal APR of about 7.42% and an APY of about 7.66%. Borrowers can use this to compare dealer financing against credit-union loans when the stated rate is unclear or hidden in fees.",
       faqs: [
         {
           q: "How do you calculate the interest rate on a loan?",
@@ -1051,6 +1131,48 @@ export const CALCULATORS: CalculatorMeta[] = [
         "ideal weight by height",
         "body fat percentage",
       ],
+      // ── AdSense Fix 1: real per-calculator content (verified numbers) ──
+      resultGuide: [
+        "Your BMI value is a single screening number, not a body-fat measurement. A 70 kg adult at 175 cm has BMI = 70 ÷ 1.75² = 22.9, which sits in the normal range. The healthy-weight band for 175 cm is roughly 56.6–76.2 kg; below 56.6 kg is underweight and above 76.2 kg is overweight on the standard adult scale.",
+        "The category is what you act on, not the decimal. A BMI of 22.9 and 23.4 mean essentially the same thing — both normal. A change of less than one full point is rarely meaningful, and day-to-day weight can move BMI by half a point from hydration alone.",
+        "What moves BMI most is weight, not height — BMI squares height, so small height differences barely shift the score once you are an adult. Losing 5 kg from 80 kg to 75 kg at 175 cm moves BMI from 26.1 (overweight) to 24.5 (normal), the single biggest lever most people have.",
+      ],
+      method: {
+        formula:
+          "BMI = weight (kg) ÷ height (m)². In imperial units this is mathematically identical to BMI = 703 × weight (lb) ÷ height (in)². Adult categories used by the CDC and WHO: underweight < 18.5, normal weight 18.5–24.9, overweight 25.0–29.9, obese 30.0 and above. The healthy-weight range for a given height is 18.5 × h² to 24.9 × h².",
+        assumptions: [
+          "The person is an adult aged 20 or over — children and teens use age- and sex-specific CDC percentile charts, not these fixed cutoffs.",
+          "Weight and height are measured, not self-estimated (self-reported height inflates BMI accuracy issues).",
+          "The calculation uses metric kg and m, or US lb and in converted through the 703 constant.",
+        ],
+        excludes: [
+          "Body composition — BMI cannot tell muscle from fat, so a muscular athlete can read overweight while carrying little fat.",
+          "Fat distribution, which matters for metabolic risk (abdominal fat carries more risk than hip and thigh fat).",
+          "Age, sex, ethnicity and bone frame, all of which shift the real health risk at the same BMI.",
+          "Pregnancy and lactation, for which BMI does not apply.",
+        ],
+      },
+      limits: [
+        "BMI is a screening tool, not a diagnosis — the CDC explicitly says it is not a body-fatness or health measure.",
+        "Very muscular people (athletes, bodybuilders) often read overweight or obese on BMI while having low body fat.",
+        "Older adults can have a normal BMI but high body fat and low muscle mass (sarcopenia), which BMI cannot detect.",
+        "Children and teens must use CDC BMI-for-age percentile charts, not the adult cutoffs shown here.",
+      ],
+      sources: [
+        {
+          title: "CDC — About adult BMI",
+          url: "https://www.cdc.gov/bmi/adult-bmi/about/index.html",
+        },
+        {
+          title: "CDC — Child and teen BMI",
+          url: "https://www.cdc.gov/bmi/child-bmi/about/index.html",
+        },
+        {
+          title: "WHO — BMI classification",
+          url: "https://www.who.int/data/gho/indicator-metadata-registry/imr-details/2383",
+        },
+      ],
+      lastReviewed: "2026-11-20",
     },
   },
   {

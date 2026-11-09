@@ -99,19 +99,24 @@ function generate(opts: Options): string {
   return required.join("");
 }
 
-function strength(pw: string, opts: Options): {
+function strength(
+  pw: string,
+  opts: Options,
+  alphabetSize: number,
+): {
   score: number; // 0-4
   label: string;
   entropyBits: number;
 } {
-  if (!pw) return { score: 0, label: "—", entropyBits: 0 };
-  const variety =
-    (/[a-z]/.test(pw) ? 26 : 0) +
-    (/[A-Z]/.test(pw) ? 26 : 0) +
-    (/[0-9]/.test(pw) ? 10 : 0) +
-    (/[^a-zA-Z0-9]/.test(pw) ? 32 : 0);
-  const entropyBits = pw.length * Math.log2(Math.max(variety, 1));
+  if (!pw || alphabetSize <= 0)
+    return { score: 0, label: "—", entropyBits: 0 };
+  // Entropy = length × log2(pool size), where the pool is exactly the sets the
+  // user ticked (the actual alphabet, after ambiguous/similar exclusion). This
+  // is the maximum possible entropy for a password of this length drawn
+  // uniformly from that alphabet — what an attacker must brute-force.
+  const entropyBits = pw.length * Math.log2(alphabetSize);
 
+  // Thresholds (bits): <28 weak, <36 fair, <60 good, <128 strong, else very strong.
   let score: number;
   if (entropyBits < 28) score = 0;
   else if (entropyBits < 36) score = 1;
@@ -156,8 +161,8 @@ export default function PasswordGenerator() {
 
   const alphabetSize = useMemo(() => buildAlphabet(opts).length, [opts]);
   const strengthInfo = useMemo(
-    () => strength(password, opts),
-    [password, opts],
+    () => strength(password, opts, alphabetSize),
+    [password, opts, alphabetSize],
   );
 
   const regenerate = useCallback(() => {
@@ -313,6 +318,20 @@ export default function PasswordGenerator() {
                         : "millennia"}
               </div>
             </div>
+            <p className="mt-3 text-xs leading-relaxed text-brand-muted">
+              Entropy = length × log₂(alphabet size), where the alphabet is
+              exactly the character sets you ticked above. Thresholds: under
+              28 bits is <strong>weak</strong>, 28–35 <strong>fair</strong>,
+              36–59 <strong>good</strong>, 60–127 <strong>strong</strong>, and
+              128+ <strong>very strong</strong>. A 16-character password from
+              all 94 printable ASCII characters has about 104.9 bits of
+              entropy. Passwords use{" "}
+              <code className="rounded bg-brand-canvas px-1 py-0.5 text-xs">
+                crypto.getRandomValues
+              </code>{" "}
+              with rejection sampling (never <code>Math.random</code>) and are
+              never logged or transmitted.
+            </p>
           </div>
         </div>
       </CalcCard>

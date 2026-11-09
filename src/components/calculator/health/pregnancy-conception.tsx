@@ -63,7 +63,13 @@ export default function PregnancyConceptionCalculator() {
   const conception = valid ? addDays(input, -266) : null;
   const lmp = valid ? addDays(input, -280) : null;
 
-  // Ovulation window: conception ±2 days (most fertile window)
+  // Fertile window — the standard medical definition is the 5 days before
+  // ovulation plus ovulation day (6 days total), because sperm can survive up
+  // to 5 days inside the body and the egg survives about 24 hours after
+  // ovulation. We label this "fertile window" and keep the ±2-day
+  // "ovulation window" as the narrower most-likely window around conception.
+  const fertileStart = valid ? addDays(conception!, -5) : null;
+  const fertileEnd = valid ? conception! : null;
   const ovulationStart = valid ? addDays(conception!, -2) : null;
   const ovulationEnd = valid ? addDays(conception!, 2) : null;
 
@@ -122,13 +128,13 @@ export default function PregnancyConceptionCalculator() {
             </div>
             <div className="rounded-lg border border-brand bg-brand-canvas p-3">
               <div className="text-xs font-medium text-brand-muted">
-                Ovulation window
+                Fertile window
               </div>
               <div className="mt-1 text-sm font-semibold text-brand-ink">
-                {fmtDate(ovulationStart)} – {fmtDate(ovulationEnd)}
+                {fmtDate(fertileStart)} – {fmtDate(fertileEnd)}
               </div>
               <div className="mt-0.5 text-xs text-brand-muted">
-                Most fertile days
+                5 days before ovulation + ovulation day (6 days)
               </div>
             </div>
             <div className="rounded-lg border border-brand bg-brand-canvas p-3">
@@ -188,13 +194,13 @@ export default function PregnancyConceptionCalculator() {
                   </tr>
                   <tr>
                     <td className="px-3 py-2 font-medium">
-                      Ovulation window starts
+                      Fertile window starts
                     </td>
                     <td className="px-3 py-2 text-right tabular-nums">
-                      {fmtDate(ovulationStart)}
+                      {fmtDate(fertileStart)}
                     </td>
                     <td className="px-3 py-2 text-right text-brand-muted tabular-nums">
-                      −2
+                      −5
                     </td>
                   </tr>
                   <tr>
@@ -207,12 +213,14 @@ export default function PregnancyConceptionCalculator() {
                     </td>
                   </tr>
                   <tr>
-                    <td className="px-3 py-2 font-medium">Ovulation window ends</td>
+                    <td className="px-3 py-2 font-medium">
+                      Ovulation window (most likely)
+                    </td>
                     <td className="px-3 py-2 text-right tabular-nums">
-                      {fmtDate(ovulationEnd)}
+                      {fmtDate(ovulationStart)} – {fmtDate(ovulationEnd)}
                     </td>
                     <td className="px-3 py-2 text-right text-brand-muted tabular-nums">
-                      +2
+                      −2 to +2
                     </td>
                   </tr>
                   <tr>
@@ -233,10 +241,14 @@ export default function PregnancyConceptionCalculator() {
 
           <div className="mt-5 rounded-lg border border-brand bg-brand-canvas p-3 text-xs leading-relaxed text-brand-muted">
             Conception is back-calculated as <strong>due date − 266 days</strong>
-            (38 weeks gestation from conception). Sperm can live up to 5 days
-            inside the body and the egg survives about 24 hours after
-            ovulation, so conception may have occurred on any day in the
-            fertile window shown above. Estimates are approximate.
+            (38 weeks gestation from conception). The <strong>fertile window</strong>{" "}
+            shown above is the five days before ovulation plus ovulation day — the
+            six days pregnancy is possible, because sperm can survive up to five
+            days inside the body and the egg survives about 24 hours after
+            ovulation. The narrower <strong>ovulation window</strong> (±2 days
+            around conception) is the most likely window for conception. Estimates
+            are approximate; irregular cycles and cycle-length variation can
+            shift the true date by several days.
           </div>
         </CalcCard>
       )}

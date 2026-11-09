@@ -117,6 +117,30 @@ const ARTICLES = [
     reviewer: "Hammad Khan",
     sources: ["IRS Rev. Proc. 2025-32", "IRS"],
   },
+  {
+    slug: "does-compounding-frequency-matter",
+    title: "Does Compounding Frequency Matter? Daily vs Monthly vs Annual",
+    excerpt:
+      "Does compounding frequency actually change your returns? See the real numbers: $10,000 at 5% for 20 years grows to $26,533 compounded annually vs $27,181 compounded daily — a $648 difference from the same rate.",
+    date: "November 2026",
+    category: "Finance",
+    readTime: "6 min",
+    author: "Mohammed Khan",
+    reviewer: "Hammad Khan",
+    sources: ["SEC", "FDIC", "Federal Reserve"],
+  },
+  {
+    slug: "password-length-vs-complexity",
+    title: "Password Length vs Complexity: Which Matters More?",
+    excerpt:
+      "A 16-character password from 94 symbols has 104.9 bits of entropy — strong enough to defeat any offline cracking attempt. Learn how length and complexity combine, and why length usually wins.",
+    date: "November 2026",
+    category: "Security",
+    readTime: "7 min",
+    author: "Mohammed Khan",
+    reviewer: "Hammad Khan",
+    sources: ["NIST SP 800-63B", "CISA"],
+  },
 ];
 
 export default function BlogPage() {

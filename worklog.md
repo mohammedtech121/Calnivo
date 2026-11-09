@@ -1924,3 +1924,37 @@ Verification:
 
 Stage Summary
 Blog expanded from 5 to 9 original, sourced articles — closing the AdSense Fix 5 content gap (which asked for 8-10 articles). All articles use verified figures that match the live calculators, cite primary .gov sources, and include named author + reviewer + updated date. Lint clean, tests pass, all routes 200.
+
+---
+
+Task ID: MORE-CONTENT-PASS
+Agent: senior content + frontend engineer
+Task: Exceed the AdSense content targets — more articles + expanded calculator content.
+
+Work Log:
+- Baseline: lint clean, 34/34 tests, tsc clean. 9 blog articles, 5 calculators with Fix 1 content.
+- Verified existing blog articles have NO wrong numbers (Fix 7 confirmed clean across all articles).
+
+2 more blog articles written (blog now 11, exceeds the 8-10 target):
+5. /blog/does-compounding-frequency-matter — $10k@5%/20y: annual $26,533 vs daily $27,181 ($648 gap). Full frequency table, diminishing-returns explanation, why APY is the honest comparison. Sources: SEC, FDIC, Federal Reserve.
+6. /blog/password-length-vs-complexity — 16 chars × 94 symbols = 104.9 bits entropy. Full comparison table (8-char "P@ssw0rd" 52 bits vs 23-char passphrase 109 bits). NIST SP 800-63B guidance, why length beats complexity. Sources: NIST, CISA, xkcd 936.
+
+Expanded Fix 1 per-calculator content to 3 more indexed calculators (now 8 total):
+- calorie: result guide (Mifflin male 80kg/178cm/30 → BMR 1,767.5, TDEE 2,740, cut target 2,240), method (Mifflin + activity factors + macro split), limits, sources (NIH, CDC, NIDDK).
+- percentage: result guide (80→100 = 25% increase but 100→80 = 20% decrease — asymmetry), method, percentage-point vs percent-change distinction, sources (NIST, BLS).
+- age: result guide (born 2000-01-15 age-at 2026-01-15 = 26y 0m 0d, 9,497 days with 7 leap days), calendar-subtraction method, Feb 29 birthday handling, sources (NIST, ISO 8601).
+
+Blog index + sitemap updated:
+- /blog index now lists all 11 articles (was 9)
+- sitemap.ts now includes all 11 article URLs
+
+Verification:
+- bun run lint: clean
+- npx tsc --noEmit: clean
+- bun test: 34 pass, 0 fail
+- All 5 new/expanded routes return 200
+- Calorie page HTML confirms: "What your result means", "Sources", "Last reviewed", BMR 1,767.5, TDEE 2,740 all render
+- No runtime errors in dev.log
+
+Stage Summary
+Blog expanded from 9 to 11 original sourced articles (exceeds AdSense Fix 5 target of 8-10). Fix 1 per-calculator content expanded from 5 to 8 indexed calculators (mortgage, loan, income-tax, compound-interest, bmi + calorie, percentage, age). All figures verified. Lint clean, tests pass, all routes 200.

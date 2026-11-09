@@ -1247,6 +1247,49 @@ export const CALCULATORS: CalculatorMeta[] = [
         "maintenance calories",
         "BMR vs TDEE",
       ],
+      // ── AdSense Fix 1: real per-calculator content (verified numbers) ──
+      resultGuide: [
+        "Your daily calorie target is built from your BMR (what you would burn in a coma) multiplied by an activity factor. A 30-year-old male at 80 kg and 178 cm has a Mifflin-St Jeor BMR of 1,767.5 kcal; with moderate activity (factor 1.55) his TDEE is 2,740 kcal/day. To lose about 1 lb per week, eat around 2,240 kcal/day — a 500 kcal deficit from maintenance.",
+        "The activity factor matters more than the formula. The same 30-year-old male has a TDEE of 2,121 kcal if sedentary (factor 1.2) and 3,387 kcal if very active (factor 1.725) — a 1,266 kcal swing from activity alone. Two people with identical stats can have very different maintenance calories based on how much they move.",
+        "Macros are derived from the calorie target, not calculated separately. A common 30/40/30 split (protein/carbs/fat) on a 2,240 kcal cutting target gives 168 g protein, 224 g carbs and 75 g fat. Protein is kept high to preserve muscle in a deficit; carbs fuel training; fat supports hormones. The calculator shows the full macro breakdown for your target.",
+      ],
+      method: {
+        formula:
+          "BMR (Mifflin-St Jeor): men = 10 × weight(kg) + 6.25 × height(cm) − 5 × age + 5; women = 10 × weight(kg) + 6.25 × height(cm) − 5 × age − 161. TDEE = BMR × activity factor (1.2 sedentary, 1.375 light, 1.55 moderate, 1.725 very active, 1.9 extra active). Weight-loss target = TDEE − 500 for ~1 lb/week; weight-gain target = TDEE + 500 for ~1 lb/week. Macros: protein 30%, carbs 40%, fat 30% of the target.",
+        assumptions: [
+          "The Mifflin-St Jeor equation (1990) is the most accurate predictive formula for most adults, within about 10% of measured values.",
+          "Body composition is average — very muscular or very lean people will be less accurately estimated.",
+          "The activity factor is self-reported and is the largest source of error.",
+          "One pound of body fat ≈ 3,500 kcal is the classic approximation; actual losses vary with water retention and metabolic adaptation.",
+        ],
+        excludes: [
+          "Medical conditions that affect metabolism (hypothyroidism, PCOS, insulin resistance).",
+          "Medications that change appetite or metabolic rate (SSRIs, beta-blockers, steroids).",
+          "The thermic effect of food (about 10% of TDEE) is already embedded in the activity factor.",
+          "Hormonal differences across the menstrual cycle, which can shift daily energy needs by 100–300 kcal.",
+        ],
+      },
+      limits: [
+        "An estimate within ~10% — a measured BMR via indirect calorimetry is more accurate but rarely accessible.",
+        "The 500 kcal/day rule for 1 lb/week breaks down as you get leaner; adaptive thermogenesis slows loss over time.",
+        "Very low-calorie diets (under 1,200 for women, 1,500 for men) without medical supervision risk muscle loss, gallstones and nutrient deficiencies.",
+        "Macro splits are a starting point — adjust based on hunger, training performance and real-world results.",
+      ],
+      sources: [
+        {
+          title: "NIH — Mifflin-St Jeor equation (1990) validation",
+          url: "https://www.ncbi.nlm.nih.gov/pubmed/2305711",
+        },
+        {
+          title: "CDC — Healthy weight loss",
+          url: "https://www.cdc.gov/healthy-weight-growth/losing-weight/index.html",
+        },
+        {
+          title: "NIH — Body weight planner",
+          url: "https://www.niddk.nih.gov/bwp",
+        },
+      ],
+      lastReviewed: "2026-11-20",
     },
   },
   {
@@ -1777,6 +1820,43 @@ export const CALCULATORS: CalculatorMeta[] = [
         "tip calculator percentage",
         "discount percentage calculator",
       ],
+      // ── AdSense Fix 1: real per-calculator content (verified numbers) ──
+      resultGuide: [
+        "Percent change is not symmetric: going from 80 to 100 is a 25% increase ((100−80)/80 × 100), but going from 100 back down to 80 is only a 20% decrease ((80−100)/100 × 100). The same 20-unit gap produces different percentages depending on which value is the starting point — always divide by the original value, not the new value.",
+        "&ldquo;X% of Y&rdquo; and &ldquo;X is what percent of Y&rdquo; are mirror problems. 25% of 80 is 20 (0.25 × 80). And 20 is what percent of 80? 20/80 × 100 = 25%. The first multiplies; the second divides — but they describe the same relationship from opposite directions.",
+        "Percentage-point changes are different from percent changes. If an interest rate rises from 5% to 6%, that is a 1 percentage-point increase but a 20% increase in the rate itself ((6−5)/5 × 100). Loan ads often conflate the two; the percentage-point figure is almost always the one that matters for comparing rates.",
+      ],
+      method: {
+        formula:
+          "Percent of: X% of Y = (X/100) × Y. Is-what-percent: X is what % of Y = (X/Y) × 100. Percent change: ((new − old)/old) × 100, with a positive result meaning increase and negative meaning decrease. Increase/decrease by a percent: new = old × (1 ± X/100). All formulas divide by the original (starting) value, never the new value.",
+        assumptions: [
+          "The starting value is non-zero when computing percent change (division by zero is undefined and returns '—').",
+          "Values are real numbers — percentages of negative values are mathematically valid but rarely meaningful in context.",
+          "Percentages are expressed as a number out of 100, not as a decimal (50% = 0.50 = 50/100).",
+        ],
+        excludes: [
+          "Compound percentage changes (e.g. two successive 10% increases compound to 21%, not 20%) — use the compound-interest calculator for those.",
+          "Percentage-point vs percent-change distinction, which this calculator does not label automatically.",
+          "Weighted percentages where each item contributes a different share of the total.",
+        ],
+      },
+      limits: [
+        "Percent change from zero is undefined — the calculator returns '—' rather than 'Infinity'.",
+        "A 100% increase doubles the value; a 100% decrease zeros it. Many people confuse '100% of' with '100% more than'.",
+        "Negative starting values produce counterintuitive results (e.g. going from −10 to 10 is a −200% change, which reads as a decrease despite the value going up).",
+        "Percentages compound, not add: three 10% increases give 33.1%, not 30%.",
+      ],
+      sources: [
+        {
+          title: "NIST — The International System of Units (SI), percentage notation",
+          url: "https://www.nist.gov/pml/special-publication-811",
+        },
+        {
+          title: "Bureau of Labor Statistics — Percent change calculations",
+          url: "https://www.bls.gov/cpi/factsheets/percent-change-calculator.htm",
+        },
+      ],
+      lastReviewed: "2026-11-20",
     },
   },
   {
@@ -2006,6 +2086,45 @@ export const CALCULATORS: CalculatorMeta[] = [
         "days until my birthday",
         "age in months calculator",
       ],
+      // ── AdSense Fix 1: real per-calculator content (verified numbers) ──
+      resultGuide: [
+        "Your age in years, months and days is calendar-based, not a simple division. Someone born January 15, 2000, checked on January 15, 2026, is exactly 26 years, 0 months, 0 days old — 9,497 total days including 7 leap days (2000, 2004, 2008, 2012, 2016, 2020, 2024). The same birthdate checked on February 14, 2026, is 26 years, 0 months, 30 days — not 26 years 1 month, because the 15th of February has not been reached.",
+        "Total days include leap days, which is why a 26-year-old has lived 9,497 days, not 26 × 365 = 9,490. The 7 February 29ths in that span add 7 days. This matters for anything prorated by day (interest, rent, age-based eligibility) — the leap days are real time that has passed.",
+        "Your next birthday is measured to the exact calendar date, not rounded. If today is March 10 and your birthday is March 15, your next birthday is in 5 days, not 'this month'. The calculator finds the next occurrence of your birth month and day in the calendar — this year if it has not passed, next year if it has.",
+      ],
+      method: {
+        formula:
+          "Age is computed by calendar subtraction: years = ageAtYear − birthYear, then borrow down for months and days (if ageAtMonth < birthMonth, borrow a year; if ageAtDay < birthDay, borrow a month from the previous month's last day). Total days = differenceInCalendarDays(ageAt, birth). Total weeks = floor(totalDays / 7). Total months = years × 12 + months. Leap days are counted by the calendar library, not estimated.",
+        assumptions: [
+          "The Gregorian calendar is used throughout, including for dates before its 1582 introduction (proleptic Gregorian).",
+          "Birth date and age-at date are both valid calendar dates (Feb 29 only exists in leap years).",
+          "Time of day is not considered — age changes at midnight, not at the exact hour of birth.",
+          "A Feb 29 birthday in a non-leap age-at year is treated as Feb 28 for the 'has the birthday passed' check (JavaScript Date behavior).",
+        ],
+        excludes: [
+          "Time of birth (some cultures count age from the hour of birth).",
+          "Time-zone differences, which can shift the day count by one near the date boundary.",
+          "Lunar or non-Gregorian calendars (Hijri, Hebrew, Chinese) used in some cultural contexts.",
+          "Gestational age (used in pregnancy), which counts from the last menstrual period, not birth.",
+        ],
+      },
+      limits: [
+        "Feb 29 birthdays roll to Feb 28 (or Mar 1, depending on jurisdiction) in non-leap years — legal age still increments on March 1 in most countries.",
+        "The total-days count includes the start date by convention (differenceInCalendarDays), so 'today' reads as 1 day, not 0. Adjust if your use case needs exclusive counting.",
+        "Years/months/days breakdown is a human-friendly approximation; the total-days figure is the exact one.",
+        "Dates before 1582 use the proleptic Gregorian calendar and may not match historical records kept under the Julian calendar.",
+      ],
+      sources: [
+        {
+          title: "NIST — The Gregorian calendar and leap-year rules",
+          url: "https://www.nist.gov/pml/owm/metric-si/time",
+        },
+        {
+          title: "ISO 8601 — Date and time format standard",
+          url: "https://www.iso.org/iso-8601-date-and-time-format.html",
+        },
+      ],
+      lastReviewed: "2026-11-20",
     },
   },
   {

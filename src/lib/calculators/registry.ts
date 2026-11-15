@@ -1083,7 +1083,7 @@ export const CALCULATORS: CalculatorMeta[] = [
         },
         {
           q: "Which U.S. state has the highest sales tax?",
-          a: "As of 2024, California has the highest state-level sales tax rate at 7.25%. When combined with local city and county taxes, some California cities reach over 10.5% — the highest combined rates in the country.",
+          a: "As of 2026, California has the highest state-level sales tax rate at 7.25%. When combined with local city and county taxes, some California cities reach over 10.5% — the highest combined rates in the country.",
         },
         {
           q: "What's the difference between sales tax and VAT?",
@@ -2053,7 +2053,7 @@ export const CALCULATORS: CalculatorMeta[] = [
         "Review the totals below: total days, weeks, hours lived, and days until your next birthday.",
       ],
       example:
-        "If you were born on 1995-06-15 and today is 2024-11-20, your age is 29 years, 5 months and 5 days. You have lived 10,751 total days (approximately 1,536 weeks or 258,024 hours), and your next birthday is in 207 days.",
+        "If you were born on 1995-06-15 and today is 2026-11-20, your age is 31 years, 5 months and 5 days. You have lived 11,481 total days (approximately 1,640 weeks or 275,544 hours), and your next birthday is in 207 days.",
       faqs: [
         {
           q: "How do I calculate my exact age?",
@@ -2149,7 +2149,7 @@ export const CALCULATORS: CalculatorMeta[] = [
         "Use the result to plan deadlines, leases, project milestones or countdowns.",
       ],
       example:
-        "Adding 90 days to 2024-01-01 gives 2024-03-31 (a leap year, so February has 29 days). The duration between 2023-03-14 and 2024-11-20 is 1 year, 8 months and 6 days, equal to 617 days or approximately 88 weeks.",
+        "Adding 90 days to 2026-01-01 gives 2026-04-01 (not a leap year, so February has 28 days). The duration between 2025-03-14 and 2026-11-20 is 1 year, 8 months and 6 days, equal to 617 days or approximately 88 weeks.",
       faqs: [
         {
           q: "How do I add days to a date?",

@@ -141,6 +141,42 @@ const ARTICLES = [
     reviewer: "Hammad Khan",
     sources: ["NIST SP 800-63B", "CISA"],
   },
+  {
+    slug: "how-concrete-bag-counts-work",
+    title: "How Concrete Bag Counts Really Work (With a Verified Example)",
+    excerpt:
+      "A 10×10 ft slab at 4 inches deep needs 33.3 cubic feet of concrete — about 56 bags of 80 lb, or 62 bags with 10% waste. Learn the exact formula and how bag yield works.",
+    date: "November 2026",
+    category: "Construction",
+    readTime: "6 min",
+    author: "Mohammed Khan",
+    reviewer: "Hammad Khan",
+    sources: ["NIST", "ACI"],
+  },
+  {
+    slug: "how-due-dates-are-calculated",
+    title: "How Due Dates Are Calculated: Naegele's Rule, Conception and IVF",
+    excerpt:
+      "Your due date is not 9 months from conception — it is 280 days from your last menstrual period. Learn Naegele's rule, how cycle length shifts the date, and why ultrasound can change it.",
+    date: "November 2026",
+    category: "Health",
+    readTime: "7 min",
+    author: "Mohammed Khan",
+    reviewer: "Hammad Khan",
+    sources: ["ACOG", "CDC"],
+  },
+  {
+    slug: "longer-loan-lower-rate-which-costs-less",
+    title: "Longer Loan, Lower Rate: Which Actually Costs Less?",
+    excerpt:
+      "A 36-month loan at 9% vs a 72-month loan at 6% — the lower rate looks better, but the longer term costs $485 more in interest. Learn why term length often matters more than the rate.",
+    date: "November 2026",
+    category: "Finance",
+    readTime: "6 min",
+    author: "Mohammed Khan",
+    reviewer: "Hammad Khan",
+    sources: ["CFPB", "FTC"],
+  },
 ];
 
 export default function BlogPage() {

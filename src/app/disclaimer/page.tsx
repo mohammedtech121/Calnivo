@@ -38,9 +38,9 @@ export default function DisclaimerPage() {
             <p className="mt-2">
               Mortgage, loan, investment, retirement, tax, and other financial calculators produce
               estimates that depend on interest rates, loan terms, tax brackets, and assumptions
-              that vary by lender, jurisdiction, and date. Tax calculators use IRS 2024 federal
-              brackets (taxes filed in 2025) for the United States and do not include state taxes,
-              most deductions, or credits.
+              that vary by lender, jurisdiction, and date. Tax calculators use IRS 2025 and 2026
+              federal brackets (Rev. Proc. 2024-40 and Rev. Proc. 2025-32) with a tax-year selector
+              defaulting to 2026, and do not include state taxes, most deductions, or credits.
             </p>
             <p className="mt-2">
               <strong className="text-brand-ink">

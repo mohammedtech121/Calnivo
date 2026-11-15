@@ -87,6 +87,21 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.6,
     },
     {
+      url: `${SITE_URL}/blog/how-concrete-bag-counts-work`,
+      changeFrequency: "monthly",
+      priority: 0.6,
+    },
+    {
+      url: `${SITE_URL}/blog/how-due-dates-are-calculated`,
+      changeFrequency: "monthly",
+      priority: 0.6,
+    },
+    {
+      url: `${SITE_URL}/blog/longer-loan-lower-rate-which-costs-less`,
+      changeFrequency: "monthly",
+      priority: 0.6,
+    },
+    {
       url: `${SITE_URL}/about`,
       changeFrequency: "yearly",
       priority: 0.4,

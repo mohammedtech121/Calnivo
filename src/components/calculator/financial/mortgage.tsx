@@ -53,7 +53,7 @@ export default function MortgageCalculator() {
   const [downPayment, setDownPayment] = useState("80000");
   const [downUnit, setDownUnit] = useState<"usd" | "pct">("usd");
   const [loanYears, setLoanYears] = useState("30");
-  const [rate, setRate] = useState("6.8");
+  const [rate, setRate] = useState("6.5");
   const [includeCosts, setIncludeCosts] = useState(false);
   const [propertyTax, setPropertyTax] = useState("1.1");
   const [homeInsurance, setHomeInsurance] = useState("1400");

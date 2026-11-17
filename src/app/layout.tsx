@@ -20,7 +20,7 @@ const SITE_URL = "https://calnivocalc.com";
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "Calnivo — Free Online Calculators",
+    default: "Free Online Calculators: Mortgage, BMI, Loan & More | Calnivo",
     template: "%s | Calnivo",
   },
   description:

@@ -176,7 +176,6 @@ export const CALCULATORS: CalculatorMeta[] = [
         "Enter the annual interest rate (use a current 30-year fixed rate from a lender).",
         "Choose the loan term — 15, 20, or 30 years.",
         "Add annual property taxes, homeowners insurance, and HOA dues for a true monthly cost.",
-        "Enter property tax, home insurance, and HOA if included.",
       ],
       example:
         "For a $400,000 home with 20% down ($80,000) on a 30-year fixed mortgage at 6.5% interest, the loan principal is $320,000. The monthly principal-and-interest payment is $2,022.62, total interest over the life of the loan is about $408,142.36, and the total amount paid is $728,142.36.",

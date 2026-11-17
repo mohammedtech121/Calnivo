@@ -428,61 +428,47 @@ function PopularCalculators() {
   );
 }
 
-// Keyword-rich content hub — indexable prose that targets head + long-tail
-// calculator queries. Crawlers (and AI search systems) see this as a
-// comprehensive topical authority signal.
+// Content hub — short per-category blurbs that help visitors and crawlers
+// understand what Calnivo offers, without forced keyword bolding (Issue 14).
 function SeoContentHub() {
+  const blurbs: { cat: CalculatorCategory; text: string }[] = [
+    {
+      cat: "financial",
+      text: "Mortgage, loan, auto loan, compound interest, retirement, income tax, and investment calculators. Each shows the amortization or future-value formula, a worked example, and what the result leaves out.",
+    },
+    {
+      cat: "health",
+      text: "BMI, calorie, body fat, BMR, ideal weight, and pregnancy calculators. Each cites its medical source (CDC, NIH, ACOG) and states that the result is a screening estimate, not a diagnosis.",
+    },
+    {
+      cat: "math",
+      text: "Scientific calculator with trig, logarithms and factorial; plus fraction, percentage, triangle, standard deviation, and random number tools with step-by-step working.",
+    },
+    {
+      cat: "other",
+      text: "Age, date, time, hours, GPA, grade, concrete, subnet, password generator, and unit conversion — everyday utilities for school, work, and home.",
+    },
+  ];
   return (
-    <div className="grid gap-6 lg:grid-cols-2">
-      <article className="rounded-2xl border border-brand bg-white p-6 shadow-brand sm:p-8">
-        <h2 className="text-xl font-bold tracking-tight text-brand-ink">
-          Free online calculators for every need
-        </h2>
-        <p className="mt-3 text-sm leading-relaxed text-brand-muted">
-          Calnivo offers {CALCULATORS.length} free online calculators across four core
-          categories. Whether you need a <strong className="text-brand-ink">mortgage
-          calculator</strong> to estimate your monthly home payment, a <strong className="text-brand-ink">
-          BMI calculator</strong> to check your body mass index, a <strong className="text-brand-ink">
-          scientific calculator</strong> for trigonometry and logarithms, or a <strong className="text-brand-ink">
-          compound interest calculator</strong> to project your savings growth — every tool runs
-          instantly in your browser. No sign-up required. Calculator inputs stay in your browser.
-        </p>
-        <p className="mt-3 text-sm leading-relaxed text-brand-muted">
-          Use our <strong className="text-brand-ink">loan calculator</strong> for personal-loan
-          payments, the <strong className="text-brand-ink">auto loan calculator</strong> for car
-          financing, the <strong className="text-brand-ink">retirement calculator</strong> to
-          plan your nest egg, or the <strong className="text-brand-ink">income tax
-          calculator</strong> to estimate your federal tax bill. Each tool shows the formula,
-          a worked example, and answers to common questions.
-        </p>
-      </article>
-
-      <article className="rounded-2xl border border-brand bg-white p-6 shadow-brand sm:p-8">
-        <h2 className="text-xl font-bold tracking-tight text-brand-ink">
-          Accurate math, health &amp; everyday tools
-        </h2>
-        <p className="mt-3 text-sm leading-relaxed text-brand-muted">
-          Our <strong className="text-brand-ink">math calculators</strong> include a full{" "}
-          <strong className="text-brand-ink">scientific calculator</strong> with sin, cos, tan,
-          logarithms, powers and factorial, a <strong className="text-brand-ink">percentage
-          calculator</strong> with four modes, a <strong className="text-brand-ink">fraction
-          calculator</strong> with step-by-step working, and a{" "}
-          <strong className="text-brand-ink">standard deviation calculator</strong> for statistics.
-        </p>
-        <p className="mt-3 text-sm leading-relaxed text-brand-muted">
-          For health &amp; fitness, try the <strong className="text-brand-ink">calorie
-          calculator</strong> (TDEE &amp; macros), the <strong className="text-brand-ink">BMR
-          calculator</strong> using Mifflin-St Jeor, the{" "}
-          <strong className="text-brand-ink">body fat calculator</strong> (U.S. Navy method), or
-          the <strong className="text-brand-ink">ideal weight calculator</strong>. Everyday
-          utilities include an <strong className="text-brand-ink">age calculator</strong>,{" "}
-          <strong className="text-brand-ink">date calculator</strong>,{" "}
-          <strong className="text-brand-ink">hours calculator</strong>,{" "}
-          <strong className="text-brand-ink">GPA calculator</strong>,{" "}
-          <strong className="text-brand-ink">subnet calculator</strong>, and a secure{" "}
-          <strong className="text-brand-ink">password generator</strong>.
-        </p>
-      </article>
+    <div className="grid gap-4 sm:grid-cols-2">
+      {blurbs.map((b) => {
+        const cat = CATEGORY_META[b.cat];
+        const Icon = cat.icon;
+        return (
+          <article
+            key={b.cat}
+            className="rounded-2xl border border-brand bg-white p-5 shadow-brand"
+          >
+            <div className="flex items-center gap-2">
+              <span className={cn("grid h-8 w-8 place-items-center rounded-lg", cat.tint, cat.fg)}>
+                <Icon className="h-4 w-4" />
+              </span>
+              <h2 className="text-sm font-semibold text-brand-ink">{cat.label}</h2>
+            </div>
+            <p className="mt-2 text-sm leading-relaxed text-brand-muted">{b.text}</p>
+          </article>
+        );
+      })}
     </div>
   );
 }

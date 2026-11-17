@@ -42,26 +42,28 @@ export async function generateMetadata({
   if (!meta) return { title: "Calculator not found" };
 
   const catMeta = CATEGORY_META[meta.category];
-  const title = `${meta.name} — Free Online Calculator with Formula & Guide`;
+  // Title under 60 characters including " | Calnivo" (Issue 6).
+  const shortTitle = `${meta.short} Calculator | Calnivo`;
   const description = meta.description;
   const url = `https://calnivocalc.com/calculators/${meta.id}`;
   const isNotReady = NOT_READY.has(id);
 
   return {
-    title,
+    title: shortTitle,
     description,
     alternates: { canonical: `/calculators/${meta.id}` },
+    authors: [{ name: "Mohammed Khan", url: "https://calnivocalc.com/about" }],
     openGraph: {
-      title,
+      title: shortTitle,
       description,
       url,
       siteName: "Calnivo",
-      type: "website",
-      images: [{ url: "/og-image.png", width: 1200, height: 1200, alt: title }],
+      type: "article", // Issue 12: article, not website
+      images: [{ url: "/og-image.png", width: 1200, height: 1200, alt: shortTitle }],
     },
     twitter: {
       card: "summary_large_image",
-      title,
+      title: shortTitle,
       description,
     },
     robots: isNotReady
@@ -137,7 +139,7 @@ export default async function Page({
   // Related calculators (same category, excluding current).
   const related = Object.values(CALCULATOR_MAP)
     .filter((c) => c.category === meta.category && c.id !== id)
-    .slice(0, 7);
+    .slice(0, 14);
 
   return (
     <>
@@ -237,7 +239,7 @@ export default async function Page({
                           >
                             <CIcon className="h-3.5 w-3.5" />
                           </span>
-                          <span className="font-medium group-hover:text-brand-accent-deep">{c.short}</span>
+                          <span className="font-medium group-hover:text-brand-accent-deep">{c.name}</span>
                         </Link>
                       </li>
                     );

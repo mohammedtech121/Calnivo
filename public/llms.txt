@@ -1,0 +1,23 @@
+# Calnivo
+
+> Free online calculators for finance, health, math and everyday tasks. Each page shows the formula, a worked example, assumptions and sources. Inputs stay in the browser.
+
+## Finance
+- [Mortgage calculator](https://calnivocalc.com/calculators/mortgage): monthly payment with taxes, insurance and HOA
+- [Loan calculator](https://calnivocalc.com/calculators/loan): payment and total interest
+- [Compound interest calculator](https://calnivocalc.com/calculators/compound-interest): savings growth with monthly deposits
+- [Income tax calculator](https://calnivocalc.com/calculators/income-tax): 2025 and 2026 IRS federal brackets
+
+## Health
+- [BMI calculator](https://calnivocalc.com/calculators/bmi): body mass index and category
+- [Calorie calculator](https://calnivocalc.com/calculators/calorie): TDEE and macros using Mifflin-St Jeor
+
+## Math and everyday
+- [Percentage calculator](https://calnivocalc.com/calculators/percentage): four modes with examples
+- [Scientific calculator](https://calnivocalc.com/calculators/scientific): trig, logs, powers, factorial
+- [Age calculator](https://calnivocalc.com/calculators/age): exact age in years, months, days
+
+## About
+- [Methodology](https://calnivocalc.com/methodology): how calculators are built, sources, corrections log
+- [About](https://calnivocalc.com/about): founders and editorial process
+- [Blog](https://calnivocalc.com/blog): in-depth guides on mortgage, tax, BMI, compound interest

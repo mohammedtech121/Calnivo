@@ -40,11 +40,12 @@ export default function AgeCalculator() {
   // Start empty to avoid SSR/hydration mismatch; set the visitor's local
   // current date only after mount in the browser.
   const [ageAt, setAgeAt] = useState<string>("");
-  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    // Set the visitor's local current date after mount to avoid SSR/hydration
+    // mismatch. This is the canonical pattern for client-only initial state.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setAgeAt(todayStr());
-    setMounted(true);
   }, []);
 
   const result = useMemo(() => {

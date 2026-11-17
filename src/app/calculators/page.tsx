@@ -8,9 +8,9 @@ import {
 } from "@/lib/calculators/registry";
 
 export const metadata: Metadata = {
-  title: "All Calculators — Browse 40+ Free Online Tools",
+  title: "All Calculators — Browse 40 Free Online Tools",
   description:
-    "Browse all 40+ free online calculators on Calnivo. Finance, fitness, health, math, and everyday utilities — all 100% client-side, no sign-up required.",
+    "Browse all 40 free online calculators on Calnivo. Finance, fitness, health, math, and everyday utilities — all 100% client-side, no sign-up required.",
   alternates: { canonical: "/calculators" },
 };
 

@@ -14,8 +14,8 @@ const articleSchema = {
   "@type": "Article",
   headline: "How Due Dates Are Calculated: Naegele's Rule, Conception and IVF",
   url: "https://calnivocalc.com/blog/how-due-dates-are-calculated",
-  datePublished: "2026-11-20",
-  dateModified: "2026-11-20",
+  datePublished: "2026-11-17",
+  dateModified: "2026-11-17",
   author: {
     "@type": "Person",
     name: "Mohammed Khan",

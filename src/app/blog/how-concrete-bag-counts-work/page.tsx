@@ -14,8 +14,8 @@ const articleSchema = {
   "@type": "Article",
   headline: "How Concrete Bag Counts Really Work (With a Verified Example)",
   url: "https://calnivocalc.com/blog/how-concrete-bag-counts-work",
-  datePublished: "2026-11-20",
-  dateModified: "2026-11-20",
+  datePublished: "2026-11-17",
+  dateModified: "2026-11-17",
   author: {
     "@type": "Person",
     name: "Mohammed Khan",

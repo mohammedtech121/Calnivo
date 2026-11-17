@@ -14,8 +14,8 @@ const articleSchema = {
   "@type": "Article",
   headline: "Longer Loan, Lower Rate: Which Actually Costs Less?",
   url: "https://calnivocalc.com/blog/longer-loan-lower-rate-which-costs-less",
-  datePublished: "2026-11-20",
-  dateModified: "2026-11-20",
+  datePublished: "2026-11-17",
+  dateModified: "2026-11-17",
   author: {
     "@type": "Person",
     name: "Mohammed Khan",

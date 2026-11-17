@@ -14,8 +14,8 @@ const articleSchema = {
   "@type": "Article",
   headline: "15-Year vs 30-Year Mortgage: Which Costs Less?",
   url: "https://calnivocalc.com/blog/15-year-vs-30-year-mortgage",
-  datePublished: "2026-11-20",
-  dateModified: "2026-11-20",
+  datePublished: "2026-11-17",
+  dateModified: "2026-11-17",
   author: {
     "@type": "Person",
     name: "Mohammed Khan",

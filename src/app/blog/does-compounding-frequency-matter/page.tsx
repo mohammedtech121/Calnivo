@@ -14,8 +14,8 @@ const articleSchema = {
   "@type": "Article",
   headline: "Does Compounding Frequency Matter? Daily vs Monthly vs Annual",
   url: "https://calnivocalc.com/blog/does-compounding-frequency-matter",
-  datePublished: "2026-11-20",
-  dateModified: "2026-11-20",
+  datePublished: "2026-11-17",
+  dateModified: "2026-11-17",
   author: {
     "@type": "Person",
     name: "Mohammed Khan",

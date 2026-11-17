@@ -6,6 +6,7 @@ import {
   CALCULATOR_MAP,
   CATEGORY_META,
 } from "@/lib/calculators/registry";
+import { NOINDEX_CALCULATOR_IDS } from "@/lib/calculators/indexability";
 import { Layout } from "@/components/layout/Layout";
 import { CalculatorSeoContent } from "@/components/calculator/CalculatorSeoContent";
 import { RecentCalculatorTracker } from "@/components/calculator/RecentCalculatorTracker";
@@ -28,38 +29,8 @@ export function generateStaticParams() {
 // Per the AdSense audit guide Fix 4: noindex calculators that don't yet have
 // unique, rewritten content. These pages still work for direct visitors, but
 // Google won't index them until they are rewritten with real per-calculator content.
-const NOT_READY = new Set([
-  "concrete",
-  "subnet",
-  "hours",
-  "time",
-  "random-number",
-  "password-generator",
-  "pace",
-  "triangle",
-  "standard-deviation",
-  "finance",
-  "interest-rate",
-  "sales-tax",
-  "pregnancy-conception",
-  "fraction",
-  "conversion",
-  "gpa",
-  "grade",
-  "date",
-  "ideal-weight",
-  "body-fat",
-  "bmr",
-  "pregnancy",
-  "inflation",
-  "investment",
-  "amortization",
-  "interest",
-  "payment",
-  "salary",
-  "retirement",
-  "auto-loan",
-]);
+// The list is centralized in src/lib/calculators/indexability.ts (Issue 24).
+const NOT_READY = NOINDEX_CALCULATOR_IDS;
 
 export async function generateMetadata({
   params,

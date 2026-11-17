@@ -14,8 +14,8 @@ const articleSchema = {
   "@type": "Article",
   headline: "Nominal vs Effective Interest Rate: APR vs APY Explained",
   url: "https://calnivocalc.com/blog/nominal-vs-effective-interest-rate",
-  datePublished: "2026-11-20",
-  dateModified: "2026-11-20",
+  datePublished: "2026-11-17",
+  dateModified: "2026-11-17",
   author: {
     "@type": "Person",
     name: "Mohammed Khan",

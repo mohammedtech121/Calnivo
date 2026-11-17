@@ -39,7 +39,7 @@ export default function NotFound() {
             </Link>
           </div>
           <p className="mt-8 text-xs text-brand-muted">
-            Calnivo has 40+ free calculators — finance, health, math, and everyday utilities.
+            Calnivo has 40 free calculators — finance, health, math, and everyday utilities.
           </p>
         </div>
       </main>

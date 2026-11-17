@@ -66,7 +66,7 @@ export function Header() {
               onChange={(e) => setQuery(e.target.value)}
               onFocus={() => setFocused(true)}
               onBlur={() => setTimeout(() => setFocused(false), 150)}
-              placeholder="Search 40+ calculators…"
+              placeholder="Search 40 calculators…"
               className="w-full bg-transparent text-sm text-brand-ink placeholder:text-brand-muted/70 outline-none"
             />
             {query && (

@@ -14,8 +14,8 @@ const articleSchema = {
   "@type": "Article",
   headline: "How Federal Tax Brackets Work in 2026 (With a Worked Example)",
   url: "https://calnivocalc.com/blog/how-federal-tax-brackets-work",
-  datePublished: "2026-11-20",
-  dateModified: "2026-11-20",
+  datePublished: "2026-11-17",
+  dateModified: "2026-11-17",
   author: {
     "@type": "Person",
     name: "Mohammed Khan",

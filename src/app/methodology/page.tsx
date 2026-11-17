@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Layout } from "@/components/layout/Layout";
 import { CALCULATORS, CALCULATOR_MAP } from "@/lib/calculators/registry";
+import { NOINDEX_CALCULATOR_IDS } from "@/lib/calculators/indexability";
 import {
   ShieldCheck,
   ClipboardCheck,
@@ -35,14 +36,8 @@ export const metadata = {
 // The methodology table only lists calculators that are indexable (rewritten
 // with the Fix 1 content structure). Noindexed calculators are noted as
 // "pending rewrite" at the bottom.
-const NOT_READY = new Set([
-  "concrete", "subnet", "hours", "time", "random-number", "password-generator",
-  "pace", "triangle", "standard-deviation", "finance", "interest-rate",
-  "sales-tax", "pregnancy-conception", "fraction", "conversion", "gpa",
-  "grade", "date", "ideal-weight", "body-fat", "bmr", "pregnancy",
-  "inflation", "investment", "amortization", "interest", "payment",
-  "salary", "retirement", "auto-loan",
-]);
+// Centralized noindex list — see src/lib/calculators/indexability.ts (Issue 24).
+const NOT_READY = NOINDEX_CALCULATOR_IDS;
 
 interface Correction {
   date: string;
@@ -52,43 +47,43 @@ interface Correction {
 
 const CORRECTIONS_LOG: Correction[] = [
   {
-    date: "2026-11-20",
+    date: "2026-11-17",
     calculator: "Income Tax",
     change:
       "Corrected the 2026 federal tax brackets to the official IRS Rev. Proc. 2025-32 thresholds (single: $12,400 / $50,400 / $105,700 / $201,775 / $256,225 / $640,600; married and head of household refreshed likewise). Recomputed all worked examples: $85,000 single → $13,412 (was $13,407); $100,000 → $16,712; $83,900 → $13,170. Standard deduction FAQ retained at 2025 ($15,750 single / $31,500 married) and 2026 ($16,100 / $32,200) figures.",
   },
   {
-    date: "2026-11-20",
+    date: "2026-11-17",
     calculator: "Mortgage",
     change:
       "Corrected the worked example: monthly payment $2,022.62 (was $2,022.82), total interest $408,142.36 (was $408,215), total paid $728,142.36 (was $728,215). Numbers now match the live calculator exactly.",
   },
   {
-    date: "2026-11-20",
+    date: "2026-11-17",
     calculator: "Loan",
     change:
       "Corrected the worked example: monthly payment $525.05 (was $525.13), total interest $6,502.79 (was $6,507.80), total paid $31,502.79 (was $31,507.80).",
   },
   {
-    date: "2026-11-20",
+    date: "2026-11-17",
     calculator: "Interest Rate",
     change:
       "Relabelled the result from “effective APR” to “nominal APR” (the code multiplies the monthly rate by 12, which is a nominal rate). Added a separate APY card computing (1 + r)^12 − 1. Corrected the worked example payment from $482.66 to $482.83 (the value that actually gives 7.42%).",
   },
   {
-    date: "2026-11-20",
+    date: "2026-11-17",
     calculator: "Pregnancy Conception",
     change:
       "Aligned the fertile window with the standard medical definition (5 days before ovulation + ovulation day = 6 days) instead of the ±2-day window previously shown. The narrower ±2-day window is kept as the “most likely” ovulation window.",
   },
   {
-    date: "2026-11-20",
+    date: "2026-11-17",
     calculator: "Fraction",
     change:
       "The add/subtract step now uses the true least common denominator (LCM of the denominators) instead of the product. The step-by-step explains when the product equals the LCD and when it does not.",
   },
   {
-    date: "2026-11-20",
+    date: "2026-11-17",
     calculator: "Password Generator",
     change:
       "Entropy now uses the actual selected alphabet size (length × log₂(alphabet)) instead of a regex-based estimate with hardcoded pool sizes. Added a thresholds explanation for weak/fair/good/strong/very strong.",
@@ -147,12 +142,14 @@ export default function MethodologyPage() {
             </div>
             <div className="rounded-2xl border border-brand bg-white p-5 shadow-brand">
               <h3 className="font-semibold text-brand-ink">
-                3. Generate examples from code
+                3. Verify examples against the code
               </h3>
               <p className="mt-1 text-sm text-brand-muted">
-                Every worked example on a calculator page is produced by
-                calling the real calculator function, not typed by hand. This
-                means the text and the tool can never disagree.
+                Every worked example on a calculator page is computed
+                independently (in Python or a spreadsheet) and checked against
+                the live calculator output before publishing. Examples are
+                stored as text in the registry and regression-tested in our
+                test suite so the text and the tool cannot drift apart.
               </p>
             </div>
             <div className="rounded-2xl border border-brand bg-white p-5 shadow-brand">

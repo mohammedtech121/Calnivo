@@ -14,8 +14,8 @@ const articleSchema = {
   "@type": "Article",
   headline: "Password Length vs Complexity: Which Matters More?",
   url: "https://calnivocalc.com/blog/password-length-vs-complexity",
-  datePublished: "2026-11-20",
-  dateModified: "2026-11-20",
+  datePublished: "2026-11-17",
+  dateModified: "2026-11-17",
   author: {
     "@type": "Person",
     name: "Mohammed Khan",

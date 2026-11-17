@@ -1,18 +1,11 @@
 import type { MetadataRoute } from "next";
 import { CALCULATORS } from "@/lib/calculators/registry";
+import { NOINDEX_CALCULATOR_IDS } from "@/lib/calculators/indexability";
 
 const SITE_URL = "https://calnivocalc.com";
 
-// Same set as NOT_READY in /calculators/[id]/page.tsx — these pages are
-// noindexed until rewritten with unique per-calculator content.
-const NOT_READY = new Set([
-  "concrete", "subnet", "hours", "time", "random-number", "password-generator",
-  "pace", "triangle", "standard-deviation", "finance", "interest-rate",
-  "sales-tax", "pregnancy-conception", "fraction", "conversion", "gpa",
-  "grade", "date", "ideal-weight", "body-fat", "bmr", "pregnancy",
-  "inflation", "investment", "amortization", "interest", "payment",
-  "salary", "retirement", "auto-loan",
-]);
+// Centralized noindex list — see src/lib/calculators/indexability.ts (Issue 24).
+const NOT_READY = NOINDEX_CALCULATOR_IDS;
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return [

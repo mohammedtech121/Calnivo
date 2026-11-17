@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     template: "%s | Calnivo",
   },
   description:
-    "Free online calculators for mortgage, BMI, loan, compound interest, retirement and more. 40+ tools with formulas, examples, and step-by-step guides. No sign-up required.",
+    "Free online calculators for mortgage, BMI, loan, compound interest, retirement and more. 40 tools with formulas, examples, and step-by-step guides. No sign-up required.",
   applicationName: "Calnivo",
   authors: [{ name: "Mohammed Khan" }, { name: "Hammad Khan" }],
   creator: "Calnivo",
@@ -61,7 +61,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Calnivo — Free Online Calculators",
     description:
-      "Fast, comprehensive, free online calculators across finance, fitness, health, math and everyday utilities. 40+ tools, all client-side, no sign-up required.",
+      "Fast, comprehensive, free online calculators across finance, fitness, health, math and everyday utilities. 40 tools, all client-side, no sign-up required.",
     url: SITE_URL,
     siteName: "Calnivo",
     type: "website",
@@ -79,7 +79,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Calnivo — Free Online Calculators",
     description:
-      "40+ free online calculators for finance, fitness, health, math and everyday utilities.",
+      "40 free online calculators for finance, fitness, health, math and everyday utilities.",
     images: ["/og-image.png"],
   },
   other: {
@@ -102,7 +102,7 @@ const jsonLd = {
   name: "Calnivo",
   url: SITE_URL,
   description:
-    "Free online calculators for finance, fitness, health, math and everyday utilities. 40+ tools, all client-side, no sign-up required.",
+    "Free online calculators for finance, fitness, health, math and everyday utilities. 40 tools, all client-side, no sign-up required.",
   applicationCategory: "UtilitiesApplication",
   operatingSystem: "Any",
   browserRequirements: "Requires a modern web browser with JavaScript enabled.",
@@ -171,7 +171,7 @@ const organizationLd = {
   url: SITE_URL,
   logo: LOGO_URL,
   description:
-    "Free online calculators for finance, fitness, health, math and everyday utilities. 40+ tools, all client-side, no sign-up required.",
+    "Free online calculators for finance, fitness, health, math and everyday utilities. 40 tools, all client-side, no sign-up required.",
   founder: [
     {
       "@type": "Person",

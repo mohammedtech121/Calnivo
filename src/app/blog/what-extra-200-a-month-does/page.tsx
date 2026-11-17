@@ -14,8 +14,8 @@ const articleSchema = {
   "@type": "Article",
   headline: "What an Extra $200 a Month Really Does to Your Mortgage",
   url: "https://calnivocalc.com/blog/what-extra-200-a-month-does",
-  datePublished: "2026-11-20",
-  dateModified: "2026-11-20",
+  datePublished: "2026-11-17",
+  dateModified: "2026-11-17",
   author: {
     "@type": "Person",
     name: "Mohammed Khan",

@@ -90,7 +90,7 @@ export interface CalculatorSeo {
   limits?: string[];
   /** 2–3 primary sources (IRS, CFPB, CDC, ACOG, NIST, WHO). Link to the exact page. */
   sources?: CalculatorSource[];
-  /** ISO date of the last real recheck, e.g. "2026-11-20". */
+  /** ISO date of the last real recheck, e.g. "2026-11-17". */
   lastReviewed?: string;
 }
 
@@ -249,7 +249,7 @@ export const CALCULATORS: CalculatorMeta[] = [
           url: "https://www.fdic.gov/resources/consumers/consumer-news/2019-10.html",
         },
       ],
-      lastReviewed: "2026-11-20",
+      lastReviewed: "2026-11-17",
     },
   },
   {
@@ -343,7 +343,7 @@ export const CALCULATORS: CalculatorMeta[] = [
           url: "https://www.consumer.ftc.gov/articles/what-know-personal-loans",
         },
       ],
-      lastReviewed: "2026-11-20",
+      lastReviewed: "2026-11-17",
     },
   },
   {
@@ -853,7 +853,7 @@ export const CALCULATORS: CalculatorMeta[] = [
           url: "https://www.irs.gov/filing/federal-income-tax-rates-and-brackets",
         },
       ],
-      lastReviewed: "2026-11-20",
+      lastReviewed: "2026-11-17",
     },
   },
   {
@@ -944,7 +944,7 @@ export const CALCULATORS: CalculatorMeta[] = [
           url: "https://www.federalreserve.gov/faqs/interest_1447.htm",
         },
       ],
-      lastReviewed: "2026-11-20",
+      lastReviewed: "2026-11-17",
     },
   },
   {
@@ -1194,7 +1194,7 @@ export const CALCULATORS: CalculatorMeta[] = [
           url: "https://www.who.int/data/gho/indicator-metadata-registry/imr-details/2383",
         },
       ],
-      lastReviewed: "2026-11-20",
+      lastReviewed: "2026-11-17",
     },
   },
   {
@@ -1289,7 +1289,7 @@ export const CALCULATORS: CalculatorMeta[] = [
           url: "https://www.niddk.nih.gov/bwp",
         },
       ],
-      lastReviewed: "2026-11-20",
+      lastReviewed: "2026-11-17",
     },
   },
   {
@@ -1856,7 +1856,7 @@ export const CALCULATORS: CalculatorMeta[] = [
           url: "https://www.bls.gov/cpi/factsheets/percent-change-calculator.htm",
         },
       ],
-      lastReviewed: "2026-11-20",
+      lastReviewed: "2026-11-17",
     },
   },
   {
@@ -2053,7 +2053,7 @@ export const CALCULATORS: CalculatorMeta[] = [
         "Review the totals below: total days, weeks, hours lived, and days until your next birthday.",
       ],
       example:
-        "If you were born on 1995-06-15 and today is 2026-11-20, your age is 31 years, 5 months and 5 days. You have lived 11,481 total days (approximately 1,640 weeks or 275,544 hours), and your next birthday is in 207 days.",
+        "If you were born on 1995-06-15 and today is 2026-11-17, your age is 31 years, 5 months and 5 days. You have lived 11,481 total days (approximately 1,640 weeks or 275,544 hours), and your next birthday is in 207 days.",
       faqs: [
         {
           q: "How do I calculate my exact age?",
@@ -2124,7 +2124,7 @@ export const CALCULATORS: CalculatorMeta[] = [
           url: "https://www.iso.org/iso-8601-date-and-time-format.html",
         },
       ],
-      lastReviewed: "2026-11-20",
+      lastReviewed: "2026-11-17",
     },
   },
   {
@@ -2149,7 +2149,7 @@ export const CALCULATORS: CalculatorMeta[] = [
         "Use the result to plan deadlines, leases, project milestones or countdowns.",
       ],
       example:
-        "Adding 90 days to 2026-01-01 gives 2026-04-01 (not a leap year, so February has 28 days). The duration between 2025-03-14 and 2026-11-20 is 1 year, 8 months and 6 days, equal to 617 days or approximately 88 weeks.",
+        "Adding 90 days to 2026-01-01 gives 2026-04-01 (not a leap year, so February has 28 days). The duration between 2025-03-14 and 2026-11-17 is 1 year, 8 months and 6 days, equal to 617 days or approximately 88 weeks.",
       faqs: [
         {
           q: "How do I add days to a date?",
@@ -2538,7 +2538,7 @@ export const CALCULATORS: CalculatorMeta[] = [
       definition:
         "A strong password generator creates random, high-entropy passwords using a configurable mix of uppercase letters, lowercase letters, digits and symbols — protecting your accounts from brute-force and dictionary attacks.",
       formula:
-        "Password entropy in bits = length × log2(charset_size). Lowercase-only (26 chars) at 12 characters = 12 × log2(26) ≈ 56 bits. Mixed case + digits + symbols (94 chars) at 16 characters = 16 × log2(94) ≈ 105 bits — strong enough to defeat any offline cracking attempt.",
+        "Password entropy in bits = length × log2(charset_size). Lowercase-only (26 chars) at 12 characters = 12 × log2(26) ≈ 56 bits. Mixed case + digits + symbols (87 chars in the default pool) at 16 characters = 16 × log2(87) ≈ 103 bits — strong enough to defeat any offline cracking attempt.",
       howToUse: [
         "Set the desired password length (16+ characters recommended).",
         "Tick the character classes to include: uppercase, lowercase, digits, symbols.",
@@ -2547,7 +2547,7 @@ export const CALCULATORS: CalculatorMeta[] = [
         "Copy the result and paste it into a password manager — never reuse it across sites.",
       ],
       example:
-        "With all 4 character classes enabled at 16 characters, the generator produces passwords like 'K7#mQ2$vL9&pX5@n'. This password has an alphabet size of 94, giving entropy = 16 × log2(94) ≈ 105 bits — equivalent to a 1-in-10^31 chance of being guessed.",
+        "With all 4 character classes enabled at 16 characters, the generator produces passwords like 'K7#mQ2$vL9&pX5@n'. This password has an alphabet size of 87 (26 upper + 26 lower + 10 digits + 25 symbols), giving entropy = 16 × log2(87) ≈ 103 bits — equivalent to a 1-in-10^31 chance of being guessed.",
       faqs: [
         {
           q: "What makes a strong password?",
@@ -2559,7 +2559,7 @@ export const CALCULATORS: CalculatorMeta[] = [
         },
         {
           q: "How is password entropy calculated?",
-          a: "Entropy (bits) = length × log2(charset_size). A 12-character password using all 94 printable ASCII characters has 12 × 6.55 ≈ 79 bits of entropy. Each additional bit doubles the cracking difficulty.",
+          a: "Entropy (bits) = length × log2(charset_size). A 12-character password using all 87 characters in the default pool (26 upper + 26 lower + 10 digits + 25 symbols) has 12 × 6.44 ≈ 77 bits of entropy. Each additional bit doubles the cracking difficulty.",
         },
         {
           q: "Are random passwords safer than passphrases?",

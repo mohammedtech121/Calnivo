@@ -324,7 +324,7 @@ export default function PasswordGenerator() {
               28 bits is <strong>weak</strong>, 28–35 <strong>fair</strong>,
               36–59 <strong>good</strong>, 60–127 <strong>strong</strong>, and
               128+ <strong>very strong</strong>. A 16-character password from
-              all 94 printable ASCII characters has about 104.9 bits of
+              all 87 characters in the default pool has about 103.1 bits of
               entropy. Passwords use{" "}
               <code className="rounded bg-brand-canvas px-1 py-0.5 text-xs">
                 crypto.getRandomValues

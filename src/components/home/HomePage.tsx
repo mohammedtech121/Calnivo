@@ -31,7 +31,7 @@ export function HomePage() {
         <div className="min-w-0">
           <div className="inline-flex items-center gap-2 rounded-full border border-brand bg-white px-3 py-1 text-xs font-medium text-brand-muted shadow-sm">
             <span className="h-1.5 w-1.5 rounded-full bg-brand-accent" />
-            {CALCULATORS.length}+ free calculators · no sign-up
+            {CALCULATORS.length} free calculators · no sign-up
           </div>
           <h1 className="mt-4 text-4xl font-bold tracking-tight text-brand-ink sm:text-5xl">
             Free Online <span className="text-brand-accent-gradient">Calculators</span>
@@ -77,7 +77,7 @@ export function HomePage() {
                 ["100% Free", "Every tool, every time. No registration required."],
                 ["Standard formulas", "Each calculator lists the formula and sources it follows."],
                 ["Private by design", "Calculator inputs stay in your browser."],
-                ["40+ tools", "Finance, health, math & everyday utilities."],
+                ["40 tools", "Finance, health, math & everyday utilities."],
               ].map(([t, d]) => (
                 <li key={t} className="flex gap-3">
                   <span className="mt-1 h-2 w-2 shrink-0 rounded-full bg-brand-accent-gradient" />
@@ -89,7 +89,7 @@ export function HomePage() {
               ))}
             </ul>
             <div className="mt-6 grid grid-cols-3 divide-x divide-brand border-t border-brand pt-5 text-center">
-              <Stat n={`${CALCULATORS.length}+`} l="Calculators" />
+              <Stat n={`${CALCULATORS.length}`} l="Calculators" />
               <Stat n="4" l="Categories" />
               <Stat n="$0" l="Always free" />
             </div>
@@ -439,7 +439,7 @@ function SeoContentHub() {
           Free online calculators for every need
         </h2>
         <p className="mt-3 text-sm leading-relaxed text-brand-muted">
-          Calnivo offers {CALCULATORS.length}+ free online calculators across four core
+          Calnivo offers {CALCULATORS.length} free online calculators across four core
           categories. Whether you need a <strong className="text-brand-ink">mortgage
           calculator</strong> to estimate your monthly home payment, a <strong className="text-brand-ink">
           BMI calculator</strong> to check your body mass index, a <strong className="text-brand-ink">

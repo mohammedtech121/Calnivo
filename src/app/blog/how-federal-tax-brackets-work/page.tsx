@@ -82,27 +82,27 @@ export default function Article() {
                 </tr>
                 <tr>
                   <td className="px-4 py-3 font-semibold">12%</td>
-                  <td className="px-4 py-3 tabular-nums">$12,401 – $50,450</td>
+                  <td className="px-4 py-3 tabular-nums">$12,401 – $50,400</td>
                 </tr>
                 <tr>
                   <td className="px-4 py-3 font-semibold">22%</td>
-                  <td className="px-4 py-3 tabular-nums">$50,451 – $107,650</td>
+                  <td className="px-4 py-3 tabular-nums">$50,401 – $105,700</td>
                 </tr>
                 <tr>
                   <td className="px-4 py-3 font-semibold">24%</td>
-                  <td className="px-4 py-3 tabular-nums">$107,651 – $205,500</td>
+                  <td className="px-4 py-3 tabular-nums">$105,701 – $201,775</td>
                 </tr>
                 <tr>
                   <td className="px-4 py-3 font-semibold">32%</td>
-                  <td className="px-4 py-3 tabular-nums">$205,501 – $261,000</td>
+                  <td className="px-4 py-3 tabular-nums">$201,776 – $256,225</td>
                 </tr>
                 <tr>
                   <td className="px-4 py-3 font-semibold">35%</td>
-                  <td className="px-4 py-3 tabular-nums">$261,001 – $652,750</td>
+                  <td className="px-4 py-3 tabular-nums">$256,226 – $640,600</td>
                 </tr>
                 <tr>
                   <td className="px-4 py-3 font-semibold">37%</td>
-                  <td className="px-4 py-3 tabular-nums">$652,751+</td>
+                  <td className="px-4 py-3 tabular-nums">$640,601+</td>
                 </tr>
               </tbody>
             </table>
@@ -138,28 +138,28 @@ export default function Article() {
                   <td className="px-4 py-3 text-right tabular-nums">$1,240.00</td>
                 </tr>
                 <tr>
-                  <td className="px-4 py-3">12% on $12,401 – $50,450</td>
-                  <td className="px-4 py-3 text-right tabular-nums">$38,050</td>
-                  <td className="px-4 py-3 text-right tabular-nums">$4,566.00</td>
+                  <td className="px-4 py-3">12% on $12,401 – $50,400</td>
+                  <td className="px-4 py-3 text-right tabular-nums">$38,000</td>
+                  <td className="px-4 py-3 text-right tabular-nums">$4,560.00</td>
                 </tr>
                 <tr>
-                  <td className="px-4 py-3">22% on $50,451 – $85,000</td>
-                  <td className="px-4 py-3 text-right tabular-nums">$34,550</td>
-                  <td className="px-4 py-3 text-right tabular-nums">$7,601.00</td>
+                  <td className="px-4 py-3">22% on $50,401 – $85,000</td>
+                  <td className="px-4 py-3 text-right tabular-nums">$34,600</td>
+                  <td className="px-4 py-3 text-right tabular-nums">$7,612.00</td>
                 </tr>
                 <tr className="bg-emerald-50 font-semibold">
                   <td className="px-4 py-3">Total federal tax owed</td>
                   <td className="px-4 py-3 text-right tabular-nums">$85,000</td>
-                  <td className="px-4 py-3 text-right tabular-nums text-emerald-700">$13,407.00</td>
+                  <td className="px-4 py-3 text-right tabular-nums text-emerald-700">$13,412.00</td>
                 </tr>
               </tbody>
             </table>
           </div>
           <p>
             So a single filer with $85,000 of taxable income in 2026 owes{" "}
-            <strong className="text-brand-ink">$13,407</strong> in federal income tax. Their
+            <strong className="text-brand-ink">$13,412</strong> in federal income tax. Their
             take-home (after federal tax) is{" "}
-            <strong className="text-brand-ink">$71,593</strong>. This excludes FICA (Social
+            <strong className="text-brand-ink">$71,588</strong>. This excludes FICA (Social
             Security and Medicare), state income tax, and any pre-tax deductions.
           </p>
 
@@ -174,12 +174,12 @@ export default function Article() {
               <strong className="text-brand-ink">Marginal rate</strong> is the rate on the{" "}
               <em>last dollar</em> earned — the bracket the top of your income falls into. For this
               filer it is <strong className="text-brand-ink">22%</strong>. A raise that keeps you
-              under $107,650 is taxed at 22% on each additional dollar.
+              under $105,700 is taxed at 22% on each additional dollar.
             </li>
             <li>
               <strong className="text-brand-ink">Effective rate</strong> is your{" "}
               <em>average</em> rate — total tax divided by taxable income. For this filer it is{" "}
-              <strong className="text-brand-ink">15.8%</strong> ($13,407 ÷ $85,000). The effective
+              <strong className="text-brand-ink">15.8%</strong> ($13,412 ÷ $85,000). The effective
               rate is always lower than the marginal rate because the lower brackets are taxed
               less.
             </li>
@@ -195,7 +195,7 @@ export default function Article() {
             What this calculator does not include
           </h2>
           <p>
-            The $13,407 figure is <strong className="text-brand-ink">federal income tax only</strong>.
+            The $13,412 figure is <strong className="text-brand-ink">federal income tax only</strong>.
             It does not include:
           </p>
           <ul className="list-disc space-y-2 pl-6">

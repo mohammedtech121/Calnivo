@@ -55,7 +55,7 @@ const CORRECTIONS_LOG: Correction[] = [
     date: "2026-11-20",
     calculator: "Income Tax",
     change:
-      "Updated federal tax brackets from 2024 to the 2025 and 2026 IRS tables (Rev. Proc. 2024-40 and Rev. Proc. 2025-32) and added a tax-year selector. Standard deduction FAQ updated to the 2025 ($15,750 single / $31,500 married) and 2026 ($16,100 / $32,200) figures.",
+      "Corrected the 2026 federal tax brackets to the official IRS Rev. Proc. 2025-32 thresholds (single: $12,400 / $50,400 / $105,700 / $201,775 / $256,225 / $640,600; married and head of household refreshed likewise). Recomputed all worked examples: $85,000 single → $13,412 (was $13,407); $100,000 → $16,712; $83,900 → $13,170. Standard deduction FAQ retained at 2025 ($15,750 single / $31,500 married) and 2026 ($16,100 / $32,200) figures.",
   },
   {
     date: "2026-11-20",

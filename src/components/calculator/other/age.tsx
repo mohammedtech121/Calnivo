@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   differenceInCalendarDays,
   format,
@@ -37,7 +37,15 @@ function todayStr(): string {
 
 export default function AgeCalculator() {
   const [birth, setBirth] = useState<string>("2000-01-01");
-  const [ageAt, setAgeAt] = useState<string>("2026-01-01");
+  // Start empty to avoid SSR/hydration mismatch; set the visitor's local
+  // current date only after mount in the browser.
+  const [ageAt, setAgeAt] = useState<string>("");
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setAgeAt(todayStr());
+    setMounted(true);
+  }, []);
 
   const result = useMemo(() => {
     if (!birth || !ageAt) return null;

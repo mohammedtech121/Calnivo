@@ -54,32 +54,33 @@ const BRACKETS_2025: Record<FilingStatus, Bracket[]> = {
 };
 
 // IRS 2026 federal tax brackets (Rev. Proc. 2025-32, taxes filed in 2027)
+// Official thresholds from the IRS 2026 tax-rate schedules.
 const BRACKETS_2026: Record<FilingStatus, Bracket[]> = {
   single: [
     { rate: 10, upto: 12400 },
-    { rate: 12, upto: 50450 },
-    { rate: 22, upto: 107650 },
-    { rate: 24, upto: 205500 },
-    { rate: 32, upto: 261000 },
-    { rate: 35, upto: 652750 },
+    { rate: 12, upto: 50400 },
+    { rate: 22, upto: 105700 },
+    { rate: 24, upto: 201775 },
+    { rate: 32, upto: 256225 },
+    { rate: 35, upto: 640600 },
     { rate: 37, upto: Infinity },
   ],
   married: [
     { rate: 10, upto: 24800 },
-    { rate: 12, upto: 100900 },
-    { rate: 22, upto: 215300 },
-    { rate: 24, upto: 411000 },
-    { rate: 32, upto: 522000 },
-    { rate: 35, upto: 783100 },
+    { rate: 12, upto: 100800 },
+    { rate: 22, upto: 211400 },
+    { rate: 24, upto: 403550 },
+    { rate: 32, upto: 512450 },
+    { rate: 35, upto: 1281300 },
     { rate: 37, upto: Infinity },
   ],
   head: [
     { rate: 10, upto: 17650 },
     { rate: 12, upto: 67450 },
-    { rate: 22, upto: 107650 },
-    { rate: 24, upto: 205500 },
-    { rate: 32, upto: 261400 },
-    { rate: 35, upto: 652750 },
+    { rate: 22, upto: 105700 },
+    { rate: 24, upto: 201775 },
+    { rate: 32, upto: 256225 },
+    { rate: 35, upto: 640600 },
     { rate: 37, upto: Infinity },
   ],
 };

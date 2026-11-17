@@ -783,11 +783,11 @@ export const CALCULATORS: CalculatorMeta[] = [
         "Review the federal tax owed, marginal rate, and effective rate. State tax, credits, and other deductions are not included.",
       ],
       example:
-        "A single filer with $85,000 of taxable income for 2026 owes about $13,407 in federal income tax — an effective rate of 15.8% and a marginal rate of 22%. For 2025 the same income owes about $13,614.",
+        "A single filer with $85,000 of taxable income for 2026 owes about $13,412 in federal income tax — an effective rate of 15.8% and a marginal rate of 22%. For 2025 the same income owes about $13,614.",
       faqs: [
         {
           q: "How are federal income tax brackets calculated?",
-          a: "The U.S. uses a progressive system: each chunk of your taxable income is taxed at the rate for its bracket. A single filer at $85,000 in 2026 pays 10% on the first $12,400, 12% on income from $12,401 to $50,450, and 22% on income from $50,451 to $85,000 — a total of about $13,407.",
+          a: "The U.S. uses a progressive system: each chunk of your taxable income is taxed at the rate for its bracket. A single filer at $85,000 in 2026 pays 10% on the first $12,400, 12% on income from $12,401 to $50,400, and 22% on income from $50,401 to $85,000 — a total of about $13,412.",
         },
         {
           q: "What is the difference between marginal and effective tax rate?",
@@ -799,7 +799,7 @@ export const CALCULATORS: CalculatorMeta[] = [
         },
         {
           q: "How much tax do I owe on $100,000 of income?",
-          a: "A single filer with $100,000 of taxable income for 2026 owes about $16,707 in federal income tax — an effective rate of 16.7%. For 2025 the same income owes about $16,914. If $100,000 is your gross income and you take the $16,100 (2026) standard deduction, your taxable income drops to $83,900 and your federal tax falls to about $13,277.",
+          a: "A single filer with $100,000 of taxable income for 2026 owes about $16,712 in federal income tax — an effective rate of 16.7%. For 2025 the same income owes about $16,914. If $100,000 is your gross income and you take the $16,100 (2026) standard deduction, your taxable income drops to $83,900 and your federal tax falls to about $13,170.",
         },
       ],
       relatedSearches: [
@@ -813,9 +813,9 @@ export const CALCULATORS: CalculatorMeta[] = [
       ],
       // ── AdSense Fix 1: real per-calculator content (verified numbers) ──
       resultGuide: [
-        "Federal tax owed is the progressive sum across your brackets. A single filer with $85,000 of taxable income for 2026 owes $13,407: 10% on the first $12,400 ($1,240), 12% on $12,401–$50,450 ($4,566), and 22% on $50,451–$85,000 ($7,601). Switching to married filing jointly on the same income drops the tax to about $9,871 because the brackets are roughly twice as wide.",
-        "Your marginal rate is the rate on your last dollar earned, not on your whole income. For a single filer at $85,000 in 2026 the marginal rate is 22%, meaning any extra dollar of income is taxed at 22¢ until you cross into the 24% bracket at $107,650. This is why a small raise can sometimes feel worthless after tax.",
-        "Effective rate is your average rate — total tax ÷ taxable income. At $85,000 single in 2026 it is 15.8% ($13,407 ÷ $85,000), well below the 22% marginal rate. Your take-home (after federal tax) is $71,593. This excludes state tax, FICA, and any pre-tax deductions you may have.",
+        "Federal tax owed is the progressive sum across your brackets. A single filer with $85,000 of taxable income for 2026 owes $13,412: 10% on the first $12,400 ($1,240), 12% on $12,401–$50,400 ($4,560), and 22% on $50,401–$85,000 ($7,612). Switching to married filing jointly on the same income drops the tax to about $9,704 because the brackets are roughly twice as wide.",
+        "Your marginal rate is the rate on your last dollar earned, not on your whole income. For a single filer at $85,000 in 2026 the marginal rate is 22%, meaning any extra dollar of income is taxed at 22¢ until you cross into the 24% bracket at $105,700. This is why a small raise can sometimes feel worthless after tax.",
+        "Effective rate is your average rate — total tax ÷ taxable income. At $85,000 single in 2026 it is 15.8% ($13,412 ÷ $85,000), well below the 22% marginal rate. Your take-home (after federal tax) is $71,588. This excludes state tax, FICA, and any pre-tax deductions you may have.",
       ],
       method: {
         formula:
@@ -1569,7 +1569,7 @@ export const CALCULATORS: CalculatorMeta[] = [
         "Results update as you type to show the estimated conception date and fertile window.",
       ],
       example:
-        "If your due date is October 10, the estimated conception date is October 10 − 38 weeks = approximately January 25. The fertile window would have been around January 20–27, with ovulation most likely on or near January 25.",
+        "If your due date is October 10, 2026, the estimated conception date is October 10, 2026 − 266 days = January 17, 2026. The fertile window would have been around January 12–17, 2026, with ovulation most likely on or near January 17.",
       faqs: [
         {
           q: "How do I calculate my conception date?",
@@ -1612,7 +1612,7 @@ export const CALCULATORS: CalculatorMeta[] = [
       definition:
         "A due date calculator estimates when your baby will be born using Naegele's rule, based on the first day of your last menstrual period. The result includes your estimated delivery date, current gestational age, and the number of weeks remaining until birth.",
       formula:
-        "Naegele's rule: Due Date = LMP + 280 days (equivalently, LMP + 9 months + 7 days). For cycles shorter or longer than 28 days, adjust by (cycle length − 28) days. For IVF pregnancies: Due Date = transfer date + 266 days for a day-5 embryo, or + 263 days for a day-3 embryo.",
+        "Naegele's rule: Due Date = LMP + 280 days (equivalently, LMP + 9 months + 7 days). For cycles shorter or longer than 28 days, adjust by (cycle length − 28) days. This calculator is LMP-based only; for IVF, see your provider (ACOG: EDD = transfer date + 261 days for a day-5 embryo, or + 263 days for a day-3 embryo).",
       howToUse: [
         "Enter the first day of your last menstrual period.",
         "Optionally enter your average cycle length (defaults to 28 days).",
@@ -1636,7 +1636,7 @@ export const CALCULATORS: CalculatorMeta[] = [
         },
         {
           q: "What if I conceived through IVF?",
-          a: "For IVF, the due date is calculated from the embryo transfer date: add 266 days for a day-5 blastocyst transfer or 263 days for a day-3 embryo transfer. Tell your provider the exact transfer date and embryo age.",
+          a: "This calculator uses the LMP method and does not accept an IVF transfer date. Per ACOG, IVF due dates are: transfer date + 261 days for a day-5 embryo, or + 263 days for a day-3 embryo. Ask your fertility clinic to confirm your exact transfer date and embryo age, then have your OB apply the correct offset.",
         },
       ],
       relatedSearches: [

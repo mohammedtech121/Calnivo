@@ -6,6 +6,21 @@ export const metadata = {
   description:
     "Calnivo's disclaimer: calculator results are estimates for informational purposes only. Not financial, medical, or legal advice. Verify critical values independently.",
   alternates: { canonical: "/disclaimer" },
+  authors: [{ name: "Mohammed Khan" }],
+  openGraph: {
+    title: "Disclaimer | Calnivo",
+    description:
+      "Calculator results are estimates for informational purposes only. Not financial, medical, or legal advice.",
+    url: "https://calnivocalc.com/disclaimer",
+    siteName: "Calnivo",
+    type: "article",
+  },
+  twitter: {
+    card: "summary",
+    title: "Disclaimer | Calnivo",
+    description:
+      "Calculator results are estimates for informational purposes only. Not financial, medical, or legal advice.",
+  },
 };
 
 export default function DisclaimerPage() {

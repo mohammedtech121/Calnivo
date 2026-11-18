@@ -6,6 +6,21 @@ export const metadata = {
   description:
     "Calnivo's terms of use. Calculators are provided for informational purposes only and are not financial, medical, or legal advice.",
   alternates: { canonical: "/terms" },
+  authors: [{ name: "Mohammed Khan" }],
+  openGraph: {
+    title: "Terms of Use | Calnivo",
+    description:
+      "Calnivo's terms of use. Calculators are provided for informational purposes only.",
+    url: "https://calnivocalc.com/terms",
+    siteName: "Calnivo",
+    type: "article",
+  },
+  twitter: {
+    card: "summary",
+    title: "Terms of Use | Calnivo",
+    description:
+      "Calnivo's terms of use. Calculators are provided for informational purposes only.",
+  },
 };
 
 export default function TermsPage() {

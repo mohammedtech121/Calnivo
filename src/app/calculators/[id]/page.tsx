@@ -210,6 +210,24 @@ export default async function Page({
               </div>
             </div>
 
+            {/* Answer-first block (GEO Issue 7) — 2-3 sentence summary with
+                formula + worked example, above the calculator widget.
+                Server-rendered for crawlers and AI answer engines. */}
+            {meta.seo?.formula && (
+              <div className="mb-6 rounded-xl border border-brand bg-gradient-to-br from-accent/20 to-white p-4 sm:p-5">
+                <p className="text-sm leading-relaxed text-brand-muted">
+                  <strong className="text-brand-ink">{meta.short} formula.</strong>{" "}
+                  {meta.seo.formula}
+                </p>
+                {meta.seo.example && (
+                  <p className="mt-2 text-sm leading-relaxed text-brand-muted">
+                    <strong className="text-brand-ink">Example.</strong>{" "}
+                    {meta.seo.example}
+                  </p>
+                )}
+              </div>
+            )}
+
             {/* Body: calculator + sidebar */}
             <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_300px]">
               <div className="min-w-0">

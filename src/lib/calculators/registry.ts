@@ -170,7 +170,7 @@ export const CALCULATORS: CalculatorMeta[] = [
       definition:
         "A mortgage calculator is a free online tool that estimates your monthly mortgage payment, including principal, interest, property taxes, and insurance. Use it to compare loan scenarios and see how down payment, interest rate, and loan term affect your total cost over the life of the loan.",
       formula:
-        "The monthly payment formula is M = P × [r(1+r)^n] / [(1+r)^n − 1], where P is the loan principal, r is the monthly interest rate (annual rate ÷ 12), and n is the number of monthly payments (loan term in years × 12). Property taxes, homeowners insurance, and PMI (when the down payment is under 20%) are added on top of the principal-and-interest payment to get your full PITI payment.",
+        "The monthly payment formula is M = P × [r(1+r)^n] / [(1+r)^n − 1], where P is the loan principal, r is the monthly interest rate (annual rate ÷ 12), and n is the number of monthly payments (loan term in years × 12). Property taxes, homeowners insurance, and HOA dues can be added on top of the principal-and-interest payment to get your full monthly housing cost. This calculator does not include PMI (private mortgage insurance); if your down payment is under 20%, budget for PMI separately.",
       howToUse: [
         "Enter the home price and your down payment amount or percentage.",
         "Enter the annual interest rate (use a current 30-year fixed rate from a lender).",
@@ -182,7 +182,7 @@ export const CALCULATORS: CalculatorMeta[] = [
       faqs: [
         {
           q: "How is a mortgage payment calculated?",
-          a: "Mortgage payments are calculated using the amortization formula M = P × [r(1+r)^n] / [(1+r)^n − 1], where P is the loan amount, r is the monthly interest rate, and n is the total number of monthly payments. Property taxes, insurance, and PMI are then added to the principal-and-interest payment.",
+          a: "Mortgage payments are calculated using the amortization formula M = P × [r(1+r)^n] / [(1+r)^n − 1], where P is the loan amount, r is the monthly interest rate, and n is the total number of monthly payments. Property taxes, insurance, and HOA can be added to the principal-and-interest payment. PMI is not included by this calculator; if your down payment is under 20%, ask your lender for the PMI rate and add it to your estimate.",
         },
         {
           q: "What is the difference between APR and interest rate on a mortgage?",
@@ -199,7 +199,7 @@ export const CALCULATORS: CalculatorMeta[] = [
       ],
       relatedSearches: [
         "mortgage calculator with taxes and insurance",
-        "mortgage calculator with PMI",
+        "mortgage calculator with HOA",
         "monthly mortgage payment estimator",
         "30 year mortgage calculator",
         "15 year mortgage calculator",
@@ -294,18 +294,16 @@ export const CALCULATORS: CalculatorMeta[] = [
       ],
       relatedSearches: [
         "personal loan calculator",
-        "loan calculator with extra payments",
         "monthly payment calculator",
         "loan payoff calculator",
         "simple interest loan calculator",
-        "debt consolidation calculator",
         "loan interest calculator",
       ],
       // ── AdSense Fix 1: real per-calculator content (verified numbers) ──
       resultGuide: [
         "The monthly payment is the fixed amount that pays off the loan exactly over the term. A $25,000 personal loan at 9.5% APR over 60 months costs $525.05 a month. Lowering the rate from 9.5% to 7.5% on the same loan drops the payment to $501.51 and saves about $1,400 in interest.",
         "Total interest is everything you pay above the amount borrowed — here $6,502.79 on a $25,000 loan, so the loan truly costs $31,502.79. A longer term lowers the monthly payment but raises total interest: the same $25,000 at 9.5% over 72 months costs $456.33 a month but $7,855.76 in interest, $1,352.97 more than the 60-month loan.",
-        "Extra payments shorten the term and cut interest far more than they cut the payment. Adding $50 a month to the $25,000 loan above pays it off in 54 months instead of 60, with interest of $5,764.64 — a saving of $738.15. Extra payments apply to principal first, so they compound by removing future interest on that principal.",
+        "Extra payments shorten the term and cut interest — but this calculator does not model extra payments; it assumes level monthly payments. Adding $50 a month to the $25,000 loan above would pay it off in 54 months with interest of $5,764.64 — a saving of $738.15. To model extra payments, use the amortization calculator or your lender's tool.",
       ],
       method: {
         formula:
@@ -358,7 +356,7 @@ export const CALCULATORS: CalculatorMeta[] = [
       definition:
         "An auto loan calculator is a free online tool that estimates your monthly car payment and total interest based on vehicle price, down payment, trade-in value, APR, and loan term. Use it to compare financing offers from dealers, banks, and credit unions before you walk onto the lot.",
       formula:
-        "Monthly payment = P × [r(1+r)^n] / [(1+r)^n − 1], where P is the amount financed (vehicle price − down payment − trade-in value, plus any taxes and fees rolled into the loan), r is the monthly interest rate (APR ÷ 12), and n is the loan term in months.",
+        "Monthly payment = P × [r(1+r)^n] / [(1+r)^n − 1], where P is the amount financed (vehicle price − down payment − trade-in value, plus sales tax on the price-minus-trade-in), r is the monthly interest rate (APR ÷ 12), and n is the loan term in months. Documentation, registration, and dealer fees are not included; add them to the vehicle price if you want them financed.",
       howToUse: [
         "Enter the vehicle purchase price.",
         "Add your down payment and the trade-in value of your current car.",
@@ -399,9 +397,9 @@ export const CALCULATORS: CalculatorMeta[] = [
   },
   {
     id: "interest",
-    name: "Interest Calculator",
+    name: "Simple Interest Calculator",
     category: "financial",
-    short: "Interest",
+    short: "Simple Interest",
     description:
       "Compute simple and compound interest earned on a principal amount.",
     icon: Percent,
@@ -451,9 +449,9 @@ export const CALCULATORS: CalculatorMeta[] = [
   },
   {
     id: "payment",
-    name: "Payment Calculator",
+    name: "Loan Payment Calculator",
     category: "financial",
-    short: "Payment",
+    short: "Loan Payment",
     description:
       "General payment calculator for loans with flexible compounding options.",
     icon: Wallet,
@@ -512,12 +510,12 @@ export const CALCULATORS: CalculatorMeta[] = [
     keywords: ["retirement", "401k", "pension", "savings"],
     seo: {
       definition:
-        "A retirement calculator is a free online tool that projects how much you'll have saved by retirement age based on your current savings, monthly contributions, expected rate of return, and years to retirement. Use it to see if you're on track and to model Social Security, 401(k) match, and IRA scenarios side by side.",
+        "A retirement calculator is a free online tool that projects how much you'll have saved by retirement age based on your current savings, monthly contributions, expected rate of return, and years to retirement. It uses a standard future-value-of-an-annuity formula and does not model Social Security benefits, a separate employer 401(k) match, or IRA-specific contribution limits — include any employer match in the monthly contribution field.",
       formula:
         "Future value combines a present-value amount and a series of contributions: FV = P × (1+r)^t + PMT × [((1+r)^t − 1) / r], where P is current savings, PMT is the monthly contribution, r is the monthly return (annual return ÷ 12), and t is the number of months until retirement.",
       howToUse: [
         "Enter your current retirement savings balance.",
-        "Enter your monthly contribution (include any employer 401(k) match).",
+        "Enter your total monthly contribution from all sources (your contribution plus any employer 401(k) match).",
         "Enter the expected annual return (6–7% is a common pre-retirement assumption).",
         "Enter the number of years until you retire.",
         "Review the projected balance, total contributions, and total growth.",
@@ -711,9 +709,9 @@ export const CALCULATORS: CalculatorMeta[] = [
   },
   {
     id: "finance",
-    name: "Finance Calculator",
+    name: "Time Value of Money Calculator",
     category: "financial",
-    short: "Finance",
+    short: "TVM",
     description:
       "Solve for any variable in the TVM equation: PV, FV, PMT, rate or periods.",
     icon: Landmark,
@@ -1019,7 +1017,7 @@ export const CALCULATORS: CalculatorMeta[] = [
         "Review the nominal APR (monthly rate × 12) and the APY (the true annual cost including compounding).",
       ],
       example:
-        "A $20,000 loan repaid with $482.83 monthly payments over 48 months has a nominal APR of about 7.42% and an APY of about 7.66%. Borrowers can use this to compare dealer financing against credit-union loans when the stated rate is unclear or hidden in fees.",
+        "A $20,000 loan repaid with $482.83 monthly payments over 48 months has a nominal APR of about 7.42% and an APY of about 7.66%. This calculator solves for the implied rate from the loan amount, monthly payment, and term; it does not account for origination fees or closing costs that would raise the true cost of borrowing.",
       faqs: [
         {
           q: "How do you calculate the interest rate on a loan?",
@@ -1066,7 +1064,7 @@ export const CALCULATORS: CalculatorMeta[] = [
         "Enter the purchase amount.",
         "Enter the sales tax rate as a percentage (e.g., 7.25 for California).",
         "Choose whether the amount entered is pre-tax or tax-included.",
-        "Optionally add a second tax (e.g., state + local, or VAT + excise).",
+        "Enter a single combined tax rate (state + local combined, or just state).",
         "Review the tax amount and the final total cost.",
       ],
       example:
@@ -1720,7 +1718,7 @@ export const CALCULATORS: CalculatorMeta[] = [
       definition:
         "A fraction calculator is a free online tool that adds, subtracts, multiplies and divides fractions — including mixed numbers and improper fractions — and shows step-by-step results so you can follow the work. It's ideal for homework, recipes, carpentry, and any problem involving ratios.",
       formula:
-        "Operations on a/b and c/d: addition/subtraction use the lowest common denominator LCD = lcm(b, d), giving (a·d ± c·b)/(b·d), then reduce by gcd. Multiplication: (a/b)·(c/d) = (a·c)/(b·d). Division: (a/b) ÷ (c/d) = (a·d)/(b·c), provided c ≠ 0. The final fraction is reduced by gcd(numerator, denominator) and the sign is normalized to the numerator.",
+        "Addition/subtraction: find L = lcm(b, d) (the least common denominator), rewrite a/b as a×(L/b)/L and c/d as c×(L/d)/L, then add or subtract the numerators over L. Multiplication: (a/b)·(c/d) = (a·c)/(b·d). Division: (a/b) ÷ (c/d) = (a·d)/(b·c), provided c ≠ 0. The final fraction is reduced by gcd(numerator, denominator) and the sign is normalized to the numerator. Using b×d as a common denominator is valid but not necessarily the LCD; for 1/4 + 1/6 the LCD is 12, not 24.",
       howToUse: [
         "Enter the first fraction's numerator and denominator (use a negative numerator for negative fractions).",
         "Pick an operation: add (+), subtract (−), multiply (×), or divide (÷).",

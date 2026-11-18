@@ -7,6 +7,21 @@ export const metadata = {
   description:
     "Get in touch with the Calnivo team. Report a bug, request a calculator, or send feedback.",
   alternates: { canonical: "/contact" },
+  authors: [{ name: "Mohammed Khan" }],
+  openGraph: {
+    title: "Contact | Calnivo",
+    description:
+      "Get in touch with the Calnivo team. Report a bug, request a calculator, or send feedback.",
+    url: "https://calnivocalc.com/contact",
+    siteName: "Calnivo",
+    type: "article",
+  },
+  twitter: {
+    card: "summary",
+    title: "Contact | Calnivo",
+    description:
+      "Get in touch with the Calnivo team. Report a bug, request a calculator, or send feedback.",
+  },
 };
 
 export default function ContactPage() {

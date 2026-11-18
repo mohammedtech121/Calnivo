@@ -6,6 +6,21 @@ export const metadata = {
   description:
     "Calnivo's privacy policy. Calculator inputs run in your browser. We use Google Analytics 4 with consent. Read the full details here.",
   alternates: { canonical: "/privacy" },
+  authors: [{ name: "Mohammed Khan" }],
+  openGraph: {
+    title: "Privacy Policy | Calnivo",
+    description:
+      "Calnivo's privacy policy. Calculator inputs run in your browser. We use Google Analytics 4 with consent.",
+    url: "https://calnivocalc.com/privacy",
+    siteName: "Calnivo",
+    type: "article",
+  },
+  twitter: {
+    card: "summary",
+    title: "Privacy Policy | Calnivo",
+    description:
+      "Calnivo's privacy policy. Calculator inputs run in your browser. We use Google Analytics 4 with consent.",
+  },
 };
 
 export default function PrivacyPage() {
@@ -84,6 +99,46 @@ export default function PrivacyPage() {
               browser&apos;s local storage</strong> (under the key <code>calnivo:consent</code>)
               so Calnivo remembers your choice on future visits. This is separate from GA4 cookies
               and is not sent to Google. If you reject analytics, no GA4 cookies are ever set.
+            </p>
+
+            <h3 className="mt-6 text-lg font-semibold text-brand-ink">
+              Local browser storage — what we store on your device
+            </h3>
+            <p className="mt-2">
+              Calnivo uses your browser&apos;s localStorage to remember your preferences and
+              recent activity. None of the data below is sent to Calnivo&apos;s server, Google,
+              or any third party. It stays on your device until you clear your browser data or
+              use the in-page clear buttons. The keys we use are:
+            </p>
+            <ul className="mt-2 list-disc space-y-2 pl-6">
+              <li>
+                <code>calnivo:consent</code> — your analytics and ads consent choice
+                (&ldquo;accepted&rdquo; or &ldquo;rejected&rdquo;). Retained until you change
+                your preference.
+              </li>
+              <li>
+                <code>calnivo:history</code> — a short summary of recent calculation results
+                (calculator name, result summary text, and a timestamp). Used by the in-page
+                history feature. <strong>Generated passwords are never stored here.</strong>{" "}
+                Clear with the &ldquo;Clear history&rdquo; button on any calculator or via your
+                browser settings.
+              </li>
+              <li>
+                <code>calnivo:recent</code> — the IDs of calculators you have recently visited
+                and timestamps. Used by the homepage &ldquo;Recently used&rdquo; section. Clear
+                with the &ldquo;Clear&rdquo; button on the homepage.
+              </li>
+              <li>
+                <code>calnivo:favorites</code> — the IDs of calculators you have starred. Used
+                by the favorites feature. Clear with the &ldquo;Clear all&rdquo; button on the
+                homepage.
+              </li>
+            </ul>
+            <p className="mt-3">
+              Calculator inputs and results are never sent to our servers. Optional summaries
+              stored locally (under <code>calnivo:history</code>) remain on your device. If you
+              prefer not to have any of this stored, use your browser&apos;s &ldquo;Clear
+              browsing data&rdquo; feature or the in-page clear buttons.
             </p>
             <p className="mt-2">
               We do NOT send calculator inputs, calculation results, health data, financial
